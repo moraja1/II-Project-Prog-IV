@@ -3,6 +3,7 @@ package cr.ac.una.invoicessystem.data.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.NaturalId;
 
 @Getter
 @Setter
@@ -12,20 +13,24 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Entity
 @Table(name = "Admin")
-public class Admin {
+public final class Admin {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+    private Long id;
+
+    @Column(name = "natural_id")
+    @NaturalId
+    private String naturalId;
 
     @Column(name = "name")
-    protected String name;
+    private String name;
 
     @Column(name = "last_name")
-    protected String lastName;
+    private String lastName;
 
     @Column(name = "email")
-    protected String email;
+    private String email;
 
     @Column(name = "password", length = 64)
     private String pass;
