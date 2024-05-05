@@ -1,5 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Signika:wght@300..700&display=swap');
+
 body {
   margin: 0;
   place-items: center;
-  background: antiquewhite;
+  background: url("assets/background.jpg") no-repeat center;
+  background-size: cover;
+  height: 920px;
+  font-family: "Signika", sans-serif;
 }

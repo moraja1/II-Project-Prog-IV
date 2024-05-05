@@ -3,7 +3,7 @@ import '../components.css';
 
 export function PageHeader( {text} ) {
     return (
-        <header className="common-header">
+        <header className="molecule-header">
             <h1>{text}</h1>
         </header>
     )
