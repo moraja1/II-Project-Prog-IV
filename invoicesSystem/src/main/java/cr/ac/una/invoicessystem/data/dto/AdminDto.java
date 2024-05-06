@@ -10,7 +10,6 @@ import java.io.Serializable;
 @Builder
 public record AdminDto(Long id,
                        String naturalId,
-                       String pass,
                        String name,
                        String lastName,
                        String email) implements Serializable {

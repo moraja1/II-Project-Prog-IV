@@ -5,6 +5,5 @@ import lombok.Builder;
 import java.io.Serializable;
 
 @Builder
-public record LoginFormDto(String username,
-                           String password) implements Serializable {
+public record LoginFormDto(String username, String password) implements Serializable {
 }

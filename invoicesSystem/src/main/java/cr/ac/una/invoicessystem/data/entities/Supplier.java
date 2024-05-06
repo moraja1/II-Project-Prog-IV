@@ -2,7 +2,6 @@ package cr.ac.una.invoicessystem.data.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.NaturalId;
 
 @Getter
@@ -12,8 +11,8 @@ import org.hibernate.annotations.NaturalId;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "Admin")
-public final class Admin {
+@Table(name = "Supplier")
+public final class Supplier {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,4 +33,10 @@ public final class Admin {
 
     @Column(name = "password", length = 64)
     private String pass;
+
+    @Column(name = "access")
+    private Boolean hasAccess;
+
+    @Column(name = "service")
+    private String service;
 }

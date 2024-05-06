@@ -1,20 +1,12 @@
 package cr.ac.una.invoicessystem.logic.implementations;
 
-import cr.ac.una.invoicessystem.data.dto.AdminDto;
 import cr.ac.una.invoicessystem.data.dto.LoginFormDto;
-import cr.ac.una.invoicessystem.data.entities.Admin;
 import cr.ac.una.invoicessystem.data.repositories.AdminRepository;
-import cr.ac.una.invoicessystem.logic.AdminService;
-import cr.ac.una.invoicessystem.logic.mappers.AdminMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import cr.ac.una.invoicessystem.logic.UserService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-public class AdminServiceImplementation implements AdminService {
+public class AdminServiceImplementation implements UserService {
 
     private final AdminRepository adminRepository;
 
@@ -24,7 +16,7 @@ public class AdminServiceImplementation implements AdminService {
 
 
     @Override
-    public boolean isAdmin(LoginFormDto loginFormDto) {
+    public boolean isAuthorized(LoginFormDto loginFormDto) {
         return adminRepository.existsByNaturalIdAndPass(loginFormDto.username(), loginFormDto.password());
     }
 }
