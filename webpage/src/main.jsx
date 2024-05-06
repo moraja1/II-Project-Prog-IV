@@ -10,7 +10,7 @@ import {LoginForm} from "./components/LoginForm.jsx";
 ReactDOM.createRoot(document.getElementById('root'))
     .render(
   <React.StrictMode>
-    <PageHeader text="Factura UNA" />
+    <PageHeader text="Facturas UNA" />
       <LoginForm />
   </React.StrictMode>
 )
