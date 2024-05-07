@@ -34,10 +34,10 @@
 
     /*INPUT MOLECULE END*/
 
-    /*LOGIN FORM COMPONENT*/
+    /* COMMON */
 
-.cmp-loginForm-container {
-    max-width: 400px;
+.cmp-container {
+    max-width: 95%;
     padding: 20px;
     border-radius: 25px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -47,16 +47,24 @@
     backdrop-filter: blur(30px);
 }
 
+.cmp-title {
+    text-align: center;
+    font-optical-sizing: auto;
+    font-weight: 700;
+}
+
+    /* COMMON END */
+
+    /*LOGIN FORM COMPONENT*/
+
+.loginForm {
+    width: 400px;
+}
+
 .cmp-loginForm {
     display: flex;
     flex-direction: column;
     gap: 10px;
-}
-
-.cmp-loginForm-title {
-    text-align: center;
-    font-optical-sizing: auto;
-    font-weight: 700;
 }
 
 .cmp-loginForm-icon {
@@ -86,3 +94,31 @@
 }
 
     /* MAIN BUTTON END */
+
+    /* CMP TABLE */
+
+.usersTable {
+    max-width: 800px;
+    text-align: center;
+}
+
+.cmp-table {
+    border: 2px black solid;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    table-layout: auto;
+}
+
+.cmp-table tr {
+    border: 1px solid #000;
+}
+
+.molecule-table-icon {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+    /* CMP TABLE END */

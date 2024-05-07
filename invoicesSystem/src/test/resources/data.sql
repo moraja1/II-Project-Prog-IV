@@ -9,7 +9,3 @@ INSERT INTO `projectii`.`user` (`natural_id`, `password`, `name`, `last_name`, `
                                 `role`)
 VALUES ('404440444', 'aU6/L3Lc', 'Minni', 'L\'Episcopio', '6203604625', 'mlepiscopio2@usa.gov', '1', 'Physical',
         'Supplier');
-INSERT INTO `projectii`.`user` (`natural_id`, `password`, `name`, `last_name`, `mobile`, `email`, `enabled`, `type`,
-                                `role`)
-VALUES ('505550555', 'oT6/9>cqFo', 'Zsazsa', 'Galiford', '4426626874', 'zgaliford3@ebay.com', '0', 'Juridical',
-        'Supplier');

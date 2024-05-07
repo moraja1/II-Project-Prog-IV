@@ -4,9 +4,9 @@ import {InputBox} from "./molecules/InputBox.jsx";
 
 export function LoginForm() {
     return (
-        <article className="cmp-loginForm-container">
+        <article className="cmp-container loginForm">
             <form className="cmp-loginForm" method="get" action="/login" >
-                <h2 className="cmp-loginForm-title">Iniciar Sesión</h2>
+                <h2 className="cmp-title">Iniciar Sesión</h2>
                 <FaRegUserCircle className="cmp-loginForm-icon"/>
                 <InputBox field="Username" isRequiredProp={true} inputType="text"/>
                 <InputBox field="Password" isRequiredProp={true} inputType="password"/>
