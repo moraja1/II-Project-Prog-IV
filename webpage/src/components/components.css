@@ -188,3 +188,13 @@
     justify-content: center;
 }
     /* MENU BUTTON END */
+
+    /* MENU CMP */
+
+.cmp-menu {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+    /* MENU CMP END */
