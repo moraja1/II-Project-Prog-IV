@@ -131,6 +131,60 @@
     color: currentColor;
 }
 
-
-
     /* CMP TABLE END */
+
+    /* MENU BUTTON */
+
+.molecule-menuButton {
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background: transparent;
+    border: 2px solid #fff;
+    backdrop-filter: blur(30px);
+    width: 100px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.molecule-menuButton-img {
+    text-align: center;
+    align-self: center;
+    justify-content: center;
+    color: #222;
+}
+
+.molecule-menuButton-img * {
+    width: 54px;
+    height: 54px;
+    text-align: center;
+    align-self: center;
+    justify-content: center;
+}
+
+.molecule-menuButton-txt {
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    color: #222;
+}
+
+.molecule-menuButton:hover {
+    border: 2px solid #222;
+    backdrop-filter: blur(5px);
+}
+
+.molecule-menuButton-selected {
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background: transparent;
+    border: 2px solid #222;
+    backdrop-filter: blur(5px);
+    width: 100px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+    /* MENU BUTTON END */

@@ -2,15 +2,16 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { PageHeader } from "./components/molecules/Header.jsx";
 import './index.css'
-import MyTable from "./components/MyTable.jsx";
+import MenuButton from "./components/molecules/MenuButton.jsx";
+import { FaHome } from "react-icons/fa";
 
 
-
+const image = (<FaHome />)
 
 ReactDOM.createRoot(document.getElementById('root'))
     .render(
   <React.StrictMode>
     <PageHeader text="Facturas UNA" />
-      <MyTable />
+      <MenuButton text="Home" image={image}/>
   </React.StrictMode>
 )
