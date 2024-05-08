@@ -12,15 +12,15 @@ public class InvoiceProducts {
     @EmbeddedId
     private InvoiceProductsId id;
 
-    @MapsId("invoiceIdInvoice")
+    @MapsId("idInvoice")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_invoice", nullable = false)
-    private Invoice invoiceIdInvoice;
+    private Invoice idInvoice;
 
-    @MapsId("productsIdProducts")
+    @MapsId("idProducts")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_products", nullable = false)
-    private Product productsIdProducts;
+    private Product idProducts;
 
     @Column(name = "cantity")
     private Integer cantity;
