@@ -1,49 +1,21 @@
 import './components.css';
-import { FaUserCheck } from "react-icons/fa";
-import { IoPersonRemoveSharp } from "react-icons/io5";
+import {FaUserCheck} from "react-icons/fa";
+import {TiUserDelete} from "react-icons/ti";
+import {useEffect, useState} from "react";
+import {userList} from "../services/AdminService.js";
+
 
 export default function MyTable() {
-    let users = [
-        {
-            "id": 24,
-            "naturalId": "202220222",
-            "password": "oW0kAA91qF",
-            "name": "Dana",
-            "lastName": "Lisett",
-            "mobile": "9636350406",
-            "email": "dlisett0@intel.com",
-            "enabled": 0,
-            "type": "Physical",
-            "role": "Supplier"
-        },
-        {
-            "id": 25,
-            "naturalId": "303330333",
-            "password": "mS4FW5H&iV#1Q(",
-            "name": "Bradney",
-            "lastName": "Enefer",
-            "mobile": "5083053497",
-            "email": "benefer1@yelp.com",
-            "enabled": 0,
-            "type": "Physical",
-            "role": "Supplier"
-        },
-        {
-            "id": 26,
-            "naturalId": "404440444",
-            "password": "aU6/L3Lc",
-            "name": "Minni",
-            "lastName": "LEpiscopio",
-            "mobile": "6203604625",
-            "email": "mlepiscopio2@usa.gov",
-            "enabled": 1,
-            "type": "Physical",
-            "role": "Supplier"
-        }
-    ]
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+        userList().then((response) => {
+            setUsers(response.data);
+        }).catch(error => console.error(error));
+    }, []);
 
     let headersName = [
-        "Cedula", "Nombre", "Apellidos", "Teléfono", "Correo Electrónico", "Tipo", "Rol", "Activar o Desactivar"
+        "Cedula", "Nombre", "Apellidos", "Teléfono", "Correo Electrónico", "Tipo", "Rol", "Tiene Acceso", "Activar o Desactivar"
     ]
 
     let rows = users.map((user) =>
@@ -55,9 +27,10 @@ export default function MyTable() {
             <td>{user.email}</td>
             <td>{user.type}</td>
             <td>{user.role}</td>
+            <td>{user.enabled === 0 ? "NO" : "SI"}</td>
             <td className="molecule-table-icon">{user.enabled ?
-                <div className="molecule-table-icon"><a href="#">Activar Usuario</a><FaUserCheck /></div> :
-                <div className="molecule-table-icon"><a href="#">Desactivar Usuario</a><IoPersonRemoveSharp /></div>}</td>
+                <div className="molecule-table-icon" style={{color: "red"}}><a href="#">Desactivar Usuario</a><TiUserDelete/></div> :
+                <div className="molecule-table-icon" style={{color: "green"}}><a href="#">Activar Usuario</a><FaUserCheck/></div>}</td>
         </tr>
     );
 
@@ -75,10 +48,11 @@ export default function MyTable() {
                     <th>{headersName[5]}</th>
                     <th>{headersName[6]}</th>
                     <th>{headersName[7]}</th>
+                    <th>{headersName[8]}</th>
                 </tr>
                 </thead>
                 <tbody>
-                    {rows}
+                {rows}
                 </tbody>
             </table>
         </article>

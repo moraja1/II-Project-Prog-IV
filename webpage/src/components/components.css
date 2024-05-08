@@ -98,7 +98,7 @@
     /* CMP TABLE */
 
 .usersTable {
-    max-width: 800px;
+    max-width: 1000px;
     text-align: center;
 }
 
@@ -116,9 +116,21 @@
 }
 
 .molecule-table-icon {
+    width: 95%;
     display: flex;
-    align-items: center;
+    flex-direction: row;
     justify-content: space-between;
+    box-sizing: border-box;
+    padding: 5px;
+    text-align: center;
 }
+
+.molecule-table-icon a {
+    text-align: left;
+    text-decoration: none;
+    color: currentColor;
+}
+
+
 
     /* CMP TABLE END */
