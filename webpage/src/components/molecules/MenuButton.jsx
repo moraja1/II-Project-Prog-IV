@@ -1,18 +1,25 @@
 import '../components.css';
 import { PropTypes } from "prop-types";
+import {useEffect, useState} from "react";
 
-export default function MenuButton({ text, image, selected, callback }) {
+export default function MenuButton({ text, image, selected, clickHandler } ) {
+    const [isSelected, setSelected] = useState(false);
+
+    useEffect(() => {
+        setSelected(selected)
+    }, []);
+
     return (
-        <button className={clicked ? "molecule-menuButton-selected" : "molecule-menuButton"} onClick={callback(updateButton)}>
+        <button className={isSelected ? "molecule-menuButton-selected" : "molecule-menuButton"} onClick={clickHandler} >
             <span className="molecule-menuButton-img">{image}</span>
             <span className="molecule-menuButton-txt">{text}</span>
         </button>
     )
 }
 
-MenuButton.prototype = {
-    text: PropTypes.String.isRequired,
-    image: PropTypes.ELEMENT_NODE.isRequired,
-    selected: PropTypes.Boolean.isRequired,
-    callback: PropTypes.Callbacks.isRequired
+MenuButton.propTypes = {
+    text: PropTypes.string.isRequired,
+    image: PropTypes.elementType.isRequired,
+    selected: PropTypes.bool.isRequired,
+    clickHandler: PropTypes.func.isRequired
 }
