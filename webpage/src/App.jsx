@@ -1,8 +1,9 @@
-import MyTable from "./components/MyTable.jsx";
+import {PageHeader} from "./components/molecules/Header.jsx";
+
 function App() {
     return (
-        <div className="App">
-            <MyTable />
+        <div className="">
+            <PageHeader />
         </div>
     )
 }

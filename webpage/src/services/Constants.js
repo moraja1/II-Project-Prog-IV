@@ -16,12 +16,3 @@ export const TYPES = {
         SPANISH: "Jurídico"
     }
 }
-
-export const WINDOWS = {
-    HOME: "home",
-    PROFILE: "profile",
-    CLIENTS: "clients",
-    ACCESSES: "accesses",
-    INVOICES: "invoices",
-    PRODUCTS: "products"
-}
