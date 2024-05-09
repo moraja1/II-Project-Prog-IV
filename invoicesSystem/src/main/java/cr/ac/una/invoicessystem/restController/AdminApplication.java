@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @CrossOrigin("*")
@@ -25,9 +26,10 @@ public class AdminApplication {
         return ResponseEntity.ok().body(userRepository.findAll());
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/user/{id}")
     private ResponseEntity<User> getUserById(@PathVariable int id) {
         Optional<User> user = userRepository.findById(id);
-        return user.map(x -> ResponseEntity.ok().body(x)).orElseGet(() -> ResponseEntity.notFound().build());
+        System.out.println(user.map(Objects::toString).orElse(null));
+        return user.map(x -> ResponseEntity.ok().body(x)).orElse(ResponseEntity.notFound().build());
     }
 }
