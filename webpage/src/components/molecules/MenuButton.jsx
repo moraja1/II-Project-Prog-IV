@@ -1,14 +1,11 @@
 import '../components.css';
-import { PropTypes } from "prop-types";
+import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
 
-export default function MenuButton({ index ,text, image, selected, updateElement } ) {
-    const handleClick = () => {
-        updateElement(index);
-    }
+export default function MenuButton({ text, image, link } ) {
 
     return (
-        <Link type="button" className={selected ? "molecule-menuButton-selected" : "molecule-menuButton"} onClick={handleClick} >
+        <Link to={link} /*className={selected ? "molecule-menuButton-selected" : "molecule-menuButton"}*/ >
             <span className="molecule-menuButton-img">{image}</span>
             <span className="molecule-menuButton-txt">{text}</span>
         </Link>
@@ -16,9 +13,7 @@ export default function MenuButton({ index ,text, image, selected, updateElement
 }
 
 MenuButton.propTypes = {
-    index: PropTypes.number.isRequired,
     text: PropTypes.string.isRequired,
     image: PropTypes.object.isRequired,
-    selected: PropTypes.bool.isRequired,
-    updateElement: PropTypes.func.isRequired
+    link: PropTypes.string.isRequired
 }
