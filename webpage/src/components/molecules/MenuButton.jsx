@@ -1,5 +1,6 @@
 import '../components.css';
 import { PropTypes } from "prop-types";
+import {Link} from "react-router-dom";
 
 export default function MenuButton({ index ,text, image, selected, updateElement } ) {
     const handleClick = () => {
