@@ -7,10 +7,10 @@ export default function MenuButton({ index ,text, image, selected, updateElement
     }
 
     return (
-        <button type="button" className={selected ? "molecule-menuButton-selected" : "molecule-menuButton"} onClick={handleClick} >
+        <Link type="button" className={selected ? "molecule-menuButton-selected" : "molecule-menuButton"} onClick={handleClick} >
             <span className="molecule-menuButton-img">{image}</span>
             <span className="molecule-menuButton-txt">{text}</span>
-        </button>
+        </Link>
     )
 }
 
