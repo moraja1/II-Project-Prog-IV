@@ -2,15 +2,16 @@ import './components.css';
 import {FaUserCheck} from "react-icons/fa";
 import {TiUserDelete} from "react-icons/ti";
 import {useEffect, useState} from "react";
-import {userList} from "../services/AdminService.js";
+import {getUser} from "../services/AdminService.js";
+import {ROLES, TYPES} from "../services/Constants.js";
 
 
 export default function MyTable() {
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
-        userList().then((response) => {
-            setUsers(response.data);
+        getUser(1).then((response) => {
+            setUsers([].push(response.data));
         }).catch(error => console.error(error));
     }, []);
 
@@ -25,14 +26,15 @@ export default function MyTable() {
             <td>{user.lastName}</td>
             <td>{user.mobile}</td>
             <td>{user.email}</td>
-            <td>{user.type}</td>
-            <td>{user.role}</td>
+            <td>{user.type === TYPES.PHYSICAL.ENGLISH ? TYPES.PHYSICAL.SPANISH : TYPES.JURIDICAL.SPANISH}</td>
+            <td>{user.role === ROLES.ADMIN ? ROLES.ADMIN : ROLES.SUPPLIER.SPANISH}</td>
             <td>{user.enabled === 0 ? "NO" : "SI"}</td>
             <td className="molecule-table-icon">{user.enabled ?
-                <div className="molecule-table-icon" style={{color: "red"}}><a href="#">Desactivar Usuario</a><TiUserDelete/></div> :
-                <div className="molecule-table-icon" style={{color: "green"}}><a href="#">Activar Usuario</a><FaUserCheck/></div>}</td>
+                <div className="molecule-table-icon" style={{color: "red"}}><a>Desactivar Usuario</a><TiUserDelete/></div> :
+                <div className="molecule-table-icon" style={{color: "green"}}><a>Activar Usuario</a><FaUserCheck/></div>}</td>
         </tr>
     );
+
 
     return (
         <article className="cmp-container usersTable">

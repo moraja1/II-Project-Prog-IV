@@ -6,7 +6,12 @@ import { RiLogoutBoxRFill } from "react-icons/ri";
 import { IoPeopleCircle } from "react-icons/io5";
 import { ImProfile } from "react-icons/im";
 import { FaMoneyCheckDollar } from "react-icons/fa6";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import { FaFileInvoiceDollar } from "react-icons/fa";
+import { FaHandHoldingUsd } from "react-icons/fa";
+import {ROLES as ROLE, WINDOWS} from "../services/Constants.js";
+
+
 
 
 //IMAGES
@@ -15,54 +20,77 @@ const logout = (<RiLogoutBoxRFill />)
 const profile = (<ImProfile />)
 const accesses = (<IoPeopleCircle />)
 const clients = (<FaMoneyCheckDollar />)
+const invoices = (<FaFileInvoiceDollar />)
+const product = (<FaHandHoldingUsd />)
 
 //BUTTONS
-const homeBtnState = {
+const homeBtn = {
     text: "Home",
     image: homeImg,
-    selected: true
+    name: WINDOWS.HOME
 }
-const profileBtnState = {
+const profileBtn = {
     text: "Perfil",
     image: profile,
-    selected: false
+    name: WINDOWS.PROFILE
 }
-const accessesBtnState = {
+const accessesBtn = {
     text: "Accesos",
     image: accesses,
-    selected: false
+    name: WINDOWS.ACCESSES
 }
-const clientsBtnState = {
+const clientsBtn = {
     text: "Clientes",
     image: clients,
-    selected: false
+    name: WINDOWS.CLIENTS
 }
-const logoutBtnState = {
+const productBtn = {
+    text: "Productos",
+    image: product,
+    name: WINDOWS.PRODUCTS
+}
+const invoiceBtn = {
+    text: "Facturas",
+    image: invoices,
+    name: WINDOWS.INVOICES
+}
+const logoutBtn = {
     text: "Logout",
-    image: logout,
-    selected: false
+    image: logout
 }
 
 
-export default function MyMenu({ role }) {
-    const menu = [homeBtnState, profileBtnState];
-    menu.push((role === "Admin" ? accessesBtnState : clientsBtnState), logoutBtnState);
-    const [menuState, setMenuState] = useState(menu)
+export default function MyMenu({ role, updatePage }) {
+    //const [currentSelected, setCurrentSelected] = useState(0);
+
+    let menu = [homeBtn, profileBtn];
+    if(role === ROLE.ADMIN) menu.push(accessesBtn);
+    else menu.push(clientsBtn, productBtn, invoiceBtn);
+    menu.push(logoutBtn);
+    const [selected, setSelected] = useState(Array(menu.length).fill(true, 0, 1).fill(false, 1));
+
+    const updateElement = (index) => {
+        let newSelectedState = Array(selected.length).fill(false);
+        newSelectedState[index] = true;
+        setSelected(newSelectedState)
+    }
+
+    useEffect(() => {
+        updatePage(name);
+    }, [selected]);
 
     return (
         <nav className="cmp-menu">
-            <MenuButton text="Home" image={homeImg} selected={homeState.selected} clickHandler={handleOnClick} />
-            <MenuButton text="Perfil" image={profile} selected={profileState.selected} clickHandler={handleOnClick} />
             {
-                 role === "Admin" ?
-                <MenuButton text="Accesos" image={accesses} selected={accessesState.selected} clickHandler={handleOnClick} /> :
-                <MenuButton text="Clientes" image={clients} selected={clientsState.selected} clickHandler={handleOnClick} />
+                menu.map((menu, index) => (
+                    <MenuButton key={index} index={index} updateElement={updateElement} text={menu.text} image={menu.image} selected={selected[index]} />
+                ))
             }
-            <MenuButton text="Logout" image={logout} selected={false} clickHandler={handleOnClick}/>
         </nav>
     )
 }
 
 MyMenu.propTypes = {
-    role: PropTypes.string.isRequired
+    role: PropTypes.string.isRequired,
+    updatePage: PropTypes.func.isRequired,
 }

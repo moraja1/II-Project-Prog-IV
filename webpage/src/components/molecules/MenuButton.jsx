@@ -1,16 +1,13 @@
 import '../components.css';
 import { PropTypes } from "prop-types";
-import {useEffect, useState} from "react";
 
-export default function MenuButton({ text, image, selected, clickHandler } ) {
-    const [isSelected, setSelected] = useState(false);
-
-    useEffect(() => {
-        setSelected(selected)
-    }, []);
+export default function MenuButton({ index ,text, image, selected, updateElement } ) {
+    const handleClick = () => {
+        updateElement(index);
+    }
 
     return (
-        <button className={isSelected ? "molecule-menuButton-selected" : "molecule-menuButton"} onClick={clickHandler} >
+        <button type="button" className={selected ? "molecule-menuButton-selected" : "molecule-menuButton"} onClick={handleClick} >
             <span className="molecule-menuButton-img">{image}</span>
             <span className="molecule-menuButton-txt">{text}</span>
         </button>
@@ -18,8 +15,9 @@ export default function MenuButton({ text, image, selected, clickHandler } ) {
 }
 
 MenuButton.propTypes = {
+    index: PropTypes.number.isRequired,
     text: PropTypes.string.isRequired,
-    image: PropTypes.elementType.isRequired,
+    image: PropTypes.object.isRequired,
     selected: PropTypes.bool.isRequired,
-    clickHandler: PropTypes.func.isRequired
+    updateElement: PropTypes.func.isRequired
 }
