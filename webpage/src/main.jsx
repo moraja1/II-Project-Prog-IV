@@ -5,7 +5,7 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {PageHeader} from "./components/molecules/Header.jsx";
 import ErrorPage from "./components/error-page.jsx";
 import {LoginForm} from "./components/LoginForm.jsx";
-import {RegisterForm} from "./components/RegisterPage.jsx";
+import {RegisterForm} from "./components/RegisterForm.jsx";
 
 const router = createBrowserRouter([
     {

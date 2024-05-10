@@ -32,6 +32,22 @@
     background-color: transparent;
 }
 
+.error-message {
+    background-color: rgba(255, 0, 0, .1);
+    backdrop-filter: blur(20px);
+    border-radius: 10px;
+    padding: 5px;
+    display: none;
+}
+
+.error-message span {
+    color: red;
+}
+
+.molecule-inputBox input:invalid[focused="true"] ~ .error-message {
+    display: block;
+}
+
     /*INPUT MOLECULE END*/
 
     /* COMMON */
