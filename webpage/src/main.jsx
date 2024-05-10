@@ -1,11 +1,34 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import App from "./App.jsx";
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import {PageHeader} from "./components/molecules/Header.jsx";
+import ErrorPage from "./components/error-page.jsx";
+import {LoginForm} from "./components/LoginForm.jsx";
+import {RegisterForm} from "./components/RegisterPage.jsx";
+
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <PageHeader />,
+        errorElement: <ErrorPage />,
+        children: [
+            {
+                path: "",
+                element: <LoginForm />,
+            },
+            {
+                path: "register",
+                element: <RegisterForm />,
+            },
+        ],
+    },
+
+]);
 
 ReactDOM.createRoot(document.getElementById('root'))
     .render(
   <React.StrictMode>
-    <App />
+      <RouterProvider router={router} />
   </React.StrictMode>
 )

@@ -40,11 +40,11 @@
     max-width: 95%;
     padding: 20px;
     border-radius: 25px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     margin: 2em auto;
     background-color: transparent;
     border: 2px solid #fff;
-    backdrop-filter: blur(30px);
+    backdrop-filter: blur(20px);
 }
 
 .cmp-title {
@@ -198,3 +198,29 @@
 }
 
     /* MENU CMP END */
+
+    /* ERROR PAGE */
+
+.error-page {
+    width: 450px;
+}
+
+.error-message {
+    text-align: center;
+}
+
+    /* ERROR PAGE END */
+
+    /* REGISTER FORM */
+
+.registerForm {
+    width: 450px;
+}
+
+.cmp-registerForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+    /* REGISTER FORM END */

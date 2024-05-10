@@ -31,7 +31,7 @@ export default function MyMenu({ role }) {
     return (
         <nav className="cmp-menu">
             {
-                menu.map((menu, index) => (<MenuButton key={index} link={} text={menu.text} image={menu.image} />))
+                menu.map((menu, index) => (<MenuButton key={index} link={menu.} text={menu.text} image={menu.image} />))
             }
         </nav>
     )

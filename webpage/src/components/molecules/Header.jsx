@@ -1,12 +1,18 @@
-import { PropTypes } from "prop-types";
+import PropTypes from "prop-types";
 import '../components.css';
+import {Outlet} from "react-router-dom";
 
-export function PageHeader( {text = "Facturas UNA"} ) {
+export function PageHeader( ) {
     return (
-        <header className="molecule-header">
-            <h1>{text}</h1>
-        </header>
-    )
+        <>
+            <div className="molecule-header">
+                <h1>Facturas UNA</h1>
+            </div>
+            <div id="detail">
+                <Outlet />
+            </div>
+        </>
+    );
 }
 
 PageHeader.propTypes = {
