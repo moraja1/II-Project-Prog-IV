@@ -32,7 +32,7 @@
     background-color: transparent;
 }
 
-.error-message {
+.error-message-form {
     background-color: rgba(255, 0, 0, .1);
     backdrop-filter: blur(20px);
     border-radius: 10px;
@@ -40,11 +40,11 @@
     display: none;
 }
 
-.error-message span {
+.error-message-form span {
     color: red;
 }
 
-.molecule-inputBox input:invalid[focused="true"] ~ .error-message {
+.molecule-inputBox input:invalid[focused="true"] ~ .error-message-form {
     display: block;
 }
 

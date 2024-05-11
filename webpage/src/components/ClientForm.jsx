@@ -46,7 +46,8 @@ export function ClientForm(  ) {
                           required/>
                 <InputBox name="lastName" label={"Apellidos"}
                           errorMessage={"Por favor, ingresa tus apellidos"}
-                          inputType="text"/>
+                          inputType="text"
+                          required/>
                 <InputBox name="mobile" label={"Teléfono"}
                           errorMessage={"Por favor, ingresa tu teléfono. Debe ser nu número de 8 digitos"}
                           inputType="text"
@@ -54,7 +55,8 @@ export function ClientForm(  ) {
                 <InputBox name="email" label={"Correo Electrónico"}
                           errorMessage={"Por favor, ingresa tu correo electrónico"}
                           inputType="text"
-                          pattern={`^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}$`}/>
+                          pattern={`^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}$`}
+                          required/>
                 <input className="main-button" type="submit" value="Guardar Cliente"/>
             </form>
         </article>

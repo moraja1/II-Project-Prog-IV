@@ -21,7 +21,7 @@ const InputBox = (props) => {
                 placeholder={placeholder}
                 required={inputProps.required}
             />
-            <div className={"error-message"}>
+            <div className={"error-message-form"}>
                 <span>{errorMessage}</span>
             </div>
         </article>
