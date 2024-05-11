@@ -2,6 +2,7 @@ import './components.css';
 import { FaRegUserCircle } from "react-icons/fa";
 import InputBox from "./molecules/InputBox.jsx";
 import {Link} from "react-router-dom";
+import {FORMS} from "../services/Constants.js";
 
 export function LoginForm() {
     const handleSubmit = (evt) => {
@@ -15,7 +16,7 @@ export function LoginForm() {
 
     return (
         <article className="cmp-container loginForm">
-            <form className="cmp-loginForm" method="post" onSubmit={handleSubmit} >
+            <form name={FORMS.LOGIN} className="cmp-loginForm" method="post" onSubmit={handleSubmit} >
                 <h2 className="cmp-title">Iniciar Sesión</h2>
                 <FaRegUserCircle className="cmp-loginForm-icon"/>
                 <InputBox name="naturalId" label={"Cedula"}

@@ -1,18 +1,17 @@
-import './components.css';
-import {FaRegAddressBook} from "react-icons/fa";
-import InputBox from "./molecules/InputBox.jsx";
-import {Link} from "react-router-dom";
 import {useState} from "react";
 import {FORMS} from "../services/Constants.js";
+import { ImProfile } from "react-icons/im";
+import InputBox from "./molecules/InputBox.jsx";
+import {Link} from "react-router-dom";
 
-export function RegisterForm() {
+export function ProfileForm( props ) {
+    const { user } = props;
     const [values, setValues] = useState({
-        naturalId: "",
-        password: "",
-        name: "",
-        lastName: "",
-        mobile: "",
-        email: "",
+        lastName: user.lastName,
+        name: user.name,
+        naturalId: user.naturalId,
+        password: user.password,
+        passwordConf: ""
     })
 
     const handleOnChange = (evt) => {
@@ -34,24 +33,23 @@ export function RegisterForm() {
     return (
         <article className="cmp-container registerForm">
             <form name={FORMS.REGISTER} className="cmp-registerForm" method="post" onSubmit={handleSubmit} onChange={handleOnChange}>
-                <h2 className="cmp-title">Registrese</h2>
-                <FaRegAddressBook className="cmp-loginForm-icon"/>
+                <h2 className="cmp-title">Perfil de Usuario</h2>
+                <ImProfile className="cmp-loginForm-icon"/>
                 <InputBox name="naturalId" label={"Cedula"}
                           inputType="text"
+                          defaultValue={values.naturalId}
                           errorMessage={"Por favor, ingresa un cedula válida de 9 dígitos"}
                           pattern={`^\\d+$`}
                           required/>
                 <InputBox name="name" label={"Nombre"}
                           inputType="text"
+                          defaultValue={values.name}
                           errorMessage={"Por favor, ingresa tu nombre"}
                           required/>
                 <InputBox name="lastName" label={"Apellidos"}
                           errorMessage={"Por favor, ingresa tus apellidos"}
-                          inputType="text"/>
-                <InputBox name="lastName" label={"Teléfono"}
-                          errorMessage={"Por favor, ingresa tu número de teléfono"}
-                          pattern={`^[0-9]{8}$`}
-                          inputType="text"/>
+                          inputType="text"
+                          defaultValue={values.lastName}/>
                 <InputBox name="password" label={"Contraseña"}
                           errorMessage={"Por favor, ingresa una contraseña"}
                           inputType="password"/>
@@ -59,9 +57,8 @@ export function RegisterForm() {
                           errorMessage={"Las contraseñas no coinciden"}
                           pattern={values.password}
                           inputType="password"/>
-                <input className="main-button" type="submit" value="Registrarme"/>
+                <input className="main-button" type="submit" value="Actualizar"/>
             </form>
-            <p>Ir a <Link to="/">Iniciar Sesión</Link></p>
         </article>
     )
 }

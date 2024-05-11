@@ -1,19 +1,17 @@
 import '../components.css';
-import PropTypes from "prop-types";
-import {Link} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 
-export default function MenuButton({ text, image, link } ) {
+const MenuButton = (props) => {
+    const {link, image, text} = props;
 
     return (
-        <Link to={link} /*className={selected ? "molecule-menuButton-selected" : "molecule-menuButton"}*/ >
-            <span className="molecule-menuButton-img">{image}</span>
+        <NavLink to={link} className={({isActive, isPending}) =>
+            isPending ? "molecule-menuButton" :
+            isActive ? "molecule-menuButton active" : "molecule-menuButton"} end>
+            <span onClick={props.onClick} className="molecule-menuButton-img">{image}</span>
             <span className="molecule-menuButton-txt">{text}</span>
-        </Link>
+        </NavLink>
     )
 }
 
-MenuButton.propTypes = {
-    text: PropTypes.string.isRequired,
-    image: PropTypes.object.isRequired,
-    link: PropTypes.string.isRequired
-}
+export default MenuButton;

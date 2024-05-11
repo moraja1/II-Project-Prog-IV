@@ -1,6 +1,5 @@
 import './components.css';
 import MenuButton from "./molecules/MenuButton.jsx";
-import PropTypes from "prop-types";
 import { FaHome } from "react-icons/fa";
 import { RiLogoutBoxRFill } from "react-icons/ri";
 import { IoPeopleCircle } from "react-icons/io5";
@@ -12,31 +11,36 @@ import {ROLES} from "../services/Constants.js";
 
 //IMAGES
 const homeImg = (<FaHome />)
-const logout = (<RiLogoutBoxRFill />)
+const logout  = (<RiLogoutBoxRFill />)
 const profile = (<ImProfile />)
-const accesses = (<IoPeopleCircle />)
+const accesses= (<IoPeopleCircle />)
 const clients = (<FaMoneyCheckDollar />)
-const invoices = (<FaFileInvoiceDollar />)
+const invoices= (<FaFileInvoiceDollar />)
 const product = (<FaHandHoldingUsd />)
+
+const homeBtn = {link: "/home",     text: "Home",     image: homeImg}
+const profBtn = {link: "profile",  text: "Perfil",   image: profile}
+const acceBtn = {link: "accesses", text: "Accesos",  image: accesses}
+const clieBtn = {link: "clients",  text: "Clientes", image: clients}
+const prodBtn = {link: "products",     text: "Productos",image: product}
+const invoBtn = {link: "invoices", text: "Facturas", image: invoices}
+const logoBtn = {link: "/",         text: "Logout",   image: logout}
 
 
 export default function MyMenu({ role }) {
-    //const [currentSelected, setCurrentSelected] = useState(0);
-
-    let menu = [homeBtn, profileBtn];
-    if(role === ROLES.ADMIN) menu.push(accessesBtn);
-    else menu.push(clientsBtn, productBtn, invoiceBtn);
-    menu.push(logoutBtn);
+    let menu = [homeBtn, profBtn];
+    if(role === ROLES.ADMIN) menu.push(acceBtn);
+    else menu.push(clieBtn, prodBtn, invoBtn);
+    menu.push(logoBtn);
 
     return (
         <nav className="cmp-menu">
             {
-                menu.map((menu, index) => (<MenuButton key={index} link={menu.} text={menu.text} image={menu.image} />))
+                menu.map((menu, index) => (
+                    <MenuButton key={index}
+                                link={menu.link} text={menu.text} image={menu.image} />
+                ))
             }
         </nav>
     )
-}
-
-MyMenu.propTypes = {
-    role: PropTypes.string.isRequired
 }

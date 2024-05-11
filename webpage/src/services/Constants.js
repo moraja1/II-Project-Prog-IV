@@ -16,3 +16,11 @@ export const TYPES = {
         SPANISH: "Jurídico"
     }
 }
+
+export const FORMS = {
+    LOGIN: "Login",
+    REGISTER: "Register",
+    CLIENTS: "Clients",
+    PRODUCTS: "Products",
+    INVOICES: "Invoices"
+}
