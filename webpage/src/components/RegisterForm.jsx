@@ -33,7 +33,7 @@ export function RegisterForm() {
 
     return (
         <article className="cmp-container registerForm">
-            <form name={FORMS.REGISTER} className="cmp-registerForm" method="post" onSubmit={handleSubmit} onChange={handleOnChange}>
+            <form className="cmp-registerForm" method="post" onSubmit={handleSubmit} onChange={handleOnChange}>
                 <h2 className="cmp-title">Registrese</h2>
                 <FaRegAddressBook className="cmp-loginForm-icon"/>
                 <InputBox name="naturalId" label={"Cedula"}
@@ -47,10 +47,6 @@ export function RegisterForm() {
                           required/>
                 <InputBox name="lastName" label={"Apellidos"}
                           errorMessage={"Por favor, ingresa tus apellidos"}
-                          inputType="text"/>
-                <InputBox name="lastName" label={"Teléfono"}
-                          errorMessage={"Por favor, ingresa tu número de teléfono"}
-                          pattern={`^[0-9]{8}$`}
                           inputType="text"/>
                 <InputBox name="password" label={"Contraseña"}
                           errorMessage={"Por favor, ingresa una contraseña"}

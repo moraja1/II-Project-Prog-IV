@@ -33,31 +33,29 @@ export function ProfileForm( props ) {
 
     return (
         <article className="cmp-container registerForm">
-            <form name={FORMS.REGISTER} className="cmp-registerForm" method="post" onSubmit={handleSubmit} onChange={handleOnChange}>
+            <form className="cmp-registerForm" method="post" onSubmit={handleSubmit} onChange={handleOnChange}>
                 <h2 className="cmp-title">Perfil de Usuario</h2>
                 <ImProfile className="cmp-loginForm-icon"/>
                 <InputBox name="naturalId" label={"Cedula"}
                           inputType="text"
                           defaultValue={values.naturalId}
                           errorMessage={"Por favor, ingresa un cedula válida de 9 dígitos"}
-                          pattern={`^\\d+$`}
-                          required/>
+                          pattern={`^\\d+$`}/>
                 <InputBox name="name" label={"Nombre"}
                           inputType="text"
                           defaultValue={values.name}
-                          errorMessage={"Por favor, ingresa tu nombre"}
-                          required/>
+                          errorMessage={"Por favor, ingresa tu nombre"}/>
                 <InputBox name="lastName" label={"Apellidos"}
                           errorMessage={"Por favor, ingresa tus apellidos"}
                           inputType="text"
                           defaultValue={values.lastName}/>
                 <InputBox name="mobile" label={"Teléfono"}
-                          errorMessage={"Por favor, ingresa tu teléfono. Debe ser nu número de 8 digitos"}
+                          errorMessage={"Debe ser nu número de 8 digitos y no puede contener letras"}
                           inputType="text"
                           pattern={`^\\d{8}$`}
                           defaultValue={values.mobile}/>
                 <InputBox name="email" label={"Correo Electrónico"}
-                          errorMessage={"Por favor, ingresa tu correo electrónico"}
+                          errorMessage={"Por favor, ingresa un correo electrónico válido"}
                           inputType="text"
                           pattern={`^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}$`}
                           defaultValue={values.email}/>

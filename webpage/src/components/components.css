@@ -229,7 +229,7 @@
 
     /* MENU CMP */
 
-.cmp-menu {
+.cmp-main-menu {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -239,6 +239,19 @@
 }
 
     /* MENU CMP END */
+
+    /* SELLS MENU CMP */
+
+.cmp-sells-menu {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: fit-content;
+    margin-right: auto;
+    margin-top: -1px;
+}
+
+    /* SELLS MENU CMP END */
 
     /* ERROR PAGE */
 
@@ -265,7 +278,46 @@
 
     /* REGISTER FORM END */
 
+    /* HOME SCREEN */
+
 .home-screen {
     width: fit-content;
     text-align: center;
 }
+
+    /* HOME SCREEN END */
+
+    /* PRODUCT FORM */
+
+.productForm {
+    width: 450px;
+}
+
+.cmp-productForm {
+    display: flex;
+    flex-direction: column;
+}
+
+    /* PRODUCT FORM END */
+
+    /* PRODUCT FORM */
+
+.serviceForm {
+    width: 450px;
+}
+
+.cmp-serviceForm {
+    display: flex;
+    flex-direction: column;
+}
+
+    /* PRODUCT FORM END */
+
+    /* SELLS SCREEN */
+
+.cmp-sells-layout {
+    display: grid;
+    grid-template-columns: 25% 50% 25%;
+}
+
+    /* SELLS SCREEN END */

@@ -16,7 +16,7 @@ export function LoginForm() {
 
     return (
         <article className="cmp-container loginForm">
-            <form name={FORMS.LOGIN} className="cmp-loginForm" method="post" onSubmit={handleSubmit} >
+            <form className="cmp-loginForm" method="post" onSubmit={handleSubmit} >
                 <h2 className="cmp-title">Iniciar Sesión</h2>
                 <FaRegUserCircle className="cmp-loginForm-icon"/>
                 <InputBox name="naturalId" label={"Cedula"}

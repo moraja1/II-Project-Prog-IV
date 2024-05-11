@@ -18,23 +18,23 @@ const clients = (<FaMoneyCheckDollar />)
 const invoices= (<FaFileInvoiceDollar />)
 const product = (<FaHandHoldingUsd />)
 
-const homeBtn = {link: "/home",     text: "Home",     image: homeImg}
+const homeBtn = {link: "/home",    text: "Home",     image: homeImg}
 const profBtn = {link: "profile",  text: "Perfil",   image: profile}
 const acceBtn = {link: "accesses", text: "Accesos",  image: accesses}
 const clieBtn = {link: "clients",  text: "Clientes", image: clients}
-const prodBtn = {link: "products",     text: "Productos",image: product}
+const prodBtn = {link: "sells",    text: "Ventas",   image: product}
 const invoBtn = {link: "invoices", text: "Facturas", image: invoices}
-const logoBtn = {link: "/",         text: "Logout",   image: logout}
+const logoBtn = {link: "/",        text: "Logout",   image: logout}
 
 
-export default function MyMenu({ role }) {
+export default function MainMenu({ role }) {
     let menu = [homeBtn, profBtn];
     if(role === ROLES.ADMIN) menu.push(acceBtn);
     else menu.push(clieBtn, prodBtn, invoBtn);
     menu.push(logoBtn);
 
     return (
-        <nav className="cmp-menu">
+        <nav className="cmp-main-menu">
             {
                 menu.map((menu, index) => (
                     <MenuButton key={index}

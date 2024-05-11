@@ -9,6 +9,9 @@ import MyTable from "./components/MyTable.jsx";
 import MyHome from "./components/MyHome.jsx";
 import {ProfileForm} from "./components/ProfileForm.jsx";
 import {ClientForm} from "./components/ClientForm.jsx";
+import SellsLayout from "./components/SellsLayout.jsx";
+import {ProductForm} from "./components/ProductForm.jsx";
+import {ServiceForm} from "./components/ServiceForm.jsx";
 
 export const Context = React.createContext();
 
@@ -63,6 +66,20 @@ const router = createBrowserRouter([
             {
                 path: "clients",
                 element: <ClientForm />,
+            },
+            {
+                path: "sells",
+                element: <SellsLayout />,
+                children: [
+                    {
+                        path: "prods",
+                        element: <ProductForm />,
+                    },
+                    {
+                        path: "servs",
+                        element: <ServiceForm />,
+                    },
+                ]
             },
         ],
     }

@@ -1,12 +1,12 @@
 import {PageHeader} from "./molecules/Header.jsx";
-import MyMenu from "./MyMenu.jsx";
+import MainMenu from "./MainMenu.jsx";
 import {Outlet} from "react-router-dom";
 
 const AppLayout = ({ role }) => {
     return (
         <>
             <PageHeader>
-                <MyMenu role={role} />
+                <MainMenu role={role} />
             </PageHeader>
             <Outlet />
         </>
