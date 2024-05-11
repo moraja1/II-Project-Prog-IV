@@ -8,6 +8,7 @@ import AppLayout from "./components/AppLayout.jsx";
 import MyTable from "./components/MyTable.jsx";
 import MyHome from "./components/MyHome.jsx";
 import {ProfileForm} from "./components/ProfileForm.jsx";
+import {ClientForm} from "./components/ClientForm.jsx";
 
 export const Context = React.createContext();
 
@@ -21,7 +22,7 @@ const user = {
     "email": "dlisett0@intel.com",
     "enabled": 0,
     "type": "Physical",
-    "role": "Admin"
+    "role": "Supplier"
 }
 
 const router = createBrowserRouter([
@@ -60,8 +61,8 @@ const router = createBrowserRouter([
                 element: <ProfileForm user={user} />,
             },
             {
-                path: "register",
-                element: <RegisterForm />,
+                path: "clients",
+                element: <ClientForm />,
             },
         ],
     },

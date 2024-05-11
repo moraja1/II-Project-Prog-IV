@@ -3,15 +3,14 @@ import {FORMS} from "../services/Constants.js";
 import { ImProfile } from "react-icons/im";
 import InputBox from "./molecules/InputBox.jsx";
 
-export function ProfileForm( props ) {
-    const { user } = props;
+export function ClientForm(  ) {
     const [values, setValues] = useState({
-        lastName: user.lastName,
-        name: user.name,
-        naturalId: user.naturalId,
-        mobile: user.mobile,
-        email: user.email,
-        password: user.password,
+        lastName: "",
+        name: "",
+        naturalId: "",
+        mobile: "",
+        email: "",
+        password: "",
         passwordConf: ""
     })
 
@@ -38,37 +37,25 @@ export function ProfileForm( props ) {
                 <ImProfile className="cmp-loginForm-icon"/>
                 <InputBox name="naturalId" label={"Cedula"}
                           inputType="text"
-                          defaultValue={values.naturalId}
                           errorMessage={"Por favor, ingresa un cedula válida de 9 dígitos"}
                           pattern={`^\\d+$`}
                           required/>
                 <InputBox name="name" label={"Nombre"}
                           inputType="text"
-                          defaultValue={values.name}
                           errorMessage={"Por favor, ingresa tu nombre"}
                           required/>
                 <InputBox name="lastName" label={"Apellidos"}
                           errorMessage={"Por favor, ingresa tus apellidos"}
-                          inputType="text"
-                          defaultValue={values.lastName}/>
+                          inputType="text"/>
                 <InputBox name="mobile" label={"Teléfono"}
                           errorMessage={"Por favor, ingresa tu teléfono. Debe ser nu número de 8 digitos"}
                           inputType="text"
-                          pattern={`^\\d{8}$`}
-                          defaultValue={values.mobile}/>
+                          pattern={`^\\d{8}$`}/>
                 <InputBox name="email" label={"Correo Electrónico"}
                           errorMessage={"Por favor, ingresa tu correo electrónico"}
                           inputType="text"
-                          pattern={`^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}$`}
-                          defaultValue={values.email}/>
-                <InputBox name="password" label={"Contraseña"}
-                          errorMessage={"Por favor, ingresa una contraseña"}
-                          inputType="password"/>
-                <InputBox name="passwordConf" label={"Confirmar Contraseña"}
-                          errorMessage={"Las contraseñas no coinciden"}
-                          pattern={values.password}
-                          inputType="password"/>
-                <input className="main-button" type="submit" value="Actualizar"/>
+                          pattern={`^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}$`}/>
+                <input className="main-button" type="submit" value="Guardar Cliente"/>
             </form>
         </article>
     )
