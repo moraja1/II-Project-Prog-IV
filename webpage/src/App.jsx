@@ -1,4 +1,4 @@
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import {createBrowserRouter, Outlet, RouterProvider} from "react-router-dom";
 import {PageHeader} from "./components/molecules/Header.jsx";
 import ErrorPage from "./components/error-page.jsx";
 import {LoginForm} from "./components/LoginForm.jsx";
@@ -21,13 +21,16 @@ const user = {
     "email": "dlisett0@intel.com",
     "enabled": 0,
     "type": "Physical",
-    "role": "Supplier"
+    "role": "Admin"
 }
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <PageHeader />,
+        element: <>
+                    <PageHeader />
+                    <Outlet />
+                </>,
         errorElement: <ErrorPage />,
         children: [
             {
@@ -42,20 +45,19 @@ const router = createBrowserRouter([
     },
     {
         path: "/home",
-        element: <AppLayout role={"Admin"}/>,
+        element: <AppLayout role={user.role}/>,
         errorElement: <ErrorPage />,
         children: [
             {
                 path: "",
-                element: <MyHome user={user}/>,
+                element:
+                    <MyHome user={user}>
+                        <MyTable />
+                    </MyHome>,
             },
             {
                 path: "profile",
                 element: <ProfileForm user={user} />,
-            },
-            {
-                path: "accesses",
-                element: <MyTable />,
             },
             {
                 path: "register",

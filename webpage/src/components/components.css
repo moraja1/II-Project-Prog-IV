@@ -57,7 +57,7 @@
     padding: 20px;
     border-radius: 25px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    margin: 2em auto;
+    margin: 1em auto;
     background-color: transparent;
     border: 2px solid #fff;
     backdrop-filter: blur(20px);
@@ -114,31 +114,49 @@
     /* CMP TABLE */
 
 .usersTable {
-    max-width: 1000px;
+    width: 95%;
     text-align: center;
 }
 
 .cmp-table {
-    border: 2px black solid;
+    border: 2px solid #222;
     border-collapse: collapse;
-    margin-left: auto;
-    margin-right: auto;
+    table-layout: fixed;
     width: 100%;
-    table-layout: auto;
 }
 
 .cmp-table tr {
-    border: 1px solid #000;
+    border: 2px solid #222;
+    padding: .35em;
 }
 
-.molecule-table-icon {
-    width: 95%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    box-sizing: border-box;
-    padding: 5px;
-    text-align: center;
+.cmp-table tr:nth-child(even) {
+    background: #d0d0d0;
+}
+
+.cmp-table th,
+.cmp-table td {
+    padding: .625em;
+    text-align: left;
+}
+.cmp-table th{
+    background: #999;
+    color: #fff;
+    font-size: .85em;
+    letter-spacing: .1em;
+}
+
+.cmp-table td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.cmp-table-title {
+    text-align: left;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .molecule-table-icon a {
@@ -243,7 +261,6 @@
 .cmp-registerForm {
     display: flex;
     flex-direction: column;
-    gap: 10px;
 }
 
     /* REGISTER FORM END */

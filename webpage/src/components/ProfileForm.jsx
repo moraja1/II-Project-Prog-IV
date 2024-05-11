@@ -10,6 +10,8 @@ export function ProfileForm( props ) {
         lastName: user.lastName,
         name: user.name,
         naturalId: user.naturalId,
+        mobile: user.mobile,
+        email: user.email,
         password: user.password,
         passwordConf: ""
     })
@@ -50,6 +52,16 @@ export function ProfileForm( props ) {
                           errorMessage={"Por favor, ingresa tus apellidos"}
                           inputType="text"
                           defaultValue={values.lastName}/>
+                <InputBox name="mobile" label={"Teléfono"}
+                          errorMessage={"Por favor, ingresa tu teléfono. Debe ser nu número de 8 digitos"}
+                          inputType="text"
+                          pattern={`^\\d{8}$`}
+                          defaultValue={values.mobile}/>
+                <InputBox name="email" label={"Correo Electrónico"}
+                          errorMessage={"Por favor, ingresa tu correo electrónico"}
+                          inputType="text"
+                          pattern={`^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}$`}
+                          defaultValue={values.email}/>
                 <InputBox name="password" label={"Contraseña"}
                           errorMessage={"Por favor, ingresa una contraseña"}
                           inputType="password"/>

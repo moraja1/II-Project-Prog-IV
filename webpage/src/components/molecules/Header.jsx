@@ -1,5 +1,4 @@
 import '../components.css';
-import {Outlet} from "react-router-dom";
 
 export function PageHeader({ children }) {
     return (
@@ -9,7 +8,6 @@ export function PageHeader({ children }) {
             </div>
             <div id="detail">
                 {children}
-                <Outlet />
             </div>
         </>
     );

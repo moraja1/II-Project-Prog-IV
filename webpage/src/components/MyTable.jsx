@@ -86,7 +86,7 @@ export default function MyTable() {
     }, []);
 
     let headersName = [
-        "Cedula", "Nombre", "Apellidos", "Teléfono", "Correo Electrónico", "Tipo", "Rol", "Tiene Acceso", "Activar o Desactivar"
+        "Cedula", "Nombre", "Apellidos", "Teléfono", "Correo Electrónico", "Tipo", "Rol", "Acceso", "Acción"
     ]
 
     let rows = users.map((user) =>
@@ -100,33 +100,31 @@ export default function MyTable() {
             <td>{user.role === ROLES.ADMIN ? ROLES.ADMIN : ROLES.SUPPLIER.SPANISH}</td>
             <td>{user.enabled === 0 ? "NO" : "SI"}</td>
             <td className="molecule-table-icon">{user.enabled ?
-                <div className="molecule-table-icon" style={{color: "red"}}><a>Desactivar Usuario</a><TiUserDelete/></div> :
-                <div className="molecule-table-icon" style={{color: "green"}}><a>Activar Usuario</a><FaUserCheck/></div>}</td>
+                <div className="molecule-table-icon" style={{color: "red"}}><a>Desactivar</a></div> :
+                <div className="molecule-table-icon" style={{color: "green"}}><a>Activar</a></div>}</td>
         </tr>
     );
 
 
     return (
-        <article className="cmp-container usersTable">
-            <h2 className="cmp-title">Usuarios registrados</h2>
-            <table className="cmp-table">
-                <thead>
-                <tr>
-                    <th>{headersName[0]}</th>
-                    <th>{headersName[1]}</th>
-                    <th>{headersName[2]}</th>
-                    <th>{headersName[3]}</th>
-                    <th>{headersName[4]}</th>
-                    <th>{headersName[5]}</th>
-                    <th>{headersName[6]}</th>
-                    <th>{headersName[7]}</th>
-                    <th>{headersName[8]}</th>
-                </tr>
-                </thead>
-                <tbody>
-                {rows}
-                </tbody>
-            </table>
-        </article>
+        <table className="cmp-table">
+            <caption className="cmp-table-title">Estos son los usuarios registrados</caption>
+            <thead>
+            <tr>
+                <th>{headersName[0]}</th>
+                <th>{headersName[1]}</th>
+                <th>{headersName[2]}</th>
+                <th>{headersName[3]}</th>
+                <th>{headersName[4]}</th>
+                <th>{headersName[5]}</th>
+                <th>{headersName[6]}</th>
+                <th>{headersName[7]}</th>
+                <th>{headersName[8]}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {rows}
+            </tbody>
+        </table>
     )
 }
