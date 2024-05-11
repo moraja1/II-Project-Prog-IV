@@ -2,6 +2,7 @@ import {useState} from "react";
 import {FORMS} from "../services/Constants.js";
 import {FaRegAddressBook} from "react-icons/fa";
 import InputBox from "./molecules/InputBox.jsx";
+import SelectBox from "./molecules/SelectBox.jsx";
 
 export function ServiceForm() {
     const [values, setValues] = useState({
@@ -33,14 +34,9 @@ export function ServiceForm() {
             <form className="cmp-serviceForm" method="post" onSubmit={handleSubmit} onChange={handleOnChange}>
                 <h2 className="cmp-title">Registre Servicios</h2>
                 <FaRegAddressBook className="cmp-loginForm-icon"/>
-                <InputBox name="name" label={"Nombre"}
-                          inputType="text"
-                          errorMessage={"Por favor, ingresa el nombre del servicio"}
-                          min={4}
-                          required/>
-                <select name="name" required>
+                <SelectBox name="service" label={"Seleccione el servicio"} required>
                     {/*OPTIONS*/}
-                </select>
+                </SelectBox>
                 <InputBox name="currency" label={"Moneda"}
                           errorMessage={"Por favor, ingresa una divisa"}
                           inputType="text"
