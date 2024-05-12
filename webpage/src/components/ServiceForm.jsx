@@ -1,8 +1,22 @@
 import {useState} from "react";
-import {FORMS} from "../services/Constants.js";
 import {FaRegAddressBook} from "react-icons/fa";
 import InputBox from "./molecules/InputBox.jsx";
 import SelectBox from "./molecules/SelectBox.jsx";
+
+const selectOptions = [
+    {
+        id: 0,
+        name: "Mecanica"
+    },
+    {
+        id: 1,
+        name: "Construcción"
+    },
+    {
+        id: 2,
+        name: "Arquitectura"
+    }
+]
 
 export function ServiceForm() {
     const [values, setValues] = useState({
@@ -35,7 +49,10 @@ export function ServiceForm() {
                 <h2 className="cmp-title">Registre Servicios</h2>
                 <FaRegAddressBook className="cmp-loginForm-icon"/>
                 <SelectBox name="service" label={"Seleccione el servicio"} required>
-                    {/*OPTIONS*/}
+                    {selectOptions.map((opt, index) => (
+                            <option key={index} value={opt.name}>{opt.name}</option>
+                        )
+                    )}
                 </SelectBox>
                 <InputBox name="currency" label={"Moneda"}
                           errorMessage={"Por favor, ingresa una divisa"}

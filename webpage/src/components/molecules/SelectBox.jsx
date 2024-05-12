@@ -11,9 +11,7 @@ const SelectBox = (props) => {
                 id={name}
                 name={name}
                 defaultValue={"seleccione una opción"}>
-                {/*{options.map((opt, index) => (
-                    <option key={index} value={opt.value}>{opt.value}</option>
-                ))}*/}
+                {props.children}
             </select>
         </div>
 
