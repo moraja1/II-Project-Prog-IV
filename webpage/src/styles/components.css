@@ -128,7 +128,6 @@
 
 .main-button {
     background-color: #222;
-    font-optical-sizing: auto;
     font-weight: 700;
     color: #fff;
     cursor: pointer;
@@ -353,3 +352,69 @@
 }
 
     /* SELLS SCREEN END */
+
+    /* INVOICE FORM */
+
+.invoiceForm {
+    width: 850px;
+    display: flex;
+    flex-direction: column;
+}
+
+.cmp-invoiceForm {
+    display: flex;
+    flex-direction: column;
+}
+
+.cmp-invoiceForm-icon {
+    width: 64px;
+    height: 64px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.cmp-invoiceForm-dateCode {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.cmp-invoiceForm-dateCode article {
+    width: 45%;
+}
+
+.cmp-invoiceForm-products {
+    box-sizing: border-box;
+    display: grid;
+    max-width: 100%;
+    column-gap: 5px;
+    grid-template-columns: 2fr 1fr;
+}
+
+.cmp-invoiceForm-products .cmp-invoiceForm-autoFit {
+    box-sizing: border-box;
+    display: grid;
+    gap: 5px;
+    grid-template-columns: 2fr 1fr;
+    align-items: center;
+}
+
+.cmp-invoiceForm-button {
+    background-color: #222;
+    font-weight: 700;
+    padding: 15px;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 25px;
+    height: fit-content;
+}
+
+.cmp-invoiceForm-ivaSubtotal {
+    width: fit-content;
+    display: flex;
+    flex-direction: row;
+    max-width: 200px;
+    margin-left: auto;
+}
+
+     /* INVOICE FORM END */

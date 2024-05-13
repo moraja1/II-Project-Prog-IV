@@ -1,4 +1,4 @@
-import '../components.css';
+import '../../styles/components.css';
 
 const SelectBox = (props) => {
     const { name, label, ...inputProps } = props;

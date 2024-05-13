@@ -57,7 +57,7 @@ export function ClientForm(  ) {
                           inputType="text"
                           pattern={`^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}$`}
                           required/>
-                <input className="main-button" type="submit" value="Guardar Cliente"/>
+                <input className="main-button" type="submit" value="Guardar"/>
             </form>
         </article>
     )

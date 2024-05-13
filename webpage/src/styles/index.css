@@ -3,7 +3,7 @@
 body {
   margin: 0;
   place-items: center;
-  background: url("assets/background.jpg") no-repeat center;
+  background: url("../assets/background.jpg") no-repeat center;
   background-size: cover;
   height: 920px;
   font-family: "Signika", sans-serif;

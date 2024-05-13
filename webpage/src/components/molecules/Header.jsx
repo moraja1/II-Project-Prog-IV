@@ -1,4 +1,4 @@
-import '../components.css';
+import '../../styles/components.css';
 
 export function PageHeader({ children }) {
     return (

@@ -1,4 +1,4 @@
-import './components.css';
+import '../styles/components.css';
 import MenuButton from "./molecules/MenuButton.jsx";
 import { FaHome } from "react-icons/fa";
 import { RiLogoutBoxRFill } from "react-icons/ri";

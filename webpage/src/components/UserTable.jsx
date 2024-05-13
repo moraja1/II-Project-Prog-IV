@@ -1,11 +1,9 @@
-import './components.css';
-import {FaUserCheck} from "react-icons/fa";
-import {TiUserDelete} from "react-icons/ti";
+import '../styles/components.css';
 import {useEffect, useState} from "react";
 import {ROLES, TYPES} from "../services/Constants.js";
 
 
-export default function MyTable() {
+const UserTable = () => {
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
@@ -128,3 +126,6 @@ export default function MyTable() {
         </table>
     )
 }
+
+export default UserTable;
+

@@ -1,4 +1,4 @@
-import '../components.css';
+import '../../styles/components.css';
 import {NavLink} from "react-router-dom";
 
 const MenuButton = (props) => {

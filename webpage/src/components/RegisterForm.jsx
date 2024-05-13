@@ -1,4 +1,4 @@
-import './components.css';
+import '../styles/components.css';
 import {FaRegAddressBook} from "react-icons/fa";
 import InputBox from "./molecules/InputBox.jsx";
 import {Link} from "react-router-dom";

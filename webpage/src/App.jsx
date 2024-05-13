@@ -5,13 +5,14 @@ import {LoginForm} from "./components/LoginForm.jsx";
 import {RegisterForm} from "./components/RegisterForm.jsx";
 import React from "react";
 import AppLayout from "./components/AppLayout.jsx";
-import MyTable from "./components/MyTable.jsx";
+import UserTable from "./components/UserTable.jsx";
 import MyHome from "./components/MyHome.jsx";
 import {ProfileForm} from "./components/ProfileForm.jsx";
 import {ClientForm} from "./components/ClientForm.jsx";
 import SellsLayout from "./components/SellsLayout.jsx";
 import {ProductForm} from "./components/ProductForm.jsx";
 import {ServiceForm} from "./components/ServiceForm.jsx";
+import {InvoiceForm} from "./components/InvoiceForm.jsx";
 
 export const Context = React.createContext();
 
@@ -55,9 +56,7 @@ const router = createBrowserRouter([
             {
                 path: "",
                 element:
-                    <MyHome user={user}>
-                        <MyTable />
-                    </MyHome>,
+                    <MyHome user={user} />
             },
             {
                 path: "profile",
@@ -80,6 +79,10 @@ const router = createBrowserRouter([
                         element: <ServiceForm />,
                     },
                 ]
+            },
+            {
+                path: "invoices",
+                element: <InvoiceForm />,
             },
         ],
     }

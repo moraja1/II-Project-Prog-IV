@@ -1,4 +1,4 @@
-import '../components.css';
+import '../../styles/components.css';
 import {useState} from "react";
 
 const InputBox = (props) => {
@@ -21,9 +21,9 @@ const InputBox = (props) => {
                 placeholder={placeholder}
                 required={inputProps.required}
             />
-            <div className={"error-message-form"}>
+            {errorMessage && <div className={"error-message-form"}>
                 <span>{errorMessage}</span>
-            </div>
+            </div>}
         </article>
     )
 }

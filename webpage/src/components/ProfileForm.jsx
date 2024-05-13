@@ -1,5 +1,4 @@
 import {useState} from "react";
-import {FORMS} from "../services/Constants.js";
 import { ImProfile } from "react-icons/im";
 import InputBox from "./molecules/InputBox.jsx";
 
@@ -11,8 +10,7 @@ export function ProfileForm( props ) {
         naturalId: user.naturalId,
         mobile: user.mobile,
         email: user.email,
-        password: user.password,
-        passwordConf: ""
+        password: user.password
     })
 
     const handleOnChange = (evt) => {
@@ -61,10 +59,6 @@ export function ProfileForm( props ) {
                           defaultValue={values.email}/>
                 <InputBox name="password" label={"Contraseña"}
                           errorMessage={"Por favor, ingresa una contraseña"}
-                          inputType="password"/>
-                <InputBox name="passwordConf" label={"Confirmar Contraseña"}
-                          errorMessage={"Las contraseñas no coinciden"}
-                          pattern={values.password}
                           inputType="password"/>
                 <input className="main-button" type="submit" value="Actualizar"/>
             </form>
