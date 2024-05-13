@@ -3,8 +3,11 @@ package cr.ac.una.invoicessystem.data.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.NaturalId;
 
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -17,7 +20,8 @@ public class Invoice {
     private Integer id;
 
     @Column(name = "code")
-    private Double code;
+    @NaturalId
+    private String code;
 
     @Column(name = "date")
     private LocalDate date;
@@ -38,5 +42,11 @@ public class Invoice {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_client", nullable = false)
     private Client idClient;
+
+    @OneToMany(mappedBy = "idInvoice")
+    private Set<InvoiceProducts> invoiceProducts = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "idInvoice")
+    private Set<InvoiceServices> invoiceServices = new LinkedHashSet<>();
 
 }

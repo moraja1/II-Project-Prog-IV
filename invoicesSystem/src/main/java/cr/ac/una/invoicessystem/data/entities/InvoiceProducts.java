@@ -22,8 +22,8 @@ public class InvoiceProducts {
     @JoinColumn(name = "id_products", nullable = false)
     private Product idProducts;
 
-    @Column(name = "cantity")
-    private Integer cantity;
+    @Column(name = "quantity")
+    private Integer quantity;
 
     @Column(name = "subtotal")
     private Integer subtotal;
