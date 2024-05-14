@@ -2,10 +2,12 @@ package cr.ac.una.invoicessystem.restController;
 
 import cr.ac.una.invoicessystem.data.entities.User;
 import cr.ac.una.invoicessystem.data.repositories.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -22,8 +24,9 @@ public class AdminApplication {
     }
 
     @GetMapping("/users")
-    private ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok().body(userRepository.findAll());
+    private ResponseEntity<List<User>> getAllUsers(Pageable pageable) {
+        Page<User> usersPage = userRepository.findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()));
+        return ResponseEntity.ok().body(usersPage.getContent());
     }
 
     @GetMapping("/user/{id}")
