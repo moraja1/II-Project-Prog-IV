@@ -4,7 +4,7 @@ import InputBox from "./molecules/InputBox.jsx";
 import {AuthContext} from "../AuthProvider.jsx";
 
 export function ProfileForm() {
-    const [user, setUser] = useContext(AuthContext);
+    const {user, setUser} = useContext(AuthContext);
 
     const handleOnChange = (evt) => {
         evt.preventDefault();
