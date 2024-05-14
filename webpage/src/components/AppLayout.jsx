@@ -1,12 +1,16 @@
 import {PageHeader} from "./molecules/Header.jsx";
 import MainMenu from "./MainMenu.jsx";
 import {Outlet} from "react-router-dom";
+import {useContext} from "react";
+import {AuthContext} from "../AuthProvider.jsx";
 
-const AppLayout = ({ role }) => {
+const AppLayout = () => {
+    const { user } = useContext(AuthContext);
+
     return (
         <>
             <PageHeader>
-                <MainMenu role={role} />
+                <MainMenu role={user.role} />
             </PageHeader>
             <Outlet />
         </>

@@ -1,11 +1,15 @@
 import UserTable from "./UserTable.jsx";
 import {ROLES} from "../services/Constants.js";
+import {AuthContext} from "../AuthProvider.jsx";
+import {useContext} from "react";
 
-const MyHome = (props) => {
+const MyHome = () => {
+    const { user } = useContext(AuthContext);
+
     return (
         <article className="cmp-container home-screen">
-            <h1>{`Bienvenido, ${props.user.name} ${props.user.lastName}`}</h1>
-            {props.user.role === ROLES.ADMIN && <UserTable />}
+            <h1>{`Bienvenido, ${user.name} ${user.lastName}`}</h1>
+            {user.role === ROLES.ADMIN && <UserTable />}
         </article>
     )
 }

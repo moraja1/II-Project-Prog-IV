@@ -1,17 +1,18 @@
 import '../styles/components.css';
 import { FaRegUserCircle } from "react-icons/fa";
 import InputBox from "./molecules/InputBox.jsx";
-import {Link} from "react-router-dom";
-import {FORMS} from "../services/Constants.js";
+import {Link, useRouteError} from "react-router-dom";
+import {useContext} from "react";
+import {AuthContext} from "../AuthProvider.jsx";
 
 export function LoginForm() {
+    const {user, setUser} = useContext(AuthContext);
+
     const handleSubmit = (evt) => {
         evt.preventDefault();
 
         const formData = new FormData(evt.target);
         const payload = Object.fromEntries(formData);
-
-        console.log(payload);
     }
 
     return (
