@@ -1,6 +1,6 @@
 import UserTable from "./UserTable.jsx";
 import {ROLES} from "../services/Constants.js";
-import {AuthContext} from "../AuthProvider.jsx";
+import {AuthContext} from "../services/AuthProvider.jsx";
 import {useContext} from "react";
 
 const MyHome = () => {

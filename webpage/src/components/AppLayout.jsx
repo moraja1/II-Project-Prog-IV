@@ -2,7 +2,7 @@ import {PageHeader} from "./molecules/Header.jsx";
 import MainMenu from "./MainMenu.jsx";
 import {Outlet} from "react-router-dom";
 import {useContext} from "react";
-import {AuthContext} from "../AuthProvider.jsx";
+import {AuthContext} from "../services/AuthProvider.jsx";
 
 const AppLayout = () => {
     const { user } = useContext(AuthContext);

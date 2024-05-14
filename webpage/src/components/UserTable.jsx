@@ -1,87 +1,35 @@
 import '../styles/components.css';
 import {useEffect, useState} from "react";
 import {ROLES, TYPES} from "../services/Constants.js";
+import axios from "axios";
+import {useQuery} from "@tanstack/react-query";
+import TableAnimations from "./skeletons/TableAnimation.jsx";
+import ErrorPage from "./error-page.jsx";
+import { GrLinkNext,GrLinkPrevious  } from "react-icons/gr";
+
 
 
 const UserTable = () => {
     const [users, setUsers] = useState([]);
+    const [page, setPage] = useState(0);
 
-    useEffect(() => {
-        setUsers([
-            {
-                "id": 1,
-                "naturalId": "202220222",
-                "password": "oW0kAA91qF",
-                "name": "Dana",
-                "lastName": "Lisett",
-                "mobile": "9636350406",
-                "email": "dlisett0@intel.com",
-                "enabled": 0,
-                "type": "Physical",
-                "role": "Supplier"
-            },
-            {
-                "id": 2,
-                "naturalId": "303330333",
-                "password": "mS4FW5H&iV#1Q(",
-                "name": "Bradney",
-                "lastName": "Enefer",
-                "mobile": "5083053497",
-                "email": "benefer1@yelp.com",
-                "enabled": 0,
-                "type": "Physical",
-                "role": "Supplier"
-            },
-            {
-                "id": 3,
-                "naturalId": "404440444",
-                "password": "aU6L3Lc",
-                "name": "Minni",
-                "lastName": "Lepiscopio",
-                "mobile": "6203604625",
-                "email": "mlepiscopio2@usa.gov",
-                "enabled": 1,
-                "type": "Physical",
-                "role": "Supplier"
-            },
-            {
-                "id": 4,
-                "naturalId": "505550555",
-                "password": "fsgdfhsh",
-                "name": "Maggie",
-                "lastName": "Trabikta",
-                "mobile": "2566633154",
-                "email": "Trabikta@co.gov",
-                "enabled": 0,
-                "type": "Juridical",
-                "role": "Supplier"
-            },
-            {
-                "id": 5,
-                "naturalId": "606660666",
-                "password": "errtutuiy",
-                "name": "Maritza",
-                "lastName": "Estupiñam",
-                "mobile": "25666333211",
-                "email": "Estipikddss@ibm.corp",
-                "enabled": 0,
-                "type": "Physical",
-                "role": "Supplier"
-            },
-            {
-                "id": 6,
-                "naturalId": "707770777",
-                "password": "bvnbcaerte",
-                "name": "Crampble",
-                "lastName": "Gladiatore",
-                "mobile": "9996654984",
-                "email": "Gfjhdfbsa@yahoo.es",
-                "enabled": 1,
-                "type": "Physical",
-                "role": "Supplier"
-            }
-        ])
-    }, []);
+    const { isPending, error, data, isFetching } = useQuery({
+        queryKey: ['repoData'],
+        queryFn: () =>
+            axios
+                .get(`http://localhost:8080/admin/users?page=${page}&size=5`)
+                .then((res) => {
+                    setUsers(res.data);
+                    return res.data;
+                }),
+    })
+
+    if (isPending || isFetching) return <TableAnimations />;
+    if (error) return <ErrorPage />
+
+    const handlePageBtns = (e) => {
+        console.log(e.target.name)
+    }
 
     let headersName = [
         "Cedula", "Nombre", "Apellidos", "Teléfono", "Correo Electrónico", "Tipo", "Rol", "Acceso", "Acción"
@@ -105,25 +53,32 @@ const UserTable = () => {
 
 
     return (
-        <table className="cmp-table">
-            <caption className="cmp-table-title">Estos son los usuarios registrados</caption>
-            <thead>
-            <tr>
-                <th>{headersName[0]}</th>
-                <th>{headersName[1]}</th>
-                <th>{headersName[2]}</th>
-                <th>{headersName[3]}</th>
-                <th>{headersName[4]}</th>
-                <th>{headersName[5]}</th>
-                <th>{headersName[6]}</th>
-                <th>{headersName[7]}</th>
-                <th>{headersName[8]}</th>
-            </tr>
-            </thead>
-            <tbody>
-            {rows}
-            </tbody>
-        </table>
+        <div className={"cmp-table-container"}>
+            <table className="cmp-table">
+                <caption className="cmp-table-title">Estos son los usuarios registrados</caption>
+                <thead>
+                <tr>
+                    <th>{headersName[0]}</th>
+                    <th>{headersName[1]}</th>
+                    <th>{headersName[2]}</th>
+                    <th>{headersName[3]}</th>
+                    <th>{headersName[4]}</th>
+                    <th>{headersName[5]}</th>
+                    <th>{headersName[6]}</th>
+                    <th>{headersName[7]}</th>
+                    <th>{headersName[8]}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {rows}
+                </tbody>
+            </table>
+            <div className={"cmp-table-pagesBtns"}>
+                <button name={"prev"} onClick={handlePageBtns} type={"button"} className={"main-button cmp-table-pagesBtn"}><GrLinkPrevious /></button>
+                <button name={"next"} onClick={handlePageBtns} type={"button"} className={"main-button cmp-table-pagesBtn"}><GrLinkNext /></button>
+            </div>
+        </div>
+
     )
 }
 

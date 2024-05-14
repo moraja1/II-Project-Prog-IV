@@ -1,7 +1,7 @@
 import {useContext} from "react";
 import { ImProfile } from "react-icons/im";
 import InputBox from "./molecules/InputBox.jsx";
-import {AuthContext} from "../AuthProvider.jsx";
+import {AuthContext} from "../services/AuthProvider.jsx";
 
 export function ProfileForm() {
     const {user, setUser} = useContext(AuthContext);

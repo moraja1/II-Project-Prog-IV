@@ -3,7 +3,7 @@ import { FaRegUserCircle } from "react-icons/fa";
 import InputBox from "./molecules/InputBox.jsx";
 import {Link, useRouteError} from "react-router-dom";
 import {useContext} from "react";
-import {AuthContext} from "../AuthProvider.jsx";
+import {AuthContext} from "../services/AuthProvider.jsx";
 
 export function LoginForm() {
     const {user, setUser} = useContext(AuthContext);

@@ -11,7 +11,7 @@ import {ProductForm} from "../components/ProductForm.jsx";
 import {ServiceForm} from "../components/ServiceForm.jsx";
 import {InvoiceForm} from "../components/InvoiceForm.jsx";
 import {createBrowserRouter} from "react-router-dom";
-import {ProtectedRoute} from "../components/ProtectedRoute.jsx";
+import {ProtectedRoute} from "./ProtectedRoute.jsx";
 
 export const router = createBrowserRouter([
     {

@@ -143,6 +143,11 @@
     /* MAIN BUTTON END */
 
     /* CMP TABLE */
+.cmp-table-container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
 
 .usersTable {
     width: 95%;
@@ -194,6 +199,19 @@
     text-align: left;
     text-decoration: none;
     color: currentColor;
+}
+
+.cmp-table-pagesBtns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: fit-content;
+    margin-left: auto;
+}
+
+.cmp-table-pagesBtn {
+    background: #999;
+    min-width: 50px;
 }
 
     /* CMP TABLE END */
