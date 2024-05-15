@@ -7,28 +7,47 @@ import TableAnimations from "./skeletons/TableAnimation.jsx";
 import ErrorPage from "./error-page.jsx";
 import { GrLinkNext,GrLinkPrevious  } from "react-icons/gr";
 
-
-
 const UserTable = () => {
     const [users, setUsers] = useState([]);
     const [page, setPage] = useState(0);
-
-    const { isPending, error, data, isFetching } = useQuery({
-        queryKey: ['repoData'],
+    const [size] = useState(5);
+    const { isPending, error, isFetching, ...userTable } = useQuery({
+        queryKey: ['tableData'],
         queryFn: () =>
             axios
-                .get(`http://localhost:8080/admin/users?page=${page}&size=5`)
+                .get(`http://localhost:8080/admin/users?page=${page}&size=${size}`)
                 .then((res) => {
                     setUsers(res.data);
                     return res.data;
                 }),
     })
+    useEffect(() => {
+        userTable.refetch();
+    }, [page]);
 
     if (isPending || isFetching) return <TableAnimations />;
     if (error) return <ErrorPage />
 
     const handlePageBtns = (e) => {
-        console.log(e.target.name)
+        e.preventDefault();
+        let element = e.target.name;
+        element === undefined ? element = e.target.className.baseVal : element;
+        if(element === "prev") page > 0 ? setPage(page-1) : {};
+        if(element === "next") users.length === size ? setPage(page+1) : {};
+    }
+
+    const handleOnDeactivate = (e) => {
+        e.preventDefault();
+        let user = users.find((element) => element.id === Number(e.target.value));
+        console.log(user);
+        return null;
+    }
+
+    const handleOnActivate = (e) => {
+        e.preventDefault();
+        let user = users.find((element) => element.id === Number(e.target.value));
+        console.log(user)
+        return null;
     }
 
     let headersName = [
@@ -46,8 +65,8 @@ const UserTable = () => {
             <td>{user.role === ROLES.ADMIN ? ROLES.ADMIN : ROLES.SUPPLIER.SPANISH}</td>
             <td>{user.enabled === 0 ? "NO" : "SI"}</td>
             <td className="molecule-table-icon">{user.enabled ?
-                <div className="molecule-table-icon" style={{color: "red"}}><a>Desactivar</a></div> :
-                <div className="molecule-table-icon" style={{color: "green"}}><a>Activar</a></div>}</td>
+                <div className="molecule-table-button" style={{color: "red"}}><button onClick={handleOnDeactivate} value={user.id} >Desactivar</button></div> :
+                <div className="molecule-table-button" style={{color: "green"}}><button onClick={handleOnActivate} value={user.id} >Activar</button></div>}</td>
         </tr>
     );
 
@@ -74,8 +93,8 @@ const UserTable = () => {
                 </tbody>
             </table>
             <div className={"cmp-table-pagesBtns"}>
-                <button name={"prev"} onClick={handlePageBtns} type={"button"} className={"main-button cmp-table-pagesBtn"}><GrLinkPrevious /></button>
-                <button name={"next"} onClick={handlePageBtns} type={"button"} className={"main-button cmp-table-pagesBtn"}><GrLinkNext /></button>
+                <button name={"prev"} onClick={handlePageBtns} type={"button"} className={"main-button cmp-table-pagesBtn"}><GrLinkPrevious className={"prev"} /></button>
+                <button name={"next"} onClick={handlePageBtns} type={"button"} className={"main-button cmp-table-pagesBtn"}><GrLinkNext className={"next"} /></button>
             </div>
         </div>
 
