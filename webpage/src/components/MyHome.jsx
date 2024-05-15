@@ -1,4 +1,4 @@
-import UserTable from "./UserTable.jsx";
+import UserTable from "./UserTable/UserTable.jsx";
 import {ROLES} from "../services/Constants.js";
 import {AuthContext} from "../services/AuthProvider.jsx";
 import {useContext} from "react";
