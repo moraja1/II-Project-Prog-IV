@@ -3,33 +3,29 @@ import {AuthContext} from "../../services/AuthProvider.jsx";
 import {useContext, useState} from "react";
 import API from '../../services/GeneralApi.js'
 import {HttpStatusCode} from "axios";
+import {useModal} from "../../services/ModalHook.js";
 
 const apiUrl = "http://localhost:8080/api/users"
 export const useProfileForm = () => {
     const {user, setUser} = useContext(AuthContext);
-    const [isError, setError] = useState(false);
-    const [isSuccess, setSuccess] = useState(false);
+    const {isSuccess, isError, succeed, failed, modalRead} = useModal();
     const profileMutation = useMutation({
         mutationKey: ['profileMutation'],
         mutationFn: (userChanged) =>{
             API.patch(`${apiUrl}/${user.id}`, userChanged)
                 .then(res => {
                     if(res.status === HttpStatusCode.NoContent) {
-                        setError(true);
+                        failed();
                         return;
                     }
                     setUser(res.data);
+                    succeed();
                     return res.data;
                 })
+                .catch(() => failed())
         },
-        onError: () => setError(true),
-        onSuccess: () => setSuccess(true)
+        onError: () => failed()
     })
-
-    const handleModalRead = () => {
-        setSuccess(false);
-        setError(false);
-    }
 
     const handleSubmit = (e) => {
         const formData = new FormData(e.target);
@@ -53,6 +49,6 @@ export const useProfileForm = () => {
         handleSubmit,
         isError,
         isSuccess,
-        handleModalRead
+        modalRead
     })
 }

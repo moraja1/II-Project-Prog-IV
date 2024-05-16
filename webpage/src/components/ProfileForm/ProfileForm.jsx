@@ -21,19 +21,19 @@ const modalStyle = {
 
 export function ProfileForm() {
     const {user, handleSubmit, isError,
-        isSuccess, handleModalRead} = useProfileForm();
+        isSuccess, modalRead} = useProfileForm();
 
     return (
         <>
             <div>
-                <Modal open={isError} onClose={handleModalRead} aria-labelledby="cmp-title">
+                <Modal open={isError} onClose={modalRead} aria-labelledby="cmp-title">
                     <Box sx={modalStyle}>
                         <Typography id="modal-modal-title" variant="h6" component="h2">
                             No se pudo actualizar el perfil
                         </Typography>
                     </Box>
                 </Modal>
-                <Modal open={isSuccess} onClose={handleModalRead} aria-labelledby="cmp-title">
+                <Modal open={isSuccess} onClose={modalRead} aria-labelledby="cmp-title">
                     <Box sx={modalStyle}>
                         <Typography id="modal-modal-title" variant="h6" component="h2">
                             Perfil actualizado correctamente

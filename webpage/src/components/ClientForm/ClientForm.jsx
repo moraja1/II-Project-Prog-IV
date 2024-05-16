@@ -1,38 +1,12 @@
-import {useState} from "react";
-import {FORMS} from "../services/Constants.js";
+import {FORMS} from "../../services/Constants.js";
 import { ImProfile } from "react-icons/im";
-import InputBox from "./molecules/InputBox.jsx";
+import InputBox from "../molecules/InputBox.jsx";
 
 export function ClientForm(  ) {
-    const [values, setValues] = useState({
-        lastName: "",
-        name: "",
-        naturalId: "",
-        mobile: "",
-        email: "",
-        password: "",
-        passwordConf: ""
-    })
-
-    const handleOnChange = (evt) => {
-        evt.preventDefault();
-
-        setValues({...values, [evt.target.name]: evt.target.value});
-    }
-
-    const handleSubmit = (evt) => {
-        evt.preventDefault();
-
-
-        const formData = new FormData(evt.target);
-        const payload = Object.fromEntries(formData);
-
-        console.log(payload);
-    }
 
     return (
         <article className="cmp-container registerForm">
-            <form name={FORMS.REGISTER} className="cmp-registerForm" method="post" onSubmit={handleSubmit} onChange={handleOnChange}>
+            <form name={FORMS.REGISTER} className="cmp-registerForm" method="post" onSubmit={handleSubmit} >
                 <h2 className="cmp-title">Perfil de Usuario</h2>
                 <ImProfile className="cmp-loginForm-icon"/>
                 <InputBox name="naturalId" label={"Cedula"}
