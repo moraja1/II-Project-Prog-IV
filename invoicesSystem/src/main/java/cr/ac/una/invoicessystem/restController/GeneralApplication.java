@@ -1,5 +1,6 @@
 package cr.ac.una.invoicessystem.restController;
 
+import cr.ac.una.invoicessystem.data.dto.ClientFormDto;
 import cr.ac.una.invoicessystem.data.entities.Client;
 import cr.ac.una.invoicessystem.data.entities.User;
 import cr.ac.una.invoicessystem.data.repositories.UserRepository;
@@ -34,10 +35,14 @@ public class GeneralApplication {
     }
 
     @PutMapping("/users/client")
-    private ResponseEntity<Client> addClient(@RequestBody Client client) {
+    private ResponseEntity<Client> addClient(@RequestBody ClientFormDto client) {
+        //Validations
         if(client.getNaturalId() == null || client.getName() == null || client.getLastName() == null ||
                 client.getEmail() == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        Optional<User> userOptional = userRepository.findById(client.getSupplierId());
+        if(userOptional.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
+        //Valid input
 
         return ResponseEntity.ok(new Client());
     }
