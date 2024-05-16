@@ -10,6 +10,6 @@ export const ProtectedRoute = ({ children }) => {
         if (!user.isAuthorized) {
             navigate('/', { replace: true });
         }
-    }, [navigate, user]);
+    }, [navigate]);
     return (children)
 }

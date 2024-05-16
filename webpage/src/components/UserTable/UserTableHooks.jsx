@@ -1,8 +1,6 @@
 import {useEffect, useState} from "react";
 import {useMutation, useQuery} from "@tanstack/react-query";
-import axios from "axios";
-
-const usersUrl = "http://localhost:8080/admin/users";
+import API from '../../services/AdminApi';
 
 export const useTable = () => {
     const [users, setUsers] = useState([]);
@@ -11,8 +9,7 @@ export const useTable = () => {
     const tableDataQuery = useQuery({
         queryKey: ['tableData'],
         queryFn: () =>
-            axios
-                .get(usersUrl, {params: {page: page, size: size}})
+            API.get('',{params: {page: page, size: size}})
                 .then((res) => {
                     setUsers(res.data);
                     return res.data;
@@ -26,8 +23,7 @@ export const useTable = () => {
         mutationKey: ['patchUser'],
         mutationFn: (user) =>{
             if (user === null) return
-            axios
-                .patch(`${usersUrl}/${user.id}`, user)
+            API.patch(`/${user.id}`, user)
                 .then(res => {
                     let usersChanged = users.map(u => u.id === user.id ? user : u);
                     setUsers(usersChanged);
@@ -55,6 +51,7 @@ export const useTable = () => {
         users,
         tableDataQuery,
         handlePageButtons,
-        handleTableButton
+        handleTableButton,
+        patchUserQuery
     })
 }

@@ -4,7 +4,7 @@ import {RegisterForm} from "../components/RegisterForm.jsx";
 import {MainPage} from "../components/MainPage.jsx";
 import AppLayout from "../components/AppLayout.jsx";
 import MyHome from "../components/MyHome.jsx";
-import {ProfileForm} from "../components/ProfileForm.jsx";
+import {ProfileForm} from "../components/ProfileForm/ProfileForm.jsx";
 import {ClientForm} from "../components/ClientForm.jsx";
 import SellsLayout from "../components/SellsLayout.jsx";
 import {ProductForm} from "../components/ProductForm.jsx";

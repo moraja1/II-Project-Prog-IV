@@ -2,7 +2,6 @@ import '../styles/components.css';
 import MenuButton from "./molecules/MenuButton.jsx";
 import { FaHome } from "react-icons/fa";
 import { RiLogoutBoxRFill } from "react-icons/ri";
-import { IoPeopleCircle } from "react-icons/io5";
 import { ImProfile } from "react-icons/im";
 import { FaMoneyCheckDollar } from "react-icons/fa6";
 import { FaFileInvoiceDollar } from "react-icons/fa";
