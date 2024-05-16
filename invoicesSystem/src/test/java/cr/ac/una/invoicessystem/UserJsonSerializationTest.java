@@ -34,7 +34,7 @@ public class UserJsonSerializationTest {
                         .lastName("Lisett")
                         .mobile("9636350406")
                         .email("dlisett0@intel.com")
-                        .enabled((byte) 0)
+                        .enabled(false)
                         .type("Physical")
                         .role("Supplier")
                         .build(),
@@ -46,7 +46,7 @@ public class UserJsonSerializationTest {
                         .lastName("Enefer")
                         .mobile("5083053497")
                         .email("benefer1@yelp.com")
-                        .enabled((byte) 0)
+                        .enabled(false)
                         .type("Physical")
                         .role("Supplier")
                         .build(),
@@ -58,7 +58,7 @@ public class UserJsonSerializationTest {
                         .lastName("L'Episcopio")
                         .mobile("6203604625")
                         .email("mlepiscopio2@usa.gov")
-                        .enabled((byte) 1)
+                        .enabled(true)
                         .type("Physical")
                         .role("Supplier")
                         .build()
@@ -101,7 +101,7 @@ public class UserJsonSerializationTest {
                 .lastName("Lisett")
                 .mobile("9636350406")
                 .email("dlisett0@intel.com")
-                .enabled((byte) 0)
+                .enabled(false)
                 .type("Physical")
                 .role("Supplier")
                 .build());

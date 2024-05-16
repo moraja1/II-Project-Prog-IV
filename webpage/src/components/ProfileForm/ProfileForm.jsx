@@ -2,19 +2,31 @@ import {useContext} from "react";
 import { ImProfile } from "react-icons/im";
 import InputBox from "./molecules/InputBox.jsx";
 import {AuthContext} from "../services/AuthProvider.jsx";
+import {useMutation} from "@tanstack/react-query";
+import axios from "axios";
 
 export function ProfileForm() {
     const {user, setUser} = useContext(AuthContext);
+    const profileMutation = useMutation({
+        mutationKey: ['profileMutation'],
+        mutationFn: () =>{
+            axios
+                .patch(`${usersUrl}/${user.id}`, user)
+                .then(res => {
+                    let usersChanged = users.map(u => u.id === user.id ? user : u);
+                    setUsers(usersChanged);
+                    return res.data;
+                })
+        }
+    })
 
     const handleOnChange = (evt) => {
         evt.preventDefault();
-
         setUser({...user, [evt.target.name]: evt.target.value});
     }
 
     const handleSubmit = (evt) => {
         evt.preventDefault();
-
 
         const formData = new FormData(evt.target);
         const payload = Object.fromEntries(formData);

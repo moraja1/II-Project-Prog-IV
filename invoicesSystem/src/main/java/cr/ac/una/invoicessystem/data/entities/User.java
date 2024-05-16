@@ -1,5 +1,6 @@
 package cr.ac.una.invoicessystem.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -25,6 +26,7 @@ public class User implements Serializable {
     private String naturalId;
 
     @Column(name = "password", length = 32)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Column(name = "name", length = 32)
@@ -41,7 +43,7 @@ public class User implements Serializable {
 
     @ColumnDefault("0")
     @Column(name = "enabled")
-    private Byte enabled;
+    private Boolean enabled;
 
     @Column(name = "type", length = 16)
     private String type;
