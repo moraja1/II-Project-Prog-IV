@@ -57,19 +57,14 @@ public class GeneralApplication {
                 .mobile(client.getMobile())
                 .build();
 
+        userOptional.get().addClient(clientToSave);
+        Client savedClient = clientRepository.save(clientToSave);
         URI locationOfNewClient = ucb
                 .path("users/client/{id}")
-                .buildAndExpand(clientToSave.getNaturalId())
+                .buildAndExpand(clientToSave.getId())
                 .toUri();
 
-        System.out.println(locationOfNewClient);
-
-        /*userOptional.get().addClient(clientToSave);
-        Optional<Client> savedClient = clientRepository.findByNaturalId(clientToSave.getNaturalId());
-        if(savedClient.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();*/
-
-
-        return ResponseEntity.ok(new Client());
+        return ResponseEntity.created(locationOfNewClient).body(savedClient);
     }
 
     @GetMapping("/users/client/{id}")
