@@ -5,6 +5,7 @@ import cr.ac.una.invoicessystem.data.repositories.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,10 @@ public class AdminApplication {
 
     @GetMapping("/users")
     private ResponseEntity<List<User>> getAllUsers(Pageable pageable) {
-        Page<User> usersPage = userRepository.findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()));
+        Page<User> usersPage = userRepository.findAll(PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                Sort.by(new Sort.Order(Sort.Direction.DESC, "id"))));
         return ResponseEntity.ok().body(usersPage.getContent());
     }
 

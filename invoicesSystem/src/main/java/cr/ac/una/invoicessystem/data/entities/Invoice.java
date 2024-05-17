@@ -41,10 +41,10 @@ public class Invoice {
     @JoinColumn(name = "id_user", nullable = false)
     private User idUser;
 
-    @OneToMany(mappedBy = "idInvoice")
+    @OneToMany(mappedBy = "idInvoice", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<InvoiceProduct> invoiceProducts = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "idInvoice")
+    @OneToMany(mappedBy = "idInvoice", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<InvoiceService> invoiceServices = new LinkedHashSet<>();
 
 }

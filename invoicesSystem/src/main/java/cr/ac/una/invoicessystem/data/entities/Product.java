@@ -32,10 +32,10 @@ public class Product {
     @Column(name = "price")
     private Integer price;
 
-    @OneToMany(mappedBy = "idProducts")
+    @OneToMany(mappedBy = "idProducts", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<InvoiceProduct> invoiceProducts = new LinkedHashSet<>();
 
-    @ManyToMany(mappedBy = "id")
-    private Set<User> users = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "idProducts", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserProduct> users = new LinkedHashSet<>();
 
 }

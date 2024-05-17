@@ -54,11 +54,11 @@ public class User {
     @OneToMany(mappedBy = "idUser", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Invoice> invoices = new LinkedHashSet<>();
 
-    @ManyToMany(mappedBy = "id")
-    private Set<Product> products = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "idUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserProduct> products = new LinkedHashSet<>();
 
-    @ManyToMany(mappedBy = "id")
-    private Set<Service> services = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "idUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserService> services = new LinkedHashSet<>();
 
     @Transient
     private Boolean isAuthenticated;

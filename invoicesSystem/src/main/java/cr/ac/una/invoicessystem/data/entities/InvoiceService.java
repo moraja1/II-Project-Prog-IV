@@ -13,12 +13,12 @@ public class InvoiceService {
     private InvoiceServiceId id;
 
     @MapsId("idInvoice")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "id_invoice", nullable = false)
     private Invoice idInvoice;
 
     @MapsId("idService")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "id_service", nullable = false)
     private Service idService;
 

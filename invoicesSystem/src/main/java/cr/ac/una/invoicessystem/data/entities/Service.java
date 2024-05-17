@@ -26,10 +26,10 @@ public class Service {
     @Column(name = "price_hour")
     private Integer priceHour;
 
-    @OneToMany(mappedBy = "idService")
+    @OneToMany(mappedBy = "idService", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<InvoiceService> invoiceServices = new LinkedHashSet<>();
 
-    @ManyToMany(mappedBy = "id")
-    private Set<User> users = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "idService", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserService> users = new LinkedHashSet<>();
 
 }
