@@ -1,36 +1,29 @@
 package cr.ac.una.invoicessystem.data.entities;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.proxy.HibernateProxy;
 
-import java.io.Serializable;
-import java.util.Objects;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "user")
-public class User implements Serializable {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user", nullable = false)
     private Integer id;
 
-    @Column(name = "natural_id", length = 16)
-    private String naturalId;
+    @Column(name = "email", length = 32)
+    private String email;
 
-    @Column(name = "password", length = 32)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String password;
-
-    @Column(name = "name", length = 32)
-    private String name;
+    @ColumnDefault("b'0'")
+    @Column(name = "enabled")
+    private Boolean enabled;
 
     @Column(name = "last_name", length = 32)
     private String lastName;
@@ -38,35 +31,40 @@ public class User implements Serializable {
     @Column(name = "mobile", length = 16)
     private String mobile;
 
-    @Column(name = "email", length = 32)
-    private String email;
+    @Column(name = "name", length = 32)
+    private String name;
 
-    @ColumnDefault("0")
-    @Column(name = "enabled")
-    private Boolean enabled;
+    @Column(name = "natural_id", length = 16)
+    private String naturalId;
 
-    @Column(name = "type", length = 16)
-    private String type;
+    @Column(name = "password", length = 32)
+    private String password;
 
     @Column(name = "role", length = 16)
     private String role;
 
-    @Transient
-    private Boolean isAuthorized = false;
+    @Column(name = "type", length = 16)
+    private String type;
 
-    @Override
-    public final boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null) return false;
-        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
-        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
-        if (thisEffectiveClass != oEffectiveClass) return false;
-        User user = (User) o;
-        return getId() != null && Objects.equals(getId(), user.getId());
+    @OneToMany(mappedBy = "idUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Client> clients = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "idUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Invoice> invoices = new LinkedHashSet<>();
+
+    @ManyToMany(mappedBy = "id")
+    private Set<Product> products = new LinkedHashSet<>();
+
+    @ManyToMany(mappedBy = "id")
+    private Set<Service> services = new LinkedHashSet<>();
+
+    public void addClient(Client client) {
+        clients.add(client);
+        client.setIdUser(this);
     }
 
-    @Override
-    public final int hashCode() {
-        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    public void addInvoice(Invoice invoice) {
+        invoices.add(invoice);
+        invoice.setIdUser(this);
     }
 }

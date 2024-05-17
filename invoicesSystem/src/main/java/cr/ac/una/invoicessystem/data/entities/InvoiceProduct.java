@@ -8,9 +8,9 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "invoice_products")
-public class InvoiceProducts {
+public class InvoiceProduct {
     @EmbeddedId
-    private InvoiceProductsId id;
+    private InvoiceProductId id;
 
     @MapsId("idInvoice")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

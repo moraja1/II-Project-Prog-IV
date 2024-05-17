@@ -31,14 +31,14 @@ public class AdminApplication {
     }
 
     @GetMapping("/users/{id}")
-    private ResponseEntity<User> getUserById(@PathVariable int id) {
+    private ResponseEntity<User> getUserById(@PathVariable Long id) {
         Optional<User> user = userRepository.findById(id);
         System.out.println(user.map(Objects::toString).orElse(null));
         return user.map(x -> ResponseEntity.ok().body(x)).orElse(ResponseEntity.notFound().build());
     }
 
     @PatchMapping("/users/{id}")
-    private ResponseEntity<User> updateUserEnable(@PathVariable int id, @RequestBody User user) {
+    private ResponseEntity<User> updateUserEnable(@PathVariable Long id, @RequestBody User user) {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isEmpty()) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 

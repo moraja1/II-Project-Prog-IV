@@ -3,7 +3,6 @@ package cr.ac.una.invoicessystem.data.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.NaturalId;
 
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
@@ -20,14 +19,10 @@ public class Invoice {
     private Integer id;
 
     @Column(name = "code")
-    @NaturalId
     private String code;
 
     @Column(name = "date")
     private LocalDate date;
-
-    @Column(name = "total_price")
-    private Integer totalPrice;
 
     @Column(name = "iva")
     private Integer iva;
@@ -35,18 +30,21 @@ public class Invoice {
     @Column(name = "subtotal")
     private Integer subtotal;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_user", nullable = false)
-    private User idUser;
+    @Column(name = "total_price")
+    private Integer totalPrice;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_client", nullable = false)
     private Client idClient;
 
-    @OneToMany(mappedBy = "idInvoice")
-    private Set<InvoiceProducts> invoiceProducts = new LinkedHashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_user", nullable = false)
+    private User idUser;
 
     @OneToMany(mappedBy = "idInvoice")
-    private Set<InvoiceServices> invoiceServices = new LinkedHashSet<>();
+    private Set<InvoiceProduct> invoiceProducts = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "idInvoice")
+    private Set<InvoiceService> invoiceServices = new LinkedHashSet<>();
 
 }

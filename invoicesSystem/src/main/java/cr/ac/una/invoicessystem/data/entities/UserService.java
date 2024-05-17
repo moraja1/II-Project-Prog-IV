@@ -7,15 +7,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "user_products")
-public class UserProducts {
+@Table(name = "user_services")
+public class UserService {
     @EmbeddedId
-    private UserProductId id;
+    private UserServiceId id;
 
-    @MapsId("idProducts")
+    @MapsId("idService")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_products", nullable = false)
-    private Product idProducts;
+    @JoinColumn(name = "id_service", nullable = false)
+    private Service idService;
 
     @MapsId("idUser")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

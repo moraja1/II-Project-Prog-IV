@@ -1,6 +1,5 @@
 package cr.ac.una.invoicessystem;
 
-import com.jayway.jsonpath.DocumentContext;
 import cr.ac.una.invoicessystem.data.entities.User;
 import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;

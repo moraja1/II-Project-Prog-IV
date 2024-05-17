@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -14,23 +17,26 @@ public class Client {
     @Column(name = "id_client", nullable = false)
     private Long id;
 
-    @Column(name = "name", length = 32)
-    private String name;
+    @Column(name = "email", length = 32)
+    private String email;
 
     @Column(name = "last_name", length = 32)
     private String lastName;
 
-    @Column(name = "natural_id", length = 32)
-    private String naturalId;
-
     @Column(name = "mobile", length = 16)
     private String mobile;
 
-    @Column(name = "email", length = 32)
-    private String email;
+    @Column(name = "name", length = 32)
+    private String name;
+
+    @Column(name = "natural_id", length = 32)
+    private String naturalId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_user", nullable = false)
     private User idUser;
+
+    @OneToMany(mappedBy = "idClient")
+    private Set<Invoice> invoices = new LinkedHashSet<>();
 
 }

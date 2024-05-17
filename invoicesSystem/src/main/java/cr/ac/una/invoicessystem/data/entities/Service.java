@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -14,13 +17,19 @@ public class Service {
     @Column(name = "id_service", nullable = false)
     private Integer id;
 
-    @Column(name = "name", length = 32)
-    private String name;
-
     @Column(name = "currency", length = 32)
     private String currency;
 
+    @Column(name = "name", length = 32)
+    private String name;
+
     @Column(name = "price_hour")
     private Integer priceHour;
+
+    @OneToMany(mappedBy = "idService")
+    private Set<InvoiceService> invoiceServices = new LinkedHashSet<>();
+
+    @ManyToMany(mappedBy = "id")
+    private Set<User> users = new LinkedHashSet<>();
 
 }

@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -17,16 +20,22 @@ public class Product {
     @Column(name = "code", length = 32)
     private String code;
 
-    @Column(name = "name", length = 32)
-    private String name;
-
     @Column(name = "currency", length = 32)
     private String currency;
+
+    @Column(name = "measure_unit", length = 16)
+    private String measureUnit;
+
+    @Column(name = "name", length = 32)
+    private String name;
 
     @Column(name = "price")
     private Integer price;
 
-    @Column(name = "measure_unit", length = 16)
-    private String measureUnit;
+    @OneToMany(mappedBy = "idProducts")
+    private Set<InvoiceProduct> invoiceProducts = new LinkedHashSet<>();
+
+    @ManyToMany(mappedBy = "id")
+    private Set<User> users = new LinkedHashSet<>();
 
 }

@@ -12,8 +12,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @Embeddable
-public class InvoiceServicesId implements Serializable {
-    private static final long serialVersionUID = -539751984822042493L;
+public class InvoiceServiceId implements Serializable {
+    private static final long serialVersionUID = -5803534590312370938L;
     @Column(name = "id_invoice", nullable = false)
     private Integer idInvoice;
 
@@ -24,7 +24,7 @@ public class InvoiceServicesId implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        InvoiceServicesId entity = (InvoiceServicesId) o;
+        InvoiceServiceId entity = (InvoiceServiceId) o;
         return Objects.equals(this.idInvoice, entity.idInvoice) &&
                 Objects.equals(this.idService, entity.idService);
     }
