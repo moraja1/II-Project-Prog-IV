@@ -1,25 +1,20 @@
 import {useMutation} from "@tanstack/react-query";
 import API from '../../services/GeneralApi.js'
-import {useState} from "react";
+import {useModal} from "../../services/ModalHook.js";
 
 export const useClientForm = () => {
-    const [isSuccess, setSuccess] = useState(false);
-    const [isError, setError] = useState(false);
+    const {isSuccess, isError, succeed, failed, modalRead} = useModal();
     const clientPost = useMutation({
         mutationKey: ['clientPost'],
         mutationFn: (client) => {
             API.post('client', client)
                 .then((res) => {
-                    setSuccess(true);
+                    succeed()
                     return res.data;
                 })
+                .catch(() => failed())
         }
     })
-
-    const handleModalRead = () => {
-        setSuccess(false);
-        setError(false);
-    }
 
     const handleSubmit = (evt) => {
         evt.preventDefault();
@@ -30,4 +25,12 @@ export const useClientForm = () => {
 
         console.log(payload);
     }
+
+    return({
+        isSuccess,
+        isError,
+        modalRead,
+        clientPost,
+        handleSubmit
+    })
 }

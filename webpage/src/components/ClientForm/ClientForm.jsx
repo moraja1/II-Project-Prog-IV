@@ -1,8 +1,10 @@
 import {FORMS} from "../../services/Constants.js";
 import { ImProfile } from "react-icons/im";
 import InputBox from "../molecules/InputBox.jsx";
+import {useClientForm} from "./ClientFormHook.jsx";
 
 export function ClientForm(  ) {
+    const {} = useClientForm();
 
     return (
         <article className="cmp-container registerForm">

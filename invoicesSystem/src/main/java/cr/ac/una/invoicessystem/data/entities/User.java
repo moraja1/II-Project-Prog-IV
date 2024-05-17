@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.NaturalId;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -34,6 +35,7 @@ public class User {
     @Column(name = "name", length = 32)
     private String name;
 
+    @NaturalId
     @Column(name = "natural_id", length = 16)
     private String naturalId;
 
@@ -57,6 +59,9 @@ public class User {
 
     @ManyToMany(mappedBy = "id")
     private Set<Service> services = new LinkedHashSet<>();
+
+    @Transient
+    private Boolean isAuthenticated;
 
     public void addClient(Client client) {
         clients.add(client);
