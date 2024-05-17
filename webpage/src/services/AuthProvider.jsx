@@ -14,7 +14,7 @@ export default function AuthProvider({ children }) {
         email: "dlisett0@intel.com",
         enabled: 1,
         type: "Physical",
-        role: "Admin",
+        role: "Supplier",
         isAuthenticated: true
     });
 

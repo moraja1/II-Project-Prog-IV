@@ -8,7 +8,7 @@ import {Typography} from "@mui/material";
 import {modalStyle} from "../../services/ModalHook.js";
 
 export function ClientForm(  ) {
-    const {isSuccess, isError, modalRead, clientPost, handleSubmit} = useClientForm();
+    const {isSuccess, isError, modalRead, handleSubmit} = useClientForm();
 
     return (
         <>
@@ -27,7 +27,7 @@ export function ClientForm(  ) {
                 </Box>
             </Modal>
             <article className="cmp-container registerForm">
-                <form name={FORMS.REGISTER} className="cmp-registerForm" method="post" onSubmit={handleSubmit}>
+                <form name={FORMS.REGISTER} className="cmp-registerForm" onSubmit={handleSubmit}>
                     <h2 className="cmp-title">Perfil de Usuario</h2>
                     <ImProfile className="cmp-loginForm-icon"/>
                     <InputBox name="naturalId" label={"Cedula"}
