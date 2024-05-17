@@ -9,10 +9,9 @@ export const useClientForm = () => {
     const { user } = useContext(AuthContext);
     const {isSuccess, isError, succeed, failed, modalRead} = useModal();
     const clientPost = useMutation({
-        mutationKey: ['clientPost'],
-        mutationFn: (client) => {
-            API.post('client', client)
-                .then((res) => {
+        mutationFn: (clientToAdd => {
+            API.put(`client`, clientToAdd)
+                .then(res => {
                     if(res.status === HttpStatusCode.Forbidden) {
                         failed();
                         return;
@@ -21,26 +20,25 @@ export const useClientForm = () => {
                     return res.data;
                 })
                 .catch(() => failed())
-        }
+        }),
+        onError: () => failed()
     })
 
-    const handleSubmit = (evt) => {
-        evt.preventDefault();
-        const formData = new FormData(evt.target);
+    const handleSubmit = (e) => {
+        const formData = new FormData(e.target);
         const payload = Object.fromEntries(formData);
-
-        const clientToPut = {
+        let clientToAdd = {
             supplierId: user.id,
-            naturalId: payload.naturalId,
             name: payload.name,
             lastName: payload.lastName,
+            naturalId: payload.naturalId,
+            mobile: payload.mobile || "",
             email: payload.email,
-            mobile: payload.mobile,
-        }
+        };
 
-        clientPost.mutate(clientToPut);
+        clientPost.mutate(clientToAdd);
+        e.preventDefault();
     }
-
     return({
         isSuccess,
         isError,

@@ -1,4 +1,3 @@
-import {FORMS} from "../../services/Constants.js";
 import { ImProfile } from "react-icons/im";
 import InputBox from "../molecules/InputBox.jsx";
 import {useClientForm} from "./ClientFormHook.jsx";
@@ -27,7 +26,7 @@ export function ClientForm(  ) {
                 </Box>
             </Modal>
             <article className="cmp-container registerForm">
-                <form name={FORMS.REGISTER} className="cmp-registerForm" onSubmit={handleSubmit}>
+                <form className="cmp-registerForm" onSubmit={handleSubmit}>
                     <h2 className="cmp-title">Perfil de Usuario</h2>
                     <ImProfile className="cmp-loginForm-icon"/>
                     <InputBox name="naturalId" label={"Cedula"}
