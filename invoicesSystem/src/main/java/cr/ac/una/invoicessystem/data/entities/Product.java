@@ -23,9 +23,6 @@ public class Product {
     @Column(name = "currency", length = 32)
     private String currency;
 
-    @Column(name = "measure_unit", length = 16)
-    private String measureUnit;
-
     @Column(name = "name", length = 32)
     private String name;
 
@@ -37,5 +34,9 @@ public class Product {
 
     @OneToMany(mappedBy = "idProducts", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UserProduct> users = new LinkedHashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_measure_units", nullable = false)
+    private MeasureUnit idMeasureUnits;
 
 }
