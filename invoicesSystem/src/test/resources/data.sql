@@ -24,3 +24,13 @@ INSERT INTO `projectii`.`user`
  `role`)
 VALUES ('707770777', 'bvnbcaerte', 'Crampble', 'Gladiatore', '9996654984', 'Gfjhdfbsa@yahoo.es', true, 'Physical',
         'Supplier');
+
+
+-- MEASURE UNITS --
+INSERT INTO projectii.measure_units (id_measure_units, name, symbol) VALUES (1, 'gramo', 'g');
+INSERT INTO projectii.measure_units (id_measure_units, name, symbol) VALUES (2, 'Kilogramo', 'Kg');
+INSERT INTO projectii.measure_units (id_measure_units, name, symbol) VALUES (3, 'mililitro', 'ml');
+INSERT INTO projectii.measure_units (id_measure_units, name, symbol) VALUES (4, 'Litro', 'L');
+INSERT INTO projectii.measure_units (id_measure_units, name, symbol) VALUES (5, 'milimetro', 'mm');
+INSERT INTO projectii.measure_units (id_measure_units, name, symbol) VALUES (6, 'Metro', 'M');
+INSERT INTO projectii.measure_units (id_measure_units, name, symbol) VALUES (7, 'Unidades', 'u');

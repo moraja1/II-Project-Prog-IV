@@ -1,5 +1,6 @@
 package cr.ac.una.invoicessystem.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +17,7 @@ public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_invoice", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(name = "code")
     private String code;
@@ -37,6 +38,7 @@ public class Invoice {
     @JoinColumn(name = "id_client", nullable = false)
     private Client idClient;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_user", nullable = false)
     private User idUser;

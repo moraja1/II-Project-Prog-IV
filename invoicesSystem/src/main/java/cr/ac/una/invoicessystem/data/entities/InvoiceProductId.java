@@ -15,10 +15,10 @@ import java.util.Objects;
 public class InvoiceProductId implements Serializable {
     private static final long serialVersionUID = -2028301497070356683L;
     @Column(name = "id_invoice", nullable = false)
-    private Integer idInvoice;
+    private Long idInvoice;
 
     @Column(name = "id_products", nullable = false)
-    private Integer idProducts;
+    private Long idProducts;
 
     @Override
     public boolean equals(Object o) {

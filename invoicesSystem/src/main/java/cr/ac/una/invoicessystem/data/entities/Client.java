@@ -1,5 +1,6 @@
 package cr.ac.una.invoicessystem.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.NaturalId;
@@ -36,10 +37,12 @@ public class Client {
     @Column(name = "mobile", length = 16)
     private String mobile;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_user", nullable = false)
     private User idUser;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "idClient", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Invoice> invoices = new LinkedHashSet<>();
 

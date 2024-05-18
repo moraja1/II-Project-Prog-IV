@@ -1,16 +1,21 @@
 package cr.ac.una.invoicessystem.restController;
 
-import cr.ac.una.invoicessystem.data.entities.Client;
-import cr.ac.una.invoicessystem.data.entities.User;
+import cr.ac.una.invoicessystem.data.dto.ProductFormDto;
+import cr.ac.una.invoicessystem.data.entities.*;
 import cr.ac.una.invoicessystem.data.dto.ClientFormDto;
-import cr.ac.una.invoicessystem.data.repositories.ClientRepository;
-import cr.ac.una.invoicessystem.data.repositories.UserRepository;
+import cr.ac.una.invoicessystem.data.repositories.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin("*")
@@ -19,11 +24,22 @@ import java.util.Optional;
 public class GeneralApplication {
     private final UserRepository userRepository;
     private final ClientRepository clientRepository;
+    private final MeasureUnitRepository measureUnitRepository;
+    private final ProductRepository productRepository;
+    private final UserProductRepository userProductIdRepository;
+    private final UserProductRepository userProductRepository;
 
     public GeneralApplication(UserRepository userRepository,
-                              ClientRepository clientRepository) {
+                              ClientRepository clientRepository,
+                              MeasureUnitRepository measureUnitRepository,
+                              ProductRepository productRepository,
+                              UserProductRepository userProductIdRepository, UserProductRepository userProductRepository) {
         this.userRepository = userRepository;
         this.clientRepository = clientRepository;
+        this.measureUnitRepository = measureUnitRepository;
+        this.productRepository = productRepository;
+        this.userProductIdRepository = userProductIdRepository;
+        this.userProductRepository = userProductRepository;
     }
 
     @PatchMapping("/users/{id}")
@@ -74,5 +90,49 @@ public class GeneralApplication {
                 ResponseEntity.ok().body(client)).orElseGet(() ->
                 ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 
+    }
+
+    @GetMapping("/users/measures")
+    private ResponseEntity<List<MeasureUnit>> getAllMeasureUnits() {
+        List<MeasureUnit> measuresPage = measureUnitRepository.findAll();
+        return ResponseEntity.ok().body(measuresPage);
+    }
+
+    @PostMapping("/users/product")
+    private ResponseEntity<Product> addProduct(@RequestBody ProductFormDto product, UriComponentsBuilder ucb) {
+        //Validations
+        if(product.getCode() == null || product.getName() == null || product.getPrice() == null ||
+                product.getMeasureUnit() == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        Optional<User> userOptional = userRepository.findById(product.getSupplierId());
+        if(userOptional.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        Optional<MeasureUnit> optionalMeasureUnit = measureUnitRepository.findById(product.getMeasureUnit().id());
+        if(optionalMeasureUnit.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
+        //Valid input
+        Product productToSave = Product.builder()
+                .code(product.getCode())
+                .name(product.getName())
+                .price(product.getPrice())
+                .build();
+
+        optionalMeasureUnit.get().addProduct(productToSave);
+        Product savedProduct = productRepository.save(productToSave);
+        URI locationOfNewProduct = ucb
+                .path("users/product/{id}")
+                .buildAndExpand(savedProduct.getId())
+                .toUri();
+
+        UserProduct userProduct = new UserProduct();
+        userProduct.setId(new UserProductId(savedProduct.getId(), userOptional.get().getId()));
+
+        if(userOptional.get().getProducts() == null) userOptional.get().setProducts(new HashSet<>());
+        if(savedProduct.getUsers() == null) savedProduct.setUsers(new HashSet<>());
+
+        userOptional.get().addUserProduct(userProduct);
+        savedProduct.addUserProduct(userProduct);
+
+        userProductRepository.save(userProduct);
+
+        return ResponseEntity.created(locationOfNewProduct).body(savedProduct);
     }
 }

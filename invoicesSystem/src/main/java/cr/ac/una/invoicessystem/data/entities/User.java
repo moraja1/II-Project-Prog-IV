@@ -1,5 +1,6 @@
 package cr.ac.una.invoicessystem.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +18,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(name = "email", length = 32)
     private String email;
@@ -39,6 +40,7 @@ public class User {
     @Column(name = "natural_id", length = 16)
     private String naturalId;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password", length = 32)
     private String password;
 
@@ -54,7 +56,7 @@ public class User {
     @OneToMany(mappedBy = "idUser", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Invoice> invoices = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "idUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "idUser", orphanRemoval = true)
     private Set<UserProduct> products = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idUser", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -71,5 +73,10 @@ public class User {
     public void addInvoice(Invoice invoice) {
         invoices.add(invoice);
         invoice.setIdUser(this);
+    }
+
+    public void addUserProduct(UserProduct product) {
+        products.add(product);
+        product.setIdUser(this);
     }
 }

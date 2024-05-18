@@ -15,7 +15,7 @@ public class Service {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_service", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Column(name = "currency", length = 32)
     private String currency;

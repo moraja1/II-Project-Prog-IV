@@ -7,7 +7,7 @@ import MyHome from "../components/MyHome.jsx";
 import {ProfileForm} from "../components/ProfileForm/ProfileForm.jsx";
 import {ClientForm} from "../components/ClientForm/ClientForm.jsx";
 import SellsLayout from "../components/SellsLayout.jsx";
-import {ProductForm} from "../components/ProductForm.jsx";
+import {ProductForm} from "../components/ProductForm/ProductForm.jsx";
 import {ServiceForm} from "../components/ServiceForm.jsx";
 import {InvoiceForm} from "../components/InvoiceForm.jsx";
 import {createBrowserRouter} from "react-router-dom";
@@ -17,8 +17,8 @@ export const router = createBrowserRouter([
     {
         path: "/",
         element: <MainPage />,
-        errorElement: <ErrorPage />,
-        children: [
+        errorElement: <section className="cmp-container error-page"><ErrorPage/></section>,
+            children: [
             {
                 path: "",
                 element: <LoginForm />,
@@ -32,7 +32,7 @@ export const router = createBrowserRouter([
     {
         path: "/home",
         element: <ProtectedRoute ><AppLayout /></ProtectedRoute >,
-        errorElement: <ErrorPage />,
+        errorElement: <section className="cmp-container error-page"><ErrorPage/></section>,
         children: [
             {
                 path: "",
