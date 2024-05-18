@@ -1,9 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './styles/index.css'
-import AuthProvider from "./services/AuthProvider.jsx";
+import AuthProvider from "./services/Auth/AuthProvider.jsx";
 import {RouterProvider} from "react-router-dom";
-import {router} from "./services/RoutesRender.jsx";
+import {router} from "./services/Auth/RoutesRender.jsx";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 
 const queryClient = new QueryClient()

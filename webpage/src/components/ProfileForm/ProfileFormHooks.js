@@ -1,9 +1,9 @@
 import {useMutation} from "@tanstack/react-query";
-import {AuthContext} from "../../services/AuthProvider.jsx";
+import {AuthContext} from "../../services/Auth/AuthProvider.jsx";
 import {useContext} from "react";
 import API from '../../services/GeneralApi.js'
 import {HttpStatusCode} from "axios";
-import {useModal} from "../../services/ModalHook.js";
+import {useModal} from "../Modal/ModalHook.js";
 
 const apiUrl = "http://localhost:8080/api/users"
 export const useProfileForm = () => {

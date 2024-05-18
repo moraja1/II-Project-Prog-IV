@@ -1,61 +1,77 @@
-import {useState} from "react";
-import InputBox from "./molecules/InputBox.jsx";
+import InputBox from "../molecules/InputBox.jsx";
 import {RiShoppingBag4Fill} from "react-icons/ri";
+import SelectBox from "../molecules/SelectBox.jsx";
+import {useMutation, useQuery} from "@tanstack/react-query";
+import API from "../../services/GeneralApi.js";
+import {ProductFormAnimation} from "../skeletons/FormAnimation.jsx";
+import ErrorPage from "../error-page.jsx";
+import {ModalMsg} from "../Modal/ModalMessage.jsx";
+import {useContext, useState} from "react";
+import {HttpStatusCode} from "axios";
+import {AuthContext} from "../../services/Auth/AuthProvider.jsx";
 
 export function ProductForm() {
-    const [values, setValues] = useState({
-        code: "",
-        name: "",
-        currency: "",
-        price: "",
-        measureUnit: "",
+    const {user} = useContext(AuthContext);
+    const [activateModal, setActivateModal] = useState(false);
+    const { isPending, error, data, isFetching } = useQuery({
+        queryKey: ['measureUnits'],
+        queryFn: () =>
+            API.get(`/measures`)
+                .then((res) => res.data),
     })
-
-    const handleOnChange = (evt) => {
-        evt.preventDefault();
-
-        setValues({...values, [evt.target.name]: evt.target.value});
-    }
-
-    const handleSubmit = (evt) => {
-        evt.preventDefault();
-
-
-        const formData = new FormData(evt.target);
+    const mutation = useMutation({
+        mutationFn: (product) =>
+            API.post('/product', product)
+                .then((res) => {
+                    if(res.status === HttpStatusCode.Ok) setActivateModal(true);
+                }),
+    })
+    const handleSubmit = (e) => {
+        const formData = new FormData(e.target);
         const payload = Object.fromEntries(formData);
-
-        console.log(payload);
+        const measureUnit = JSON.parse(payload.measureUnit);
+        let product = {
+            supplierId: user.id,
+            ...payload,
+            measureUnit: measureUnit,
+        };
+        mutation.mutate(product);
+        e.preventDefault();
     }
+    const modalRead = () => setActivateModal(false);
+
+    if(isPending || isFetching) return <ProductFormAnimation />
+    if(error) return <article className="cmp-container productForm"><ErrorPage /></article>
 
     return (
-        <article className="cmp-container productForm">
-            <form className="cmp-productForm" method="post" onSubmit={handleSubmit} onChange={handleOnChange}>
-                <h2 className="cmp-title">Registre Productos</h2>
-                <RiShoppingBag4Fill className="cmp-loginForm-icon"/>
-                <InputBox name="code" label={"Codigo"}
-                          inputType="text"
-                          errorMessage={"Por favor, ingresa el codigo del producto"}
-                          min={4}
-                          required/>
-                <InputBox name="name" label={"Nombre"}
-                          inputType="text"
-                          errorMessage={"Por favor, ingresa el nombre del producto"}
-                          required/>
-                <InputBox name="currency" label={"Moneda"}
-                          errorMessage={"Por favor, ingresa una divisa"}
-                          inputType="text"
-                          min={1}
-                          required/>
-                <InputBox name="price" label={"Precio"}
-                          errorMessage={"Por favor, ingresa el precio del producto"}
-                          pattern={`^[0-9]+$`}
-                          inputType="number"/>
-                <InputBox name="measureUnit" label={"Unidad de medida"}
-                          errorMessage={"Por favor, ingresa la unidad de medida del producto"}
-                          min={1}
-                          inputType="text"/>
-                <input className="main-button" type="submit" value="Guardar"/>
-            </form>
-        </article>
+        <>
+            <ModalMsg message={"Producto agregado correctamente"} activate={activateModal} modalRead={modalRead}/>
+            <article className="cmp-container productForm">
+                <form className="cmp-productForm" onSubmit={handleSubmit}>
+                    <h2 className="cmp-title">Registre Productos</h2>
+                    <RiShoppingBag4Fill className="cmp-loginForm-icon"/>
+                    <InputBox name="code" label={"Codigo"}
+                              inputType="text"
+                              errorMessage={"Por favor, ingresa el codigo del producto"}
+                              min={4}
+                              required/>
+                    <InputBox name="name" label={"Nombre"}
+                              inputType="text"
+                              errorMessage={"Por favor, ingresa el nombre del producto"}
+                              required/>
+                    <SelectBox name="measureUnit" label={"Seleccione la unidad de medida"} required>
+                        {data.map((opt, index) => (
+                                <option key={index} value={JSON.stringify(opt)}>{`${opt.symbol} - ${opt.name}`}</option>
+                            )
+                        )}
+                    </SelectBox>
+                    <InputBox name="price" label={"Precio"}
+                              errorMessage={"Por favor, ingresa el precio del producto"}
+                              pattern={`^[0-9]+$`}
+                              inputType="number"/>
+                    <input className="main-button" type="submit" value="Guardar"/>
+                </form>
+            </article>
+        </>
     )
 }

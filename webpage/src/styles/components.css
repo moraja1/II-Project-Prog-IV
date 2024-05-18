@@ -487,3 +487,15 @@
 }
 
      /* INVOICE FORM END */
+
+    /* FORM ANIMATION */
+.form-animation * {
+    display: inline;
+}
+
+.form-animation {
+    width: 450px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
