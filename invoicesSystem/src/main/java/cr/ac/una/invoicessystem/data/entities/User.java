@@ -59,7 +59,7 @@ public class User {
     @OneToMany(mappedBy = "idUser", orphanRemoval = true)
     private Set<UserProduct> products = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "idUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "idUser", orphanRemoval = true)
     private Set<UserService> services = new LinkedHashSet<>();
 
     @Transient
@@ -78,5 +78,10 @@ public class User {
     public void addUserProduct(UserProduct product) {
         products.add(product);
         product.setIdUser(this);
+    }
+
+    public void addUserService(UserService service) {
+        services.add(service);
+        service.setIdUser(this);
     }
 }

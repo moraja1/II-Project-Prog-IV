@@ -2,7 +2,9 @@ package cr.ac.una.invoicessystem.data.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 
@@ -12,6 +14,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @Embeddable
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserServiceId implements Serializable {
     private static final long serialVersionUID = 1233513898684529540L;
     @Column(name = "id_service", nullable = false)
