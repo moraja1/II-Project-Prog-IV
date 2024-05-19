@@ -1,9 +1,9 @@
 import {useMutation} from "@tanstack/react-query";
-import API from '../../services/GeneralApi.js'
-import {useModal} from "../Modal/ModalHook.js";
+import API from '../../../services/GeneralApi.js'
+import {useModal} from "../../Modal/ModalHook.js";
 import {HttpStatusCode} from "axios";
 import {useContext} from "react";
-import {AuthContext} from "../../services/Auth/AuthProvider.jsx";
+import {AuthContext} from "../../../services/Auth/AuthProvider.jsx";
 
 export const useClientForm = () => {
     const { user } = useContext(AuthContext);

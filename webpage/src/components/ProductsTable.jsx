@@ -2,7 +2,7 @@ export const ProductsTable = (props) => {
     const { products } = props;
 
     let headersName = [
-        "Codigo", "Nombre", "Moneda", "Cantidad", "Precio"
+        "Codigo", "Nombre", "Cantidad", "Precio"
     ]
 
     let rows;
@@ -12,7 +12,6 @@ export const ProductsTable = (props) => {
             <tr key={p.id}>
                 <td>{p.code}</td>
                 <td>{p.name}</td>
-                <td>{p.currency}</td>
                 <td>{p.price}</td>
             </tr>
         );
@@ -28,7 +27,6 @@ export const ProductsTable = (props) => {
                 <th>{headersName[1]}</th>
                 <th>{headersName[2]}</th>
                 <th>{headersName[3]}</th>
-                <th>{headersName[4]}</th>
             </tr>
             </thead>
             <tbody>

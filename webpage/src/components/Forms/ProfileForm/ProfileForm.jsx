@@ -1,10 +1,10 @@
 import { ImProfile } from "react-icons/im";
-import InputBox from "../molecules/InputBox.jsx";
+import InputBox from "../../molecules/InputBox.jsx";
 import {useProfileForm} from "./ProfileFormHooks.js";
 import Modal from '@mui/material/Modal';
 import {Typography} from "@mui/material";
 import Box from "@mui/material/Box";
-import {modalStyle} from "../Modal/ModalHook.js";
+import {modalStyle} from "../../Modal/ModalHook.js";
 
 export function ProfileForm() {
     const {user, handleSubmit, isError,

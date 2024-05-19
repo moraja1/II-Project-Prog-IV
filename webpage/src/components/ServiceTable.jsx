@@ -2,7 +2,7 @@ export const ServiceTable = (props) => {
     const { services } = props;
 
     let headersName = [
-        "Codigo", "Nombre", "Moneda", "Precio por Hora"
+        "Codigo", "Nombre", "Precio por Hora"
     ]
 
     let rows;
@@ -11,8 +11,7 @@ export const ServiceTable = (props) => {
         rows = services.map((s) =>
             <tr key={s.id}>
                 <td>{s.name}</td>
-                <td>{s.currency}</td>
-                <td>{s.priceHour}</td>
+                <td>{s.price}</td>
             </tr>
         );
     }
@@ -26,7 +25,6 @@ export const ServiceTable = (props) => {
                 <th>{headersName[0]}</th>
                 <th>{headersName[1]}</th>
                 <th>{headersName[2]}</th>
-                <th>{headersName[3]}</th>
             </tr>
             </thead>
             <tbody>

@@ -1,14 +1,14 @@
-import InputBox from "../molecules/InputBox.jsx";
+import InputBox from "../../molecules/InputBox.jsx";
 import {RiShoppingBag4Fill} from "react-icons/ri";
-import SelectBox from "../molecules/SelectBox.jsx";
+import SelectBox from "../../molecules/SelectBox.jsx";
 import {useMutation, useQuery} from "@tanstack/react-query";
-import API from "../../services/GeneralApi.js";
-import {ProductFormAnimation} from "../skeletons/FormAnimation.jsx";
-import ErrorPage from "../error-page.jsx";
-import {ModalMsg} from "../Modal/ModalMessage.jsx";
+import API from "../../../services/GeneralApi.js";
+import {ProductFormAnimation} from "../../skeletons/FormAnimation.jsx";
+import ErrorPage from "../../error-page.jsx";
+import {ModalMsg} from "../../Modal/ModalMessage.jsx";
 import {useContext, useState} from "react";
 import {HttpStatusCode} from "axios";
-import {AuthContext} from "../../services/Auth/AuthProvider.jsx";
+import {AuthContext} from "../../../services/Auth/AuthProvider.jsx";
 
 export function ProductForm() {
     const {user} = useContext(AuthContext);

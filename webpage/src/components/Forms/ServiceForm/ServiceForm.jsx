@@ -1,14 +1,14 @@
 import {useContext, useState} from "react";
 import {FaRegAddressBook} from "react-icons/fa";
-import InputBox from "../molecules/InputBox.jsx";
-import SelectBox from "../molecules/SelectBox.jsx";
-import {AuthContext} from "../../services/Auth/AuthProvider.jsx";
+import InputBox from "../../molecules/InputBox.jsx";
+import SelectBox from "../../molecules/SelectBox.jsx";
+import {AuthContext} from "../../../services/Auth/AuthProvider.jsx";
 import {useMutation, useQuery} from "@tanstack/react-query";
-import API from "../../services/GeneralApi.js";
+import API from "../../../services/GeneralApi.js";
 import axios, {HttpStatusCode} from "axios";
-import {ProductFormAnimation} from "../skeletons/FormAnimation.jsx";
-import ErrorPage from "../error-page.jsx";
-import {ModalMsg} from "../Modal/ModalMessage.jsx";
+import {ProductFormAnimation} from "../../skeletons/FormAnimation.jsx";
+import ErrorPage from "../../error-page.jsx";
+import {ModalMsg} from "../../Modal/ModalMessage.jsx";
 
 export function ServiceForm() {
     const {user} = useContext(AuthContext);

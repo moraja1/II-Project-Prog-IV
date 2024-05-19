@@ -1,10 +1,10 @@
 import { ImProfile } from "react-icons/im";
-import InputBox from "../molecules/InputBox.jsx";
+import InputBox from "../../molecules/InputBox.jsx";
 import {useClientForm} from "./ClientFormHook.jsx";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import {Typography} from "@mui/material";
-import {modalStyle} from "../Modal/ModalHook.js";
+import {modalStyle} from "../../Modal/ModalHook.js";
 
 export function ClientForm(  ) {
     const {isSuccess, isError, modalRead, handleSubmit} = useClientForm();

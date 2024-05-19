@@ -1,12 +1,14 @@
 import {FaFileInvoiceDollar} from "react-icons/fa";
-import InputBox from "./molecules/InputBox.jsx";
-import SelectBox from "./molecules/SelectBox.jsx";
-import {ProductsTable} from "./ProductsTable.jsx";
+import InputBox from "../../molecules/InputBox.jsx";
+import SelectBox from "../../molecules/SelectBox.jsx";
+import {ProductsTable} from "../../ProductsTable.jsx";
 import {useState} from "react";
-import {ServiceTable} from "./ServiceTable.jsx";
+import {ServiceTable} from "../../ServiceTable.jsx";
+
+const utc = new Date().toJSON().slice(0,10).replace(/-/g,'-');
 
 export const InvoiceForm = () => {
-    var utc = new Date().toJSON().slice(0,10).replace(/-/g,'-');
+
     const [isProduct, setIsProduct] = useState(true);
 
     const handleSellSelection = (e) => {
@@ -17,6 +19,14 @@ export const InvoiceForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log("Hello")
+    }
+
+    const handleAddProduct = () => {
+
+    }
+
+    const handleAddService = () => {
+
     }
 
     return (
@@ -45,7 +55,7 @@ export const InvoiceForm = () => {
             </SelectBox>
 
             {isProduct &&
-                <form id={"cmp-invoiceForm-2"}>
+                <form id={"cmp-invoiceForm-2"} onSubmit={handleAddProduct}>
                     <div className={"cmp-invoiceForm-products"}>
                         <SelectBox name="products" label={"Seleccione un producto"} required>
                             {/*OPTIONS*/}
@@ -56,13 +66,13 @@ export const InvoiceForm = () => {
                                       min={1}
                                       defaultValue={1}
                                       required/>
-                            <button type={"button"} className="cmp-invoiceForm-button">Agregar</button>
+                            <button type={"submit"} className="cmp-invoiceForm-button">Agregar</button>
                         </div>
                     </div>
                 </form>}
             {isProduct && <ProductsTable />}
             {!isProduct &&
-                <form id={"cmp-invoiceForm-2"}>
+                <form id={"cmp-invoiceForm-2"} onSubmit={handleAddService}>
                     <div className={"cmp-invoiceForm-products"}>
                         <SelectBox name="services" label={"Seleccione un servicio"} required>
                             {/*OPTIONS*/}
@@ -73,7 +83,7 @@ export const InvoiceForm = () => {
                                       min={1}
                                       defaultValue={1}
                                       required/>
-                            <button type={"button"} className="cmp-invoiceForm-button">Agregar</button>
+                            <button type={"submit"} className="cmp-invoiceForm-button">Agregar</button>
                         </div>
                     </div>
                 </form>}
