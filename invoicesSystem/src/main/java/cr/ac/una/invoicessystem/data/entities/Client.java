@@ -24,16 +24,16 @@ public class Client {
     private Long id;
 
     @NaturalId
-    @Column(name = "natural_id", length = 32)
+    @Column(name = "natural_id", length = 32, nullable = false)
     private String naturalId;
 
-    @Column(name = "name", length = 32)
+    @Column(name = "name", length = 32, nullable = false)
     private String name;
 
-    @Column(name = "last_name", length = 32)
+    @Column(name = "last_name", length = 32, nullable = false)
     private String lastName;
 
-    @Column(name = "email", length = 32)
+    @Column(name = "email", length = 32, nullable = false)
     private String email;
 
     @Column(name = "mobile", length = 16)

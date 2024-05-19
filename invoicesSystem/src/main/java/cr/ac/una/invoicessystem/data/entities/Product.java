@@ -22,13 +22,13 @@ public class Product {
     @Column(name = "id_products", nullable = false)
     private Long id;
 
-    @Column(name = "code", length = 32)
+    @Column(name = "code", length = 32, nullable = false)
     private String code;
 
-    @Column(name = "name", length = 32)
+    @Column(name = "name", length = 32, nullable = false)
     private String name;
 
-    @Column(name = "price")
+    @Column(name = "price", nullable = false)
     private Integer price;
 
     @OneToMany(mappedBy = "products", cascade = CascadeType.ALL, orphanRemoval = true)

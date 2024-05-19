@@ -62,11 +62,9 @@ public class GeneralApplication {
         return ResponseEntity.ok().body(userOptional.get());
     }
 
-    @PutMapping("/users/client")
+    @PostMapping("/users/client")
     private ResponseEntity<Client> addClient(@RequestBody ClientFormDto client, UriComponentsBuilder ucb) {
         //Validations
-        if(client.getNaturalId() == null || client.getName() == null || client.getLastName() == null ||
-                client.getEmail() == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         Optional<User> userOptional = userRepository.findById(client.getSupplierId());
         if(userOptional.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
@@ -107,8 +105,6 @@ public class GeneralApplication {
     @PostMapping("/users/product")
     private ResponseEntity<Product> addProduct(@RequestBody ProductFormDto product, UriComponentsBuilder ucb) {
         //Validations
-        if(product.getCode() == null || product.getName() == null || product.getPrice() == null ||
-                product.getMeasureUnit() == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         Optional<User> userOptional = userRepository.findById(product.getSupplierId());
         if(userOptional.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         Optional<MeasureUnit> optionalMeasureUnit = measureUnitRepository.findById(product.getMeasureUnit().id());
