@@ -1,5 +1,7 @@
 package cr.ac.una.invoicessystem.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,15 +27,17 @@ public class Service {
     @Column(name = "price_hour")
     private Integer priceHour;
 
-    @OneToMany(mappedBy = "idService", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     private Set<InvoiceService> invoiceServices = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "idService", orphanRemoval = true)
+    @OneToMany(mappedBy = "service", orphanRemoval = true)
+    @JsonBackReference
     private Set<UserService> users = new LinkedHashSet<>();
 
     public void addUserService(UserService user) {
         users.add(user);
-        user.setIdService(this);
+        user.setService(this);
     }
 
 }

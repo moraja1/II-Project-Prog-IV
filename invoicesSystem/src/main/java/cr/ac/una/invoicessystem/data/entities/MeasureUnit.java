@@ -1,6 +1,8 @@
 package cr.ac.una.invoicessystem.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,8 +27,8 @@ public class MeasureUnit {
     @Column(name = "symbol", length = 8)
     private String symbol;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToMany(mappedBy = "idMeasureUnits", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "idMeasureUnits", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonBackReference
     private Set<Product> products = new LinkedHashSet<>();
 
     public void addProduct(Product product) {

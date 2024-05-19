@@ -1,5 +1,7 @@
 package cr.ac.una.invoicessystem.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
@@ -37,13 +39,14 @@ public class Client {
     @Column(name = "mobile", length = 16)
     private String mobile;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_user", nullable = false)
     private User idUser;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "idClient", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     private Set<Invoice> invoices = new LinkedHashSet<>();
 
     public void addInvoice(Invoice invoice) {

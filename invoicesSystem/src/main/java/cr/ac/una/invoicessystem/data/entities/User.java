@@ -1,5 +1,7 @@
 package cr.ac.una.invoicessystem.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -50,20 +52,24 @@ public class User {
     @Column(name = "type", length = 16)
     private String type;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "idUser", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Client> clients = new LinkedHashSet<>();
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "idUser", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Invoice> invoices = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "idUser", orphanRemoval = true)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "idUser", orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<UserProduct> products = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "idUser", orphanRemoval = true)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "idUser", orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<UserService> services = new LinkedHashSet<>();
 
     @Transient
-    private Boolean isAuthenticated;
+    private Boolean isAuthenticated = false;
 
     public void addClient(Client client) {
         clients.add(client);

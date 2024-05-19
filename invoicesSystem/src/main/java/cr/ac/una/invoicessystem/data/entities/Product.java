@@ -1,5 +1,7 @@
 package cr.ac.una.invoicessystem.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,20 +31,21 @@ public class Product {
     @Column(name = "price")
     private Integer price;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToMany(mappedBy = "idProducts", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "products", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     private Set<InvoiceProduct> invoiceProducts = new LinkedHashSet<>();
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToMany(mappedBy = "idProducts", orphanRemoval = true)
+    @OneToMany(mappedBy = "product", orphanRemoval = true)
+    @JsonBackReference
     private Set<UserProduct> users = new LinkedHashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_measure_units", nullable = false)
+    @JsonManagedReference
     private MeasureUnit idMeasureUnits;
 
     public void addUserProduct(UserProduct user) {
         users.add(user);
-        user.setIdProducts(this);
+        user.setProduct(this);
     }
 }

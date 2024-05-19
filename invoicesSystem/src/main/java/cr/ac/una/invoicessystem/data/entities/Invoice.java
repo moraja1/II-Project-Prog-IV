@@ -1,5 +1,7 @@
 package cr.ac.una.invoicessystem.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -36,17 +38,20 @@ public class Invoice {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_client", nullable = false)
+    @JsonManagedReference
     private Client idClient;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_user", nullable = false)
     private User idUser;
 
     @OneToMany(mappedBy = "idInvoice", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Set<InvoiceProduct> invoiceProducts = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idInvoice", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Set<InvoiceService> invoiceServices = new LinkedHashSet<>();
 
 }
