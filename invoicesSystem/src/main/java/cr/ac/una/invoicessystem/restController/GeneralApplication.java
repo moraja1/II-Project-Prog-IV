@@ -28,7 +28,6 @@ public class GeneralApplication {
     private final ClientRepository clientRepository;
     private final MeasureUnitRepository measureUnitRepository;
     private final ProductRepository productRepository;
-    private final UserProductRepository userProductIdRepository;
     private final UserProductRepository userProductRepository;
     private final ServiceRepository serviceRepository;
     private final UserServiceRepository userServiceRepository;
@@ -37,14 +36,13 @@ public class GeneralApplication {
                               ClientRepository clientRepository,
                               MeasureUnitRepository measureUnitRepository,
                               ProductRepository productRepository,
-                              UserProductRepository userProductIdRepository, UserProductRepository userProductRepository,
+                              UserProductRepository userProductRepository,
                               ServiceRepository serviceRepository,
                               UserServiceRepository userServiceRepository) {
         this.userRepository = userRepository;
         this.clientRepository = clientRepository;
         this.measureUnitRepository = measureUnitRepository;
         this.productRepository = productRepository;
-        this.userProductIdRepository = userProductIdRepository;
         this.userProductRepository = userProductRepository;
         this.serviceRepository = serviceRepository;
         this.userServiceRepository = userServiceRepository;
