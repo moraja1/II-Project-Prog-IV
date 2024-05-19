@@ -27,7 +27,7 @@ export function ClientForm(  ) {
             </Modal>
             <article className="cmp-container registerForm">
                 <form className="cmp-registerForm" onSubmit={handleSubmit}>
-                    <h2 className="cmp-title">Perfil de Usuario</h2>
+                    <h2 className="cmp-title">Agregar cliente nuevo</h2>
                     <ImProfile className="cmp-loginForm-icon"/>
                     <InputBox name="naturalId" label={"Cedula"}
                               inputType="text"
