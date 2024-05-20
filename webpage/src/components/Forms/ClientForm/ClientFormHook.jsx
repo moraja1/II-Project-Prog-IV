@@ -10,7 +10,7 @@ export const useClientForm = () => {
     const {isSuccess, isError, succeed, failed, modalRead} = useModal();
     const clientPost = useMutation({
         mutationFn: (clientToAdd => {
-            API.put(`client`, clientToAdd)
+            API.post(`client`, clientToAdd)
                 .then(res => {
                     if(res.status === HttpStatusCode.Forbidden) {
                         failed();
