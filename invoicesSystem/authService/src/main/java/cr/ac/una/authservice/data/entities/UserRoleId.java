@@ -1,4 +1,4 @@
-package cr.ac.una.authservice.data;
+package cr.ac.una.authservice.data.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

@@ -1,5 +1,7 @@
-package cr.ac.una.authservice.data;
+package cr.ac.una.authservice.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,16 +12,19 @@ import lombok.Setter;
 @Table(name = "user_roles")
 public class UserRole {
     @EmbeddedId
+    @JsonBackReference
     private UserRoleId id;
 
     @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    private cr.ac.una.invoicessystem.data.entities.User user;
+    @JsonBackReference
+    private User user;
 
     @MapsId("roleId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "role_id", nullable = false)
-    private cr.ac.una.invoicessystem.data.entities.Role role;
+    @JsonManagedReference
+    private Role role;
 
 }
