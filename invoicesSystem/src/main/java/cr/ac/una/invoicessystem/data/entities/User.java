@@ -1,6 +1,5 @@
 package cr.ac.una.invoicessystem.data.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -9,13 +8,16 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.NaturalId;
 
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "user")
+@Table(name = "user",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "natural_id")
+        })
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,27 +48,27 @@ public class User {
     @Column(name = "password", length = 32)
     private String password;
 
-    @Column(name = "role", length = 16)
-    private String role;
+    @OneToMany(mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER)
+    private Set<UserRole> roles = new HashSet<>();
 
     @Column(name = "type", length = 16)
     private String type;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "idUser", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Client> clients = new LinkedHashSet<>();
+    private Set<Client> clients = new HashSet<>();
 
     @JsonManagedReference
     @OneToMany(mappedBy = "idUser", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Invoice> invoices = new LinkedHashSet<>();
+    private Set<Invoice> invoices = new HashSet<>();
 
     @JsonManagedReference
     @OneToMany(mappedBy = "idUser", orphanRemoval = true, fetch = FetchType.EAGER)
-    private Set<UserProduct> products = new LinkedHashSet<>();
+    private Set<UserProduct> products = new HashSet<>();
 
     @JsonManagedReference
     @OneToMany(mappedBy = "idUser", orphanRemoval = true, fetch = FetchType.EAGER)
-    private Set<UserService> services = new LinkedHashSet<>();
+    private Set<UserService> services = new HashSet<>();
 
     @Transient
     private Boolean isAuthenticated = false;

@@ -2,11 +2,10 @@ package cr.ac.una.invoicessystem.data.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Set;
 
 @Builder
@@ -33,11 +32,11 @@ public class Product {
 
     @OneToMany(mappedBy = "products", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference
-    private Set<InvoiceProduct> invoiceProducts = new LinkedHashSet<>();
+    private Set<InvoiceProduct> invoiceProducts = new HashSet<>();
 
     @OneToMany(mappedBy = "product", orphanRemoval = true)
     @JsonBackReference
-    private Set<UserProduct> users = new LinkedHashSet<>();
+    private Set<UserProduct> users = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_measure_units", nullable = false)
