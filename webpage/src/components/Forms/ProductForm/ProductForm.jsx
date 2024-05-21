@@ -2,7 +2,7 @@ import InputBox from "../../molecules/InputBox.jsx";
 import {RiShoppingBag4Fill} from "react-icons/ri";
 import SelectBox from "../../molecules/SelectBox.jsx";
 import {useMutation, useQuery} from "@tanstack/react-query";
-import API from "../../../services/GeneralApi.js";
+import {gnrlAPI} from "../../../services/Api.js";
 import {ProductFormAnimation} from "../../skeletons/FormAnimation.jsx";
 import ErrorPage from "../../error-page.jsx";
 import {ModalMsg} from "../../Modal/ModalMessage.jsx";
@@ -16,12 +16,12 @@ export function ProductForm() {
     const { isPending, error, data, isFetching } = useQuery({
         queryKey: ['measureUnits'],
         queryFn: () =>
-            API.get(`/measures`)
+            gnrlAPI.get(`/measures`)
                 .then((res) => res.data),
     })
     const mutation = useMutation({
         mutationFn: (product) =>
-            API.post('/product', product)
+            gnrlAPI.post('/product', product)
                 .then((res) => {
                     if(res.status === HttpStatusCode.Ok) setActivateModal(true);
                 }),

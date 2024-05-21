@@ -1,4 +1,5 @@
 import {createContext, useState} from "react";
+import {ROLES, TYPES} from "../Constants.js";
 
 export const AuthContext = createContext(null);
 
@@ -13,8 +14,8 @@ export default function AuthProvider({ children }) {
         mobile: "96363504",
         email: "dlisett0@intel.com",
         enabled: 1,
-        type: "Physical",
-        role: "Supplier",
+        type: TYPES.PHYSICAL,
+        role: ROLES.SUPPLIER.ENGLISH,
         isAuthenticated: true
     });
 

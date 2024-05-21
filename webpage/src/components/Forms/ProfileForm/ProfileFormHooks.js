@@ -1,7 +1,7 @@
 import {useMutation} from "@tanstack/react-query";
 import {AuthContext} from "../../../services/Auth/AuthProvider.jsx";
 import {useContext} from "react";
-import API from '../../../services/GeneralApi.js'
+import {gnrlAPI} from '../../../services/Api.js'
 import {HttpStatusCode} from "axios";
 import {useModal} from "../../Modal/ModalHook.js";
 
@@ -12,7 +12,7 @@ export const useProfileForm = () => {
     const profileMutation = useMutation({
         mutationKey: ['profileMutation'],
         mutationFn: (userChanged) =>{
-            API.patch(`${apiUrl}/${user.id}`, userChanged)
+            gnrlAPI.patch(`${apiUrl}/${user.id}`, userChanged)
                 .then(res => {
                     if(res.status === HttpStatusCode.NoContent) {
                         failed();

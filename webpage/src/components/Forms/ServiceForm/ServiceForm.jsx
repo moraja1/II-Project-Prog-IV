@@ -4,7 +4,7 @@ import InputBox from "../../molecules/InputBox.jsx";
 import SelectBox from "../../molecules/SelectBox.jsx";
 import {AuthContext} from "../../../services/Auth/AuthProvider.jsx";
 import {useMutation, useQuery} from "@tanstack/react-query";
-import API from "../../../services/GeneralApi.js";
+import {gnrlAPI} from "../../../services/Api.js";
 import axios, {HttpStatusCode} from "axios";
 import {ProductFormAnimation} from "../../skeletons/FormAnimation.jsx";
 import ErrorPage from "../../error-page.jsx";
@@ -21,7 +21,7 @@ export function ServiceForm() {
     })
     const mutation = useMutation({
         mutationFn: (service) =>
-            API.post('/service', service)
+            gnrlAPI.post('/service', service)
                 .then((res) => {
                     if(res.status === HttpStatusCode.Ok) setActivateModal(true);
                 }),

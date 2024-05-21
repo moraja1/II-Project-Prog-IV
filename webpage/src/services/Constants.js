@@ -1,26 +1,18 @@
 export const ROLES = {
-    ADMIN: "Admin",
+    ADMIN: "ROLE_ADMIN",
     SUPPLIER: {
-        ENGLISH: "Supplier",
+        ENGLISH: "ROLE_USER",
         SPANISH: "Proveedor"
     }
 }
 
 export const TYPES = {
     PHYSICAL: {
-        ENGLISH: "Physical",
+        ENGLISH: "PHYSICAL",
         SPANISH: "Fisico"
     },
     JURIDICAL: {
-        ENGLISH: "Juridical",
+        ENGLISH: "JURIDICAL",
         SPANISH: "Jurídico"
     }
-}
-
-export const FORMS = {
-    LOGIN: "Login",
-    REGISTER: "Register",
-    CLIENTS: "Clients",
-    PRODUCTS: "Products",
-    INVOICES: "Invoices"
 }

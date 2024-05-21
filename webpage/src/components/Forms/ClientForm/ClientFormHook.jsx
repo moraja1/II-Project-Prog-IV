@@ -1,5 +1,5 @@
 import {useMutation} from "@tanstack/react-query";
-import API from '../../../services/GeneralApi.js'
+import {gnrlAPI} from '../../../services/Api.js'
 import {useModal} from "../../Modal/ModalHook.js";
 import {HttpStatusCode} from "axios";
 import {useContext} from "react";
@@ -10,7 +10,7 @@ export const useClientForm = () => {
     const {isSuccess, isError, succeed, failed, modalRead} = useModal();
     const clientPost = useMutation({
         mutationFn: (clientToAdd => {
-            API.post(`client`, clientToAdd)
+            gnrlAPI.post(`client`, clientToAdd)
                 .then(res => {
                     if(res.status === HttpStatusCode.Forbidden) {
                         failed();

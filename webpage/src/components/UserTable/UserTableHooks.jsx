@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useMutation, useQuery} from "@tanstack/react-query";
-import API from '../../services/AdminApi';
+import {adminAPI} from '../../services/Api';
 
 export const useTable = () => {
     const [users, setUsers] = useState([]);
@@ -9,7 +9,7 @@ export const useTable = () => {
     const tableDataQuery = useQuery({
         queryKey: ['tableData'],
         queryFn: () =>
-            API.get('',{params: {page: page, size: size}})
+            adminAPI.get('',{params: {page: page, size: size}})
                 .then((res) => {
                     setUsers(res.data);
                     return res.data;
@@ -23,7 +23,7 @@ export const useTable = () => {
         mutationKey: ['patchUser'],
         mutationFn: (user) =>{
             if (user === null) return
-            API.patch(`/${user.id}`, user)
+            adminAPI.patch(`/${user.id}`, user)
                 .then(res => {
                     let usersChanged = users.map(u => u.id === user.id ? user : u);
                     setUsers(usersChanged);
