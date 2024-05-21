@@ -8,15 +8,16 @@ import {useMutation} from "@tanstack/react-query";
 import {authAPI} from "../services/Api.js";
 import {HttpStatusCode} from "axios";
 import {ModalMsg} from "./Modal/ModalMessage.jsx";
+import {TYPES} from "../services/Constants.js";
 
 const supplierTypes = [
     {
-        value: "JURIDICAL",
-        name: "Jurídico",
+        value: TYPES.JURIDICAL.ENGLISH,
+        name: TYPES.JURIDICAL.SPANISH,
     },
     {
-        value: "PHYSICAL",
-        name: "Fisico"
+        value: TYPES.PHYSICAL.ENGLISH,
+        name: TYPES.PHYSICAL.SPANISH,
     }
 ]
 
