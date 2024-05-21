@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/api/admin")
 public class AdminApplication {
 
     private final UserRepository userRepository;

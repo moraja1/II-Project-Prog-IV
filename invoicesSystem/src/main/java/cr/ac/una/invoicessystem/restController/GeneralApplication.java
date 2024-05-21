@@ -22,7 +22,7 @@ import java.util.Set;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/users")
 public class GeneralApplication {
     private final UserRepository userRepository;
     private final ClientRepository clientRepository;
@@ -48,7 +48,7 @@ public class GeneralApplication {
         this.userServiceRepository = userServiceRepository;
     }
 
-    @PatchMapping("/users/{id}")
+    @PatchMapping("/{id}")
     private ResponseEntity<User> updateUserEnable(@PathVariable int id, @RequestBody User user) {
         Optional<User> userOptional = userRepository.findByNaturalIdAndPassword(user.getNaturalId(), user.getPassword());
         if (userOptional.isEmpty()) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -62,7 +62,7 @@ public class GeneralApplication {
         return ResponseEntity.ok().body(userOptional.get());
     }
 
-    @PostMapping("/users/client")
+    @PostMapping("/client")
     private ResponseEntity<Client> addClient(@RequestBody ClientFormDto client, UriComponentsBuilder ucb) {
         //Validations
         Optional<User> userOptional = userRepository.findById(client.getSupplierId());
@@ -80,14 +80,14 @@ public class GeneralApplication {
         userOptional.get().addClient(clientToSave);
         Client savedClient = clientRepository.save(clientToSave);
         URI locationOfNewClient = ucb
-                .path("users/client/{id}")
+                .path("/client/{id}")
                 .buildAndExpand(clientToSave.getId())
                 .toUri();
 
         return ResponseEntity.created(locationOfNewClient).body(savedClient);
     }
 
-    @GetMapping("/users/client/{id}")
+    @GetMapping("/client/{id}")
     private ResponseEntity<Client> getClient(@PathVariable Long id) {
         Optional<Client> optionalClient = clientRepository.findById(id);
         return optionalClient.map(client ->
@@ -96,13 +96,13 @@ public class GeneralApplication {
 
     }
 
-    @GetMapping("/users/measures")
+    @GetMapping("/measures")
     private ResponseEntity<List<MeasureUnit>> getAllMeasureUnits() {
         List<MeasureUnit> measuresPage = measureUnitRepository.findAll();
         return ResponseEntity.ok().body(measuresPage);
     }
 
-    @PostMapping("/users/product")
+    @PostMapping("/product")
     private ResponseEntity<Product> addProduct(@RequestBody ProductFormDto product, UriComponentsBuilder ucb) {
         //Validations
         Optional<User> userOptional = userRepository.findById(product.getSupplierId());
@@ -120,7 +120,7 @@ public class GeneralApplication {
         optionalMeasureUnit.get().addProduct(productToSave);
         Product savedProduct = productRepository.save(productToSave);
         URI locationOfNewProduct = ucb
-                .path("users/product/{id}")
+                .path("/product/{id}")
                 .buildAndExpand(savedProduct.getId())
                 .toUri();
 
@@ -138,7 +138,7 @@ public class GeneralApplication {
         return ResponseEntity.created(locationOfNewProduct).body(savedProduct);
     }
 
-    @PostMapping("/users/service")
+    @PostMapping("/service")
     private ResponseEntity<Service> addService(@RequestBody ServiceFormDto service, UriComponentsBuilder ucb) {
         //Validations
         if(service.getName() == null ||
@@ -156,7 +156,7 @@ public class GeneralApplication {
 
         Service savedService = serviceRepository.save(serviceToSave);
         URI locationOfNewService = ucb
-                .path("users/service/{id}")
+                .path("/service/{id}")
                 .buildAndExpand(savedService.getId())
                 .toUri();
 
