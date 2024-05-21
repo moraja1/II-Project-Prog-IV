@@ -15,10 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @CrossOrigin("*")
 @RestController
@@ -46,6 +43,13 @@ public class GeneralApplication {
         this.userProductRepository = userProductRepository;
         this.serviceRepository = serviceRepository;
         this.userServiceRepository = userServiceRepository;
+    }
+
+    @GetMapping("/{id}")
+    private ResponseEntity<User> getUserById(@PathVariable Long id) {
+        Optional<User> user = userRepository.findById(id);
+        System.out.println(user.map(Objects::toString).orElse(null));
+        return user.map(x -> ResponseEntity.ok().body(x)).orElse(ResponseEntity.notFound().build());
     }
 
     @PatchMapping("/{id}")

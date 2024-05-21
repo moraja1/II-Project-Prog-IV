@@ -3,6 +3,7 @@ package cr.ac.una.authservice.restController;
 import cr.ac.una.authservice.data.entities.*;
 import cr.ac.una.authservice.data.repository.RoleRepository;
 import cr.ac.una.authservice.data.repository.UserRepository;
+import cr.ac.una.authservice.data.repository.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,13 +13,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Collections;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthApplication {
 
+    private final UserRoleRepository userRoleRepository;
     private AuthenticationManager authenticationManager;
     private UserRepository userRepository;
     private RoleRepository roleRepository;
@@ -26,15 +30,16 @@ public class AuthApplication {
 
     @Autowired
     public AuthApplication(AuthenticationManager authenticationManager, UserRepository userRepository,
-                           RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+                           RoleRepository roleRepository, PasswordEncoder passwordEncoder, UserRoleRepository userRoleRepository) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userRoleRepository = userRoleRepository;
     }
 
     @PostMapping("/register")
-    private ResponseEntity<User> register(@RequestBody User user) {
+    private ResponseEntity<User> register(@RequestBody User user, UriComponentsBuilder ucb) {
         //Validations
         if(userRepository.existsByNaturalId(user.getNaturalId())) return ResponseEntity.badRequest().body(user);
         String uri = String.format("http://localhost:8085/api/user/%s", user.getNaturalId());
@@ -62,5 +67,13 @@ public class AuthApplication {
         savedUser.setRoles(Collections.singleton(userRole));
         role.setUsers(Collections.singleton(userRole));
 
+        userRoleRepository.save(userRole);
+
+        URI locationOfNewSupplier = ucb
+                .path("/api/users/{id}")
+                .buildAndExpand(savedUser.getId())
+                .toUri();
+
+        return ResponseEntity.created(locationOfNewSupplier).body(savedUser);
     }
 }

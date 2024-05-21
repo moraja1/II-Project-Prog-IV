@@ -10,8 +10,6 @@ public class InvoicesSystemApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(InvoicesSystemApplication.class, args);
-        System.out.println(EType.JURIDICAL.name());
-        System.out.println(EType.PHYSICAL.name());
     }
 
 }
