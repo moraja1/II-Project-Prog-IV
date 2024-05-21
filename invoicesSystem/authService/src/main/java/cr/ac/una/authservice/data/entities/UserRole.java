@@ -19,7 +19,7 @@ public class UserRole {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference
-    private UserEntity user;
+    private User user;
 
     @MapsId("roleId")
     @ManyToOne(fetch = FetchType.EAGER, optional = false)

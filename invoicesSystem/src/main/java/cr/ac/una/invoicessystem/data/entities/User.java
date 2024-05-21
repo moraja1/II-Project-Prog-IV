@@ -51,8 +51,10 @@ public class User {
     @OneToMany(mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<UserRole> roles = new HashSet<>();
 
-    @Column(name = "type", length = 16)
-    private String type;
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "id_supplier_type", nullable = false)
+    @JsonManagedReference
+    private SupplierType type;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "idUser", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -36,7 +36,7 @@ public class Invoice {
     @Column(name = "total_price")
     private Integer totalPrice;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_client", nullable = false)
     @JsonManagedReference
     private Client idClient;
@@ -46,11 +46,11 @@ public class Invoice {
     @JoinColumn(name = "id_user", nullable = false)
     private User idUser;
 
-    @OneToMany(mappedBy = "idInvoice", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "idInvoice", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<InvoiceProduct> invoiceProducts = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "idInvoice", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "idInvoice", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<InvoiceService> invoiceServices = new LinkedHashSet<>();
 
