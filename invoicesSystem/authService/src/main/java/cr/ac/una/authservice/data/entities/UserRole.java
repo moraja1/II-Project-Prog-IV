@@ -17,13 +17,13 @@ public class UserRole {
 
     @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "id_user", nullable = false)
     @JsonBackReference
     private User user;
 
     @MapsId("roleId")
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "role_id", nullable = false)
+    @JoinColumn(name = "id_role", nullable = false)
     @JsonManagedReference
     private Role role;
 

@@ -2,7 +2,9 @@ package cr.ac.una.authservice.data.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 
@@ -11,13 +13,15 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Embeddable
 public class UserRoleId implements Serializable {
     private static final long serialVersionUID = 4848083710519996237L;
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "id_user", nullable = false)
     private Long userId;
 
-    @Column(name = "role_id", nullable = false)
+    @Column(name = "id_role", nullable = false)
     private Integer roleId;
 
     @Override
