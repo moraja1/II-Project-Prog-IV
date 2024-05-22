@@ -1,14 +1,21 @@
 package cr.ac.una.authservice.restController;
 
+import cr.ac.una.authservice.data.dto.AuthResponseDto;
+import cr.ac.una.authservice.data.dto.LoginDto;
 import cr.ac.una.authservice.data.dto.RegisterFormDto;
 import cr.ac.una.authservice.data.entities.*;
 import cr.ac.una.authservice.data.repository.RoleRepository;
 import cr.ac.una.authservice.data.repository.SupplierTypeRepository;
 import cr.ac.una.authservice.data.repository.UserRepository;
 import cr.ac.una.authservice.data.repository.UserRoleRepository;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -82,5 +89,16 @@ public class AuthApplication {
                 .toUri();
 
         return ResponseEntity.created(locationOfNewSupplier).build();
+    }
+
+    @PostMapping("login")
+    public ResponseEntity<AuthResponseDto> login(@RequestBody LoginDto loginDto){
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginDto.username(),
+                        loginDto.password()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        //String token = jwtGenerator.generateToken(authentication);
+        return ResponseEntity.ok(new AuthResponseDto(token));
     }
 }
