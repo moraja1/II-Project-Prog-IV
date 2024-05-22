@@ -26,4 +26,9 @@ public class Role {
     @OneToMany(mappedBy = "role", orphanRemoval = true)
     @JsonBackReference
     private Set<UserRole> users = new HashSet<>();
+
+    public void addUser(UserRole user) {
+        users.add(user);
+        user.setRole(this);
+    }
 }

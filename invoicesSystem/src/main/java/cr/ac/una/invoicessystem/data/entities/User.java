@@ -45,7 +45,7 @@ public class User {
     private String naturalId;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(name = "password", length = 32)
+    @Column(name = "password", length = 256)
     private String password;
 
     @OneToMany(mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER)

@@ -15,7 +15,6 @@
 	<description>authService</description>
 	<properties>
 		<java.version>17</java.version>
-		<spring-security.version>5.2.1.RELEASE</spring-security.version>
 	</properties>
 	<dependencies>
 		<dependency>

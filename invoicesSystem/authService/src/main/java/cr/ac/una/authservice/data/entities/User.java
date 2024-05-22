@@ -45,7 +45,7 @@ public class User implements UserDetails {
     private SupplierType type;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(name = "password", length = 32)
+    @Column(name = "password", length = 256)
     private String password;
 
     @JsonManagedReference
@@ -105,5 +105,10 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public void addRole(UserRole role) {
+        roles.add(role);
+        role.setUser(this);
     }
 }
