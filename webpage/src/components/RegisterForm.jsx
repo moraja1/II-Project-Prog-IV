@@ -28,8 +28,8 @@ export function RegisterForm() {
             authAPI.post('/register', user)
                 .then((res) => {
                     if(res.status === HttpStatusCode.Created) setActivateSuccessModal(true);
-                    if(res.status === HttpStatusCode.BadRequest) setActivateFailedModal(true);
                 })
+                .catch(() => setActivateFailedModal(true))
     })
     const [activateSuccessModal, setActivateSuccessModal] = useState(false);
     const [activateFailedModal, setActivateFailedModal] = useState(false);
@@ -51,7 +51,9 @@ export function RegisterForm() {
         const formData = new FormData(evt.target);
         const payload = Object.fromEntries(formData);
 
-        console.log(payload);
+        delete payload.passwordConf;
+
+        mutation.mutate(payload);
     }
 
     return (
