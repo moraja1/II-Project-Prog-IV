@@ -46,14 +46,6 @@ export const InvoiceForm = () => {
 
     }
 
-    const handleAddProduct = () => {
-
-    }
-
-    const handleAddService = () => {
-
-    }
-
     const modalRead = () => {
         if(failProductsModal) {
             setFailProductsModal(false);
