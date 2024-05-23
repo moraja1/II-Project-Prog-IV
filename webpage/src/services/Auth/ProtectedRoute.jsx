@@ -7,7 +7,7 @@ export const ProtectedRoute = ({ children }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!user.isAuthenticated) {
+        if (user === null || !user.isAuthenticated || !user.enabled || user === {}) {
             navigate('/', { replace: true });
         }
     }, [navigate]);

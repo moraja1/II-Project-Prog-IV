@@ -30,9 +30,8 @@ export const useProfileForm = () => {
         const formData = new FormData(e.target);
         const payload = Object.fromEntries(formData);
         payload.naturalId = user.naturalId;
-
-        console.log(payload)
         profileMutation.mutate(payload);
+
         e.preventDefault();
     }
 

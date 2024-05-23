@@ -7,6 +7,8 @@ import { FaMoneyCheckDollar } from "react-icons/fa6";
 import { FaFileInvoiceDollar } from "react-icons/fa";
 import { FaHandHoldingUsd } from "react-icons/fa";
 import {ROLES} from "../services/Constants.js";
+import {useContext} from "react";
+import {AuthContext} from "../services/Auth/AuthProvider.jsx";
 
 //IMAGES
 const homeImg = (<FaHome />)
@@ -25,16 +27,22 @@ const logoBtn = {link: "/",        text: "Logout",   image: logout}
 
 
 export default function MainMenu({ role }) {
+    const {setUser} = useContext(AuthContext);
     let menu = [homeBtn, profBtn];
     if(role === ROLES.SUPPLIER.ENGLISH) menu.push(clieBtn, prodBtn, invoBtn);
     menu.push(logoBtn);
 
+    const handleAny = (link) => {
+        if(link === logoBtn.link) {
+            setUser({});
+        }
+    }
     return (
-        <nav className="cmp-main-menu">
+        <nav className="cmp-main-menu" >
             {
                 menu.map((menu, index) => (
                     <MenuButton key={index}
-                                link={menu.link} text={menu.text} image={menu.image} />
+                                link={menu.link} text={menu.text} image={menu.image} onClick={handleAny} />
                 ))
             }
         </nav>

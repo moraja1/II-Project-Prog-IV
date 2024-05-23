@@ -3,14 +3,19 @@ import {NavLink} from "react-router-dom";
 
 const MenuButton = (props) => {
     const {link, image, text} = props;
+    const customOnClick = () => {
+        props.onClick(link);
+    }
 
     return (
-        <NavLink to={link} className={({isActive, isPending}) =>
-            isPending ? "molecule-menuButton" :
-            isActive ? "molecule-menuButton active" : "molecule-menuButton"} end>
-            <span onClick={props.onClick} className="molecule-menuButton-img">{image}</span>
-            <span className="molecule-menuButton-txt">{text}</span>
-        </NavLink>
+        <div onClick={customOnClick} >
+            <NavLink to={link} className={({isActive, isPending}) =>
+                isPending ? "molecule-menuButton" :
+                    isActive ? "molecule-menuButton active" : "molecule-menuButton"} end>
+                <span className="molecule-menuButton-img">{image}</span>
+                <span className="molecule-menuButton-txt">{text}</span>
+            </NavLink>
+        </div>
     )
 }
 

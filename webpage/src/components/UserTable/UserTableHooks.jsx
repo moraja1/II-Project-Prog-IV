@@ -25,7 +25,7 @@ export const useTable = () => {
             if (user === null) return
             adminAPI.patch(`/${user.id}`, user)
                 .then(res => {
-                    let usersChanged = users.map(u => u.id === user.id ? user : u);
+                    let usersChanged = users.map(u => u.id === user.id ? res.data : u);
                     setUsers(usersChanged);
                     return res.data;
                 })
@@ -42,9 +42,13 @@ export const useTable = () => {
 
     const handleTableButton = (e) => {
         e.preventDefault();
-        let user = JSON.parse(e.target.value)
-        user.enabled = !user.enabled;
-        patchUserQuery.mutate(user);
+        let payload = JSON.parse(e.target.value)
+        payload = {
+            id: payload.id,
+            enabled: !payload.enabled,
+        }
+
+        patchUserQuery.mutate(payload);
     }
 
     return ({
