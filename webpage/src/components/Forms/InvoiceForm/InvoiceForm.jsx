@@ -55,10 +55,10 @@ export const InvoiceForm = () => {
     }
 
     const modalRead = () => {
-        if(successModal) {
+        if(failProductsModal) {
             setFailProductsModal(false);
         }
-        if(failModal) {
+        if(failServicesModal) {
             setFailServicesModal(false);
         }
     }
@@ -111,7 +111,7 @@ export const InvoiceForm = () => {
                             </div>
                         </div>
                     </form>}
-                {productsIncluded.length > 0 && <ProductsTable/>}
+                {productsIncluded.length > 0 && <ProductsTable products={productsIncluded}/>}
                 {!isProduct &&
                     <form id={"cmp-invoiceForm-2"} onSubmit={handleAddService}>
                         <div className={"cmp-invoiceForm-products"}>
