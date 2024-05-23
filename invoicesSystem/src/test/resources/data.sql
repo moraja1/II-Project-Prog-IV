@@ -5,7 +5,7 @@ INSERT INTO projectii.measure_units (id_measure_units, name, symbol) VALUES (3, 
 INSERT INTO projectii.measure_units (id_measure_units, name, symbol) VALUES (4, 'Litro', 'L');
 INSERT INTO projectii.measure_units (id_measure_units, name, symbol) VALUES (5, 'milimetro', 'mm');
 INSERT INTO projectii.measure_units (id_measure_units, name, symbol) VALUES (6, 'Metro', 'M');
-INSERT INTO projectii.measure_units (id_measure_units, name, symbol) VALUES (7, 'Unidades', 'u');
+INSERT INTO projectii.measure_units (id_measure_units, name, symbol) VALUES (7, 'Unidad', 'u');
 
 -- ROLES --
 

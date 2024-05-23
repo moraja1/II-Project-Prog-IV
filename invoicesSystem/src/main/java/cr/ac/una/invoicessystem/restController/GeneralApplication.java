@@ -6,6 +6,7 @@ import cr.ac.una.invoicessystem.logic.dto.ServiceFormDto;
 import cr.ac.una.invoicessystem.data.entities.*;
 import cr.ac.una.invoicessystem.logic.dto.ClientFormDto;
 import cr.ac.una.invoicessystem.data.repositories.*;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -106,6 +107,10 @@ public class GeneralApplication {
     @PostMapping("/product")
     private ResponseEntity<Product> addProduct(@RequestBody ProductFormDto product, UriComponentsBuilder ucb) {
         //Validations
+        if(product.getName() == null ||
+                product.getPrice() == null ||
+                product.getPrice() <= 0 ||
+                product.getSupplierId() == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         Optional<User> userOptional = userRepository.findById(product.getSupplierId());
         if(userOptional.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         Optional<MeasureUnit> optionalMeasureUnit = measureUnitRepository.findById(product.getMeasureUnit().id());
@@ -149,6 +154,7 @@ public class GeneralApplication {
 
     @PostMapping("/service")
     private ResponseEntity<Service> addService(@RequestBody ServiceFormDto service, UriComponentsBuilder ucb) {
+        Service serviceToSave = null;
         //Validations
         if(service.getName() == null ||
                 service.getPrice() == null ||
@@ -158,7 +164,7 @@ public class GeneralApplication {
         if(userOptional.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
         //Valid input
-        Service serviceToSave = Service.builder()
+        serviceToSave = Service.builder()
                 .name(service.getName())
                 .priceHour(service.getPrice())
                 .build();
@@ -181,5 +187,16 @@ public class GeneralApplication {
         userServiceRepository.save(userService);
 
         return ResponseEntity.created(locationOfNewService).body(savedService);
+    }
+
+    @GetMapping("products")
+    private ResponseEntity<List<Product>> getAllProducts(@RequestHeader("sub") String sub) {
+        //Validations
+        Optional<User> optionalUser = userRepository.findById(Long.parseLong(sub));
+        if(optionalUser.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        List<UserProduct> userProducts = userProductRepository.findAllByIdUser(optionalUser.get());
+        List<Product> products = userProducts.stream().map(UserProduct::getProduct).toList();
+
+        return ResponseEntity.ok(products);
     }
 }
