@@ -1,7 +1,6 @@
 package cr.ac.una.invoicessystem.restController;
 
-import cr.ac.una.invoicessystem.data.dto.UserTableDto;
-import cr.ac.una.invoicessystem.data.entities.ERole;
+import cr.ac.una.invoicessystem.logic.dto.UserTableDto;
 import cr.ac.una.invoicessystem.data.entities.User;
 import cr.ac.una.invoicessystem.data.repositories.UserRepository;
 import org.springframework.data.domain.Page;
@@ -16,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:3300")
 @RestController
 @RequestMapping("/api/admin")
 public class AdminApplication {

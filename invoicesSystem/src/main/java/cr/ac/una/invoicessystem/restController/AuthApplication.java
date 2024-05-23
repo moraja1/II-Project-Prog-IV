@@ -1,14 +1,15 @@
 package cr.ac.una.invoicessystem.restController;
 
-import cr.ac.una.invoicessystem.data.dto.LoginDto;
+import cr.ac.una.invoicessystem.logic.dto.LoginDto;
 import cr.ac.una.invoicessystem.data.repositories.RoleRepository;
 import cr.ac.una.invoicessystem.data.repositories.SupplierTypeRepository;
 import cr.ac.una.invoicessystem.data.repositories.UserRepository;
 import cr.ac.una.invoicessystem.data.repositories.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import cr.ac.una.invoicessystem.data.dto.RegisterFormDto;
+import cr.ac.una.invoicessystem.logic.dto.RegisterFormDto;
 import cr.ac.una.invoicessystem.data.entities.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -82,6 +83,7 @@ public class AuthApplication {
     public ResponseEntity<User> login(@RequestBody LoginDto loginDto) {
         Optional<User> user = userRepository.findByNaturalIdAndPassword(loginDto.naturalId(), loginDto.password());
         if (user.isEmpty()) return ResponseEntity.notFound().build();
+        if (!user.get().getEnabled()) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         user.get().setIsAuthenticated(true);
         return ResponseEntity.ok(user.get());
     }

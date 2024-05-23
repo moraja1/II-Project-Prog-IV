@@ -1,4 +1,4 @@
-package cr.ac.una.invoicessystem.data.dto;
+package cr.ac.una.invoicessystem.logic.dto;
 
 import lombok.*;
 

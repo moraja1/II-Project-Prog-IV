@@ -1,10 +1,10 @@
 package cr.ac.una.invoicessystem.restController;
 
-import cr.ac.una.invoicessystem.data.dto.ProductFormDto;
-import cr.ac.una.invoicessystem.data.dto.ProfileDto;
-import cr.ac.una.invoicessystem.data.dto.ServiceFormDto;
+import cr.ac.una.invoicessystem.logic.dto.ProductFormDto;
+import cr.ac.una.invoicessystem.logic.dto.ProfileDto;
+import cr.ac.una.invoicessystem.logic.dto.ServiceFormDto;
 import cr.ac.una.invoicessystem.data.entities.*;
-import cr.ac.una.invoicessystem.data.dto.ClientFormDto;
+import cr.ac.una.invoicessystem.logic.dto.ClientFormDto;
 import cr.ac.una.invoicessystem.data.repositories.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.util.*;
 
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:3300")
 @RestController
 @RequestMapping("/api/users")
 public class GeneralApplication {
@@ -110,6 +110,14 @@ public class GeneralApplication {
         if(userOptional.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         Optional<MeasureUnit> optionalMeasureUnit = measureUnitRepository.findById(product.getMeasureUnit().id());
         if(optionalMeasureUnit.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        Optional<Product> optionalProduct = productRepository.findByCode(product.getCode());
+        if(optionalProduct.isPresent()) {
+            for (var u : optionalProduct.get().getUsers()) {
+                if(u.getId().getIdUser().equals(userOptional.get().getId())) {
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+                }
+            }
+        }
 
         //Valid input
         Product productToSave = Product.builder()

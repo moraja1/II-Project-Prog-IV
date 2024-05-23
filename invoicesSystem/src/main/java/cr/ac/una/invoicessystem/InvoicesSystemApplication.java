@@ -1,7 +1,5 @@
 package cr.ac.una.invoicessystem;
 
-import cr.ac.una.invoicessystem.data.entities.ERole;
-import cr.ac.una.invoicessystem.data.entities.EType;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
