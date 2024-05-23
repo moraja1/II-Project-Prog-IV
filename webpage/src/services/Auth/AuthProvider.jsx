@@ -1,13 +1,16 @@
 import {createContext, useState} from "react";
 import {ROLES, TYPES} from "../Constants.js";
 
-export const AuthContext = createContext(null);
+export const AuthContext = createContext(undefined);
 
 
 export default function AuthProvider({ children }) {
-    const [user, setUser] = useState({
+    const [user, setUser] = useState(undefined);
+
+
+    /*{
         id: 1,
-        naturalId: "202220222",
+            naturalId: "202220222",
         password: null,
         name: "Dana",
         lastName: "Lisett",
@@ -17,7 +20,7 @@ export default function AuthProvider({ children }) {
         type: TYPES.PHYSICAL,
         role: ROLES.SUPPLIER.ENGLISH,
         isAuthenticated: true
-    });
+    }*/
 
     return (
         <AuthContext.Provider value={{user, setUser}}>

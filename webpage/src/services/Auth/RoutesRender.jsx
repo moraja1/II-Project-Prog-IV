@@ -1,5 +1,5 @@
 import ErrorPage from "../../components/error-page.jsx";
-import {LoginForm} from "../../components/LoginForm.jsx";
+import {LoginForm} from "../../components/Forms/LoginForm/LoginForm.jsx";
 import {RegisterForm} from "../../components/RegisterForm.jsx";
 import {MainPage} from "../../components/MainPage.jsx";
 import AppLayout from "../../components/AppLayout.jsx";

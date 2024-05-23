@@ -1,22 +1,23 @@
-import '../styles/components.css';
+import '../../../styles/components.css';
 import { FaRegUserCircle } from "react-icons/fa";
-import InputBox from "./molecules/InputBox.jsx";
+import InputBox from "../../molecules/InputBox.jsx";
 import {Link, useNavigate} from "react-router-dom";
-import {useContext, useState} from "react";
-import {AuthContext} from "../services/Auth/AuthProvider.jsx";
-import {authAPI} from '../services/Api.js'
+import {useContext, useEffect, useState} from "react";
+import {AuthContext} from "../../../services/Auth/AuthProvider.jsx";
+import {authAPI} from '../../../services/Api.js'
 import {useMutation} from "@tanstack/react-query";
 import {HttpStatusCode} from "axios";
-import {ModalMsg} from "./Modal/ModalMessage.jsx";
+import {ModalMsg} from "../../Modal/ModalMessage.jsx";
 
 export function LoginForm() {
-    const {user, setUser} = useContext(AuthContext);
+    const {setUser} = useContext(AuthContext);
     const navigate = useNavigate();
     const mutation = useMutation({
-        mutationFn: (user) =>
-            authAPI.post('/login', user)
+        mutationFn: (payload) =>
+            authAPI.post('/login', payload)
                 .then((res) => {
                     if(res.status === HttpStatusCode.Ok) {
+                        localStorage.setItem("user", JSON.stringify(res.data));
                         setUser(res.data);
                         navigate('/home', { replace: true });
                     }
@@ -24,14 +25,15 @@ export function LoginForm() {
                 .catch(() => setActivateFailedModal(true))
     })
     const [activateFailedModal, setActivateFailedModal] = useState(false);
+    useEffect(() => {
+        localStorage.clear()
+    }, []);
 
     const handleSubmit = (evt) => {
         evt.preventDefault();
 
         const formData = new FormData(evt.target);
         const payload = Object.fromEntries(formData);
-
-        console.log(payload)
         mutation.mutate(payload);
     }
 

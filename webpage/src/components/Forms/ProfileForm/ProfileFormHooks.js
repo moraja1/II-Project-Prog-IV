@@ -5,14 +5,13 @@ import {gnrlAPI} from '../../../services/Api.js'
 import {HttpStatusCode} from "axios";
 import {useModal} from "../../Modal/ModalHook.js";
 
-const apiUrl = "http://localhost:8080/api/users"
 export const useProfileForm = () => {
     const {user, setUser} = useContext(AuthContext);
     const {isSuccess, isError, succeed, failed, modalRead} = useModal();
     const profileMutation = useMutation({
         mutationKey: ['profileMutation'],
         mutationFn: (userChanged) =>{
-            gnrlAPI.patch(`${apiUrl}/${user.id}`, userChanged)
+            gnrlAPI.patch('/profile', userChanged)
                 .then(res => {
                     if(res.status === HttpStatusCode.NoContent) {
                         failed();
@@ -30,16 +29,10 @@ export const useProfileForm = () => {
     const handleSubmit = (e) => {
         const formData = new FormData(e.target);
         const payload = Object.fromEntries(formData);
-        let userChanged = {
-            ...user,
-            name: payload.name,
-            lastName: payload.lastName,
-            mobile: payload.mobile,
-            email: payload.email,
-            password: payload.password
-        };
+        payload.naturalId = user.naturalId;
 
-        profileMutation.mutate(userChanged);
+        console.log(payload)
+        profileMutation.mutate(payload);
         e.preventDefault();
     }
 
