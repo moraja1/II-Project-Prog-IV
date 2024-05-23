@@ -94,4 +94,9 @@ public class User {
         services.add(service);
         service.setIdUser(this);
     }
+
+    public void addRole(UserRole role) {
+        roles.add(role);
+        role.setUser(this);
+    }
 }

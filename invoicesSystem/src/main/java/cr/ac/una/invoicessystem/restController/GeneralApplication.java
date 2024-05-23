@@ -1,14 +1,11 @@
 package cr.ac.una.invoicessystem.restController;
 
 import cr.ac.una.invoicessystem.data.dto.ProductFormDto;
+import cr.ac.una.invoicessystem.data.dto.ProfileDto;
 import cr.ac.una.invoicessystem.data.dto.ServiceFormDto;
 import cr.ac.una.invoicessystem.data.entities.*;
 import cr.ac.una.invoicessystem.data.dto.ClientFormDto;
 import cr.ac.una.invoicessystem.data.repositories.*;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,15 +49,15 @@ public class GeneralApplication {
         return user.map(x -> ResponseEntity.ok().body(x)).orElse(ResponseEntity.notFound().build());
     }
 
-    @PatchMapping("/{id}")
-    private ResponseEntity<User> updateUserEnable(@PathVariable int id, @RequestBody User user) {
-        Optional<User> userOptional = userRepository.findByNaturalIdAndPassword(user.getNaturalId(), user.getPassword());
+    @PatchMapping("/profile")
+    private ResponseEntity<User> updateUserEnable(@RequestBody ProfileDto profile) {
+        Optional<User> userOptional = userRepository.findByNaturalIdAndPassword(profile.naturalId(), profile.password());
         if (userOptional.isEmpty()) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
-        userOptional.get().setName(user.getName());
-        userOptional.get().setLastName(user.getLastName());
-        userOptional.get().setEmail(user.getEmail());
-        userOptional.get().setMobile(user.getMobile());
+        userOptional.get().setName(profile.name());
+        userOptional.get().setLastName(profile.lastName());
+        userOptional.get().setEmail(profile.email());
+        userOptional.get().setMobile(profile.mobile());
         userRepository.save(userOptional.get());
 
         return ResponseEntity.ok().body(userOptional.get());

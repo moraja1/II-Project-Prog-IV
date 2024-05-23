@@ -12,6 +12,7 @@ import lombok.Setter;
 @Table(name = "user_roles")
 public class UserRole {
     @EmbeddedId
+    @JsonBackReference
     private UserRoleId id;
 
     @MapsId("idUser")

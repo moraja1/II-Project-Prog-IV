@@ -1,28 +1,19 @@
-package cr.ac.una.authservice.restController;
+package cr.ac.una.invoicessystem.restController;
 
-import cr.ac.una.authservice.data.dto.AuthResponseDto;
-import cr.ac.una.authservice.data.dto.LoginDto;
-import cr.ac.una.authservice.data.dto.RegisterFormDto;
-import cr.ac.una.authservice.data.entities.*;
-import cr.ac.una.authservice.data.repository.RoleRepository;
-import cr.ac.una.authservice.data.repository.SupplierTypeRepository;
-import cr.ac.una.authservice.data.repository.UserRepository;
-import cr.ac.una.authservice.data.repository.UserRoleRepository;
-import org.apache.coyote.Response;
+import cr.ac.una.invoicessystem.data.dto.LoginDto;
+import cr.ac.una.invoicessystem.data.repositories.RoleRepository;
+import cr.ac.una.invoicessystem.data.repositories.SupplierTypeRepository;
+import cr.ac.una.invoicessystem.data.repositories.UserRepository;
+import cr.ac.una.invoicessystem.data.repositories.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import cr.ac.una.invoicessystem.data.dto.RegisterFormDto;
+import cr.ac.una.invoicessystem.data.entities.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.Collections;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*")
@@ -30,29 +21,25 @@ import java.util.Optional;
 @RequestMapping("/api/auth")
 public class AuthApplication {
 
-    private final UserRoleRepository userRoleRepository;
-    private AuthenticationManager authenticationManager;
+    private UserRoleRepository userRoleRepository;
     private UserRepository userRepository;
     private RoleRepository roleRepository;
-    private PasswordEncoder passwordEncoder;
     private SupplierTypeRepository supplierTypeRepository;
 
     @Autowired
-    public AuthApplication(AuthenticationManager authenticationManager, UserRepository userRepository,
-                           RoleRepository roleRepository, PasswordEncoder passwordEncoder, UserRoleRepository userRoleRepository,
+    public AuthApplication(UserRepository userRepository,
+                           RoleRepository roleRepository, UserRoleRepository userRoleRepository,
                            SupplierTypeRepository supplierTypeRepository) {
-        this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
         this.userRoleRepository = userRoleRepository;
         this.supplierTypeRepository = supplierTypeRepository;
     }
 
-    @PostMapping("/register")
+    @PostMapping("register")
     private ResponseEntity<Void> register(@RequestBody RegisterFormDto register, UriComponentsBuilder ucb) {
         //Validations
-        if(userRepository.existsByNaturalId(register.naturalId())) return ResponseEntity.badRequest().build();
+        if (userRepository.existsByNaturalId(register.naturalId())) return ResponseEntity.badRequest().build();
         String uri = String.format("http://localhost:8085/api/user/%s", register.naturalId());
         RestTemplate restTemplate = new RestTemplate();
         Boolean isRegisteredInMinistry = restTemplate.getForObject(uri, Boolean.class);
@@ -60,12 +47,12 @@ public class AuthApplication {
         if (Boolean.FALSE.equals(isRegisteredInMinistry)) return ResponseEntity.badRequest().header(
                 "Message", "Not Registered in Ministry").build();
         Optional<SupplierType> type = supplierTypeRepository.findByName(EType.getEType(register.type()));
-        if(type.isEmpty()) return ResponseEntity.badRequest().build();
+        if (type.isEmpty()) return ResponseEntity.badRequest().build();
 
 
         User userToRegister = new User();
         userToRegister.setNaturalId(register.naturalId());
-        userToRegister.setPassword(passwordEncoder.encode(register.password()));
+        userToRegister.setPassword(register.password());
         userToRegister.setName(register.name());
         userToRegister.setLastName(register.lastName());
         userToRegister.setType(type.get());
@@ -92,13 +79,10 @@ public class AuthApplication {
     }
 
     @PostMapping("login")
-    public ResponseEntity<AuthResponseDto> login(@RequestBody LoginDto loginDto){
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginDto.username(),
-                        loginDto.password()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        //String token = jwtGenerator.generateToken(authentication);
-        return ResponseEntity.ok(new AuthResponseDto(token));
+    public ResponseEntity<User> login(@RequestBody LoginDto loginDto) {
+        Optional<User> user = userRepository.findByNaturalIdAndPassword(loginDto.naturalId(), loginDto.password());
+        if (user.isEmpty()) return ResponseEntity.notFound().build();
+        user.get().setIsAuthenticated(true);
+        return ResponseEntity.ok(user.get());
     }
 }
