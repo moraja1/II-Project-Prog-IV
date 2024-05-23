@@ -17,17 +17,13 @@ export function LoginForm() {
             authAPI.post('/login', payload)
                 .then((res) => {
                     if(res.status === HttpStatusCode.Ok) {
-                        localStorage.setItem("user", JSON.stringify(res.data));
                         setUser(res.data);
-                        navigate('/home', { replace: true });
+                        navigate('/home');
                     }
                 })
                 .catch(() => setActivateFailedModal(true))
     })
     const [activateFailedModal, setActivateFailedModal] = useState(false);
-    useEffect(() => {
-        localStorage.clear()
-    }, []);
 
     const handleSubmit = (evt) => {
         evt.preventDefault();

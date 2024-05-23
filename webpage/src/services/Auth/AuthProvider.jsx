@@ -1,11 +1,13 @@
-import {createContext, useState} from "react";
-import {ROLES, TYPES} from "../Constants.js";
+import {createContext, useEffect, useState} from "react";
 
-export const AuthContext = createContext(undefined);
+export const AuthContext = createContext(null);
 
 
 export default function AuthProvider({ children }) {
-    const [user, setUser] = useState(undefined);
+    const [user, setUser] = useState(JSON.parse(window.localStorage.getItem("user")));
+    useEffect(() => {
+        window.localStorage.setItem("user", JSON.stringify(user));
+    }, [user]);
 
 
     /*{

@@ -10,7 +10,7 @@ const AppLayout = () => {
     return (
         <>
             <PageHeader>
-                <MainMenu role={user.role} />
+                <MainMenu role={user.roles[0].role.name} />
             </PageHeader>
             <Outlet />
         </>
