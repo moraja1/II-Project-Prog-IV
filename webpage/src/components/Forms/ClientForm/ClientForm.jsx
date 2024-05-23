@@ -21,7 +21,7 @@ export function ClientForm(  ) {
             <Modal open={isSuccess} onClose={modalRead} aria-labelledby="cmp-title">
                 <Box sx={modalStyle}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Cliente actualizado correctamente
+                        Cliente agregado correctamente
                     </Typography>
                 </Box>
             </Modal>

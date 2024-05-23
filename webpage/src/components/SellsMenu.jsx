@@ -11,12 +11,14 @@ const servBtn = {link: "servs",    text: "Servicios",     image: servImg}
 export default function SellsMenu() {
     let menu = [prodBtn, servBtn];
 
+    const handleAny = (link) => {}
+
     return (
         <nav className="cmp-sells-menu">
             {
                 menu.map((menu, index) => (
                     <MenuButton key={index}
-                                link={menu.link} text={menu.text} image={menu.image}/>
+                                link={menu.link} text={menu.text} image={menu.image} onClick={handleAny} />
                 ))
             }
         </nav>

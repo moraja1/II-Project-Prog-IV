@@ -2,7 +2,7 @@ import '../../../styles/components.css';
 import { FaRegUserCircle } from "react-icons/fa";
 import InputBox from "../../molecules/InputBox.jsx";
 import {Link, useNavigate} from "react-router-dom";
-import {useContext, useEffect, useState} from "react";
+import {useContext, useState} from "react";
 import {AuthContext} from "../../../services/Auth/AuthProvider.jsx";
 import {authAPI} from '../../../services/Api.js'
 import {useMutation} from "@tanstack/react-query";
