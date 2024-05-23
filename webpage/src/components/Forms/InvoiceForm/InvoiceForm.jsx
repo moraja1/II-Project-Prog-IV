@@ -2,14 +2,38 @@ import {FaFileInvoiceDollar} from "react-icons/fa";
 import InputBox from "../../molecules/InputBox.jsx";
 import SelectBox from "../../molecules/SelectBox.jsx";
 import {ProductsTable} from "../../ProductsTable.jsx";
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {ServiceTable} from "../../ServiceTable.jsx";
+import {useQuery} from "@tanstack/react-query";
+import {gnrlAPI} from "../../../services/Api.js";
+import {AuthContext} from "../../../services/Auth/AuthProvider.jsx";
+import {ModalMsg} from "../../Modal/ModalMessage.jsx";
 
 const utc = new Date().toJSON().slice(0,10).replace(/-/g,'-');
+const API = (user) => {
+    gnrlAPI.defaults.headers.common['sub'] = user.id;
+    return gnrlAPI;
+}
 
 export const InvoiceForm = () => {
-
+    const {user} = useContext(AuthContext);
     const [isProduct, setIsProduct] = useState(true);
+    const [productsIncluded, setProductsIncluded] = useState([]);
+    const [servicesIncluded, setServicesIncluded] = useState([]);
+    const [failProductsModal, setFailProductsModal] = useState(false);
+    const [failServicesModal, setFailServicesModal] = useState(false);
+    const [productsRegisterd, setProductsRegistered] = useState([]);
+    const [servicesRegistered, setServicesRegistered] = useState([]);
+    const productsQuery = useQuery({
+        queryKey: ['productsQ'],
+        queryFn: () =>
+            API(user).get('/products')
+                .then(res => {
+                    setProductsRegistered(res.data);
+                    return res.data;
+                })
+                .catch(() => setFailProductsModal(true))
+    });
 
     const handleSellSelection = (e) => {
         if(e.target.selectedIndex === 0) setIsProduct(true)
@@ -18,7 +42,8 @@ export const InvoiceForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("Hello")
+
+        productsQuery.refetch();
     }
 
     const handleAddProduct = () => {
@@ -29,81 +54,98 @@ export const InvoiceForm = () => {
 
     }
 
-    return (
-        <article className={"cmp-container invoiceForm"}>
-            <form id={"cmp-invoiceForm-1"} className={"cmp-invoiceForm"}>
-                <h2 className={"cmp-title"}>Generar Factura</h2>
-                <FaFileInvoiceDollar className="cmp-invoiceForm-icon"/>
-                <div className={"cmp-invoiceForm-dateCode"}>
-                    <InputBox name="code" label={"Código"}
-                              inputType="text"
-                              errorMessage={"Por favor, ingrese un código de 4 caractéres como minimo"}
-                              min={4}
-                              required/>
-                    <InputBox name="date" label={"Fecha"}
-                              inputType="date"
-                              defaultValue={utc}
-                              disabled/>
-                </div>
-                <SelectBox name="idClient" label={"Seleccione el cliente"} required>
-                    {/*OPTIONS*/}
-                </SelectBox>
-            </form>
-            <SelectBox name="sells" label={"Que va a facturar?"} onChange={handleSellSelection}>
-                <option value={"prods"}>Productos</option>
-                <option value={"servs"}>Servicios</option>
-            </SelectBox>
+    const modalRead = () => {
+        if(successModal) {
+            setFailProductsModal(false);
+        }
+        if(failModal) {
+            setFailServicesModal(false);
+        }
+    }
 
-            {isProduct &&
-                <form id={"cmp-invoiceForm-2"} onSubmit={handleAddProduct}>
-                    <div className={"cmp-invoiceForm-products"}>
-                        <SelectBox name="products" label={"Seleccione un producto"} required>
-                            {/*OPTIONS*/}
-                        </SelectBox>
-                        <div className={"cmp-invoiceForm-autoFit"} >
-                            <InputBox name="quantity" label={"Cantidad"}
-                                      inputType="number"
-                                      min={1}
-                                      defaultValue={1}
-                                      required/>
-                            <button type={"submit"} className="cmp-invoiceForm-button">Agregar</button>
-                        </div>
+    return (
+        <>
+            <ModalMsg message={"No se tiene ningún producto registrado"} activate={failProductsModal} modalRead={modalRead}/>
+            <ModalMsg message={"No se tiene ningún servicio registrado"} activate={failServicesModal} modalRead={modalRead}/>
+            <article className={"cmp-container invoiceForm"}>
+                <form id={"cmp-invoiceForm-1"} className={"cmp-invoiceForm"}>
+                    <h2 className={"cmp-title"}>Generar Factura</h2>
+                    <FaFileInvoiceDollar className="cmp-invoiceForm-icon"/>
+                    <div className={"cmp-invoiceForm-dateCode"}>
+                        <InputBox name="code" label={"Código"}
+                                  inputType="text"
+                                  errorMessage={"Por favor, ingrese un código de 4 caractéres como minimo"}
+                                  min={4}
+                                  required/>
+                        <InputBox name="date" label={"Fecha"}
+                                  inputType="date"
+                                  defaultValue={utc}
+                                  disabled/>
                     </div>
-                </form>}
-            {isProduct && <ProductsTable />}
-            {!isProduct &&
-                <form id={"cmp-invoiceForm-2"} onSubmit={handleAddService}>
-                    <div className={"cmp-invoiceForm-products"}>
-                        <SelectBox name="services" label={"Seleccione un servicio"} required>
-                            {/*OPTIONS*/}
-                        </SelectBox>
-                        <div className={"cmp-invoiceForm-autoFit"} >
-                            <InputBox name="hourAmount" label={"Horas"}
-                                      inputType="number"
-                                      min={1}
-                                      defaultValue={1}
-                                      required/>
-                            <button type={"submit"} className="cmp-invoiceForm-button">Agregar</button>
+                    <SelectBox name="idClient" label={"Seleccione el cliente"} required>
+                        {/*OPTIONS*/}
+                    </SelectBox>
+                </form>
+                <SelectBox name="sells" label={"Que va a facturar?"} onChange={handleSellSelection}>
+                    <option value={"prods"}>Productos</option>
+                    <option value={"servs"}>Servicios</option>
+                </SelectBox>
+
+                {isProduct &&
+                    <form id={"cmp-invoiceForm-2"} onSubmit={handleAddProduct}>
+                        <div className={"cmp-invoiceForm-products"}>
+                            <SelectBox name="products" label={"Seleccione un producto"} required>
+                                {productsRegisterd.map((p, index) => (
+                                    <option key={index} value={JSON.stringify(p)} >
+                                        {`${p.name} - Precio: ${p.price} por ${p.idMeasureUnits.name}`}
+                                    </option>
+                                ))}
+                            </SelectBox>
+                            <div className={"cmp-invoiceForm-autoFit"}>
+                                <InputBox name="quantity" label={"Cantidad"}
+                                          inputType="number"
+                                          min={1}
+                                          defaultValue={1}
+                                          required/>
+                                <button type={"submit"} className="cmp-invoiceForm-button">Agregar</button>
+                            </div>
                         </div>
+                    </form>}
+                {productsIncluded.length > 0 && <ProductsTable/>}
+                {!isProduct &&
+                    <form id={"cmp-invoiceForm-2"} onSubmit={handleAddService}>
+                        <div className={"cmp-invoiceForm-products"}>
+                            <SelectBox name="services" label={"Seleccione un servicio"} required>
+                                {/*OPTIONS*/}
+                            </SelectBox>
+                            <div className={"cmp-invoiceForm-autoFit"}>
+                                <InputBox name="hourAmount" label={"Horas"}
+                                          inputType="number"
+                                          min={1}
+                                          defaultValue={1}
+                                          required/>
+                                <button type={"submit"} className="cmp-invoiceForm-button">Agregar</button>
+                            </div>
+                        </div>
+                    </form>}
+                {servicesIncluded.length > 0 && <ServiceTable/>}
+                <form id={"cmp-invoiceForm-3"} className={"cmp-invoiceForm"}>
+                    <div className={"cmp-invoiceForm-ivaSubtotal"}>
+                        <InputBox name="iva" label={"IVA"}
+                                  inputType="number"
+                                  errorMessage={"Por favor, ingrese el porcentaje de IVA"}
+                                  max={100}
+                                  min={0}
+                                  defaultValue={13}
+                                  required/>
+                        <InputBox name="subtotal" label={"Subtotal"}
+                                  inputType="number"
+                                  defaultValue={0}
+                                  disabled/>
                     </div>
-                </form>}
-            {!isProduct && <ServiceTable />}
-            <form id={"cmp-invoiceForm-3"} className={"cmp-invoiceForm"} >
-                <div className={"cmp-invoiceForm-ivaSubtotal"}>
-                    <InputBox name="iva" label={"IVA"}
-                              inputType="number"
-                              errorMessage={"Por favor, ingrese el porcentaje de IVA"}
-                              max={100}
-                              min={0}
-                              defaultValue={13}
-                              required/>
-                    <InputBox name="subtotal" label={"Subtotal"}
-                              inputType="number"
-                              defaultValue={0}
-                              disabled/>
-                </div>
-            </form>
-            <button className={"main-button"} type={"button"} onSelect={handleSubmit}>Facturar</button>
-        </article>
+                </form>
+                <button className={"main-button"} type={"button"} onSelect={handleSubmit}>Facturar</button>
+            </article>
+        </>
     )
 }

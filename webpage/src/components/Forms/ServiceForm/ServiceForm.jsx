@@ -12,7 +12,8 @@ import {ModalMsg} from "../../Modal/ModalMessage.jsx";
 
 export function ServiceForm() {
     const {user} = useContext(AuthContext);
-    const [activateModal, setActivateModal] = useState(false);
+    const [successModal, setSuccessModal] = useState(false);
+    const [failModal, setFailModal] = useState(false);
     const { isPending, error, data, isFetching } = useQuery({
         queryKey: ['servicesCabys'],
         queryFn: () =>
@@ -23,7 +24,7 @@ export function ServiceForm() {
         mutationFn: (service) =>
             gnrlAPI.post('/service', service)
                 .then((res) => {
-                    if(res.status === HttpStatusCode.Ok) setActivateModal(true);
+                    if(res.status === HttpStatusCode.Ok) setSuccessModal(true);
                 }),
     })
     const handleSubmit = (e) => {
@@ -36,14 +37,22 @@ export function ServiceForm() {
         mutation.mutate(service);
         e.preventDefault();
     }
-    const modalRead = () => setActivateModal(false);
+    const modalRead = () => {
+        if(successModal) {
+            setSuccessModal(false);
+        }
+        if(failModal) {
+            setFailModal(false);
+        }
+    }
 
     if(isPending || isFetching) return <ProductFormAnimation />
     if(error) return <article className="cmp-container productForm"><ErrorPage /></article>
 
     return (
         <>
-            <ModalMsg message={"Servicio agregado correctamente"} activate={activateModal} modalRead={modalRead}/>
+            <ModalMsg message={"No se puede agregar el servicio. Pongase en contacto con el administrador del sistema"} activate={failModal} modalRead={modalRead}/>
+            <ModalMsg message={"Servicio agregado correctamente"} activate={successModal} modalRead={modalRead}/>
             <article className="cmp-container serviceForm">
                 <form className="cmp-serviceForm" onSubmit={handleSubmit}>
                     <h2 className="cmp-title">Registre Servicios</h2>
