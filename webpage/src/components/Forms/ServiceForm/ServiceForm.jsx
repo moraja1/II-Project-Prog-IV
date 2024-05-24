@@ -18,13 +18,16 @@ export function ServiceForm() {
         queryKey: ['servicesCabys'],
         queryFn: () =>
             axios.get(`http://localhost:8081/cabys/api/services`)
-                .then((res) => res.data),
+                .then((res) => res.data)
+                .catch(() => {
+                    setFailModal(true);
+                }),
     })
     const mutation = useMutation({
         mutationFn: (service) =>
             gnrlAPI.post('/service', service)
                 .then((res) => {
-                    if(res.status === HttpStatusCode.Ok) setSuccessModal(true);
+                    if(res.status === HttpStatusCode.Created) setSuccessModal(true);
                 }),
     })
     const handleSubmit = (e) => {

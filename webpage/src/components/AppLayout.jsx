@@ -6,7 +6,6 @@ import {AuthContext} from "../services/Auth/AuthProvider.jsx";
 
 const AppLayout = () => {
     const { user } = useContext(AuthContext);
-
     return (
         <>
             <PageHeader>

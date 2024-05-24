@@ -34,7 +34,7 @@ export default function MainMenu({ role }) {
 
     const handleAny = (link) => {
         if(link === logoBtn.link) {
-            setUser({});
+            setUser(null);
         }
     }
     return (

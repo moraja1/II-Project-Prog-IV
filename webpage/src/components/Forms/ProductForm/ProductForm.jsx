@@ -58,12 +58,12 @@ export function ProductForm() {
 
     return (
         <>
-            <ModalMsg message={"No se puede agregar el producto. Verifique que el no exista un producto con el mismo código."} activate={failModal} modalRead={modalRead}/>
+            <ModalMsg message={"No se puede agregar el producto. Verifique que no exista un producto con el mismo código."} activate={failModal} modalRead={modalRead}/>
             <ModalMsg message={"Producto agregado correctamente"} activate={successModal} modalRead={modalRead}/>
             <article className="cmp-container productForm">
                 <form className="cmp-productForm" onSubmit={handleSubmit}>
                     <h2 className="cmp-title">Registre Productos</h2>
-                    <RiShoppingBag4Fill className="cmp-loginForm-icon"/>
+                    <RiShoppingBag4Fill className="cmp-loginForm-icon" />
                     <InputBox name="code" label={"Codigo"}
                               inputType="text"
                               errorMessage={"Por favor, ingresa el codigo del producto"}
