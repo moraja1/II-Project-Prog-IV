@@ -1,39 +1,39 @@
 import SelectBox from "../../molecules/SelectBox.jsx";
 import InputBox from "../../molecules/InputBox.jsx";
-import {ProductTable} from "./ProductTable.jsx";
 import {useEffect, useState} from "react";
+import {ServiceTable} from "./ServiceTable.jsx";
 
-export function ProductTableSelector({ isActive, availableProducts, selectedProducts, onProductSelected, onProductDeleted }) {
-    const [products, setProducts] = useState(availableProducts);
+export function ServiceTableSelector({ isActive, availableServices, selectedServices, onServiceSelected, onServiceDeleted }) {
+    const [services, setServices] = useState(availableServices);
     useEffect(() => {
-        setProducts(availableProducts)
-    }, [availableProducts]);
-    const handleAddProduct = (e) => {
+        setServices(availableServices)
+    }, [availableServices]);
+    const handleAddServices = (e) => {
         e.preventDefault()
         const formData = new FormData(e.target);
         let payload = Object.fromEntries(formData);
         payload = {
             ...payload,
-            product: JSON.parse(payload.product),
+            service: JSON.parse(payload.service),
         }
-        onProductSelected(payload);
+        onServiceSelected(payload);
     }
     const handleDelete = (e) => {
         const prodToDelete = JSON.parse(e.target.value);
-        onProductDeleted(prodToDelete);
+        onServiceDeleted(prodToDelete);
     }
     return (
         <>
             {isActive && <>
-                <form id={"cmp-invoiceForm-2"} onSubmit={handleAddProduct}>
+                <form id={"cmp-invoiceForm-2"} onSubmit={handleAddServices}>
                     <div className={"cmp-invoiceForm-products"}>
-                        <SelectBox name="product" label={"Seleccione un producto"} required>
-                            {products.map((prod) => <option key={prod.id} value={JSON.stringify(prod)}>
-                                {`${prod.name} - Precio: ${prod.price} por ${prod.idMeasureUnits.name}`}
+                        <SelectBox name="service" label={"Seleccione un servicio"} required>
+                            {services.map((serv) => <option key={serv.id} value={JSON.stringify(serv)}>
+                                {`${serv.name} - Precio por hora: ${serv.priceHour}`}
                             </option>)}
                         </SelectBox>
                         <div className={"cmp-invoiceForm-autoFit"}>
-                            <InputBox name="quantity" label={"Cantidad"}
+                            <InputBox name="hourAmount" label={"Cantidad de horas"}
                                       inputType="number"
                                       min={1}
                                       defaultValue={1}
@@ -42,7 +42,7 @@ export function ProductTableSelector({ isActive, availableProducts, selectedProd
                         </div>
                     </div>
                 </form>
-                <ProductTable toShow={selectedProducts} onDelete={handleDelete}/>
+                <ServiceTable toShow={selectedServices} onDelete={handleDelete} />
             </>}
         </>)
 }
