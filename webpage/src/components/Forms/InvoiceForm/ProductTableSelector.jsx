@@ -5,17 +5,29 @@ import {useEffect, useState} from "react";
 
 export function ProductTableSelector({ isActive, availableProducts, selectedProducts, onProductSelected, onProductDeleted }) {
     const [products, setProducts] = useState(availableProducts);
+    const [selectedProduct, setSelectedProduct] = useState({});
+    const [quantity, setQuantity] = useState(1);
     useEffect(() => {
-        setProducts(availableProducts)
+        setProducts(availableProducts);
+        setSelectedProduct(availableProducts[0])
     }, [availableProducts]);
+
+    const handleChangeSelector = (e) => {
+        setSelectedProduct(JSON.parse(e.target.value));
+    }
+    const handleChangeQuantity = (e) => {
+        setQuantity(e.target.value);
+    }
+
     const handleAddProduct = (e) => {
-        e.preventDefault()
-        const formData = new FormData(e.target);
-        let payload = Object.fromEntries(formData);
-        payload = {
-            ...payload,
-            product: JSON.parse(payload.product),
+        e.preventDefault();
+        e.stopPropagation();
+
+        let payload = {
+            product: selectedProduct,
+            quantity: quantity
         }
+
         onProductSelected(payload);
     }
     const handleDelete = (e) => {
@@ -25,24 +37,23 @@ export function ProductTableSelector({ isActive, availableProducts, selectedProd
     return (
         <>
             {isActive && <>
-                <form id={"cmp-invoiceForm-2"} onSubmit={handleAddProduct}>
-                    <div className={"cmp-invoiceForm-products"}>
-                        <SelectBox name="product" label={"Seleccione un producto"} required>
-                            {products.map((prod) => <option key={prod.id} value={JSON.stringify(prod)}>
-                                {`${prod.name} - Precio: ${prod.price} por ${prod.idMeasureUnits.name}`}
-                            </option>)}
-                        </SelectBox>
-                        <div className={"cmp-invoiceForm-autoFit"}>
-                            <InputBox name="quantity" label={"Cantidad"}
-                                      inputType="number"
-                                      min={1}
-                                      defaultValue={1}
-                                      required/>
-                            <input type={"submit"} value={"Agregar"} className="cmp-invoiceForm-button"/>
-                        </div>
+                <div className={"cmp-invoiceForm-products"}>
+                    <SelectBox name="product" label={"Seleccione un producto"} onChange={handleChangeSelector} required>
+                        {products.map((prod) => <option key={prod.id} value={JSON.stringify(prod)}>
+                            {`${prod.name} - Precio: ${prod.price} por ${prod.idMeasureUnits.name}`}
+                        </option>)}
+                    </SelectBox>
+                    <div className={"cmp-invoiceForm-autoFit"}>
+                        <InputBox name="quantity" label={"Cantidad"} onChange={handleChangeQuantity}
+                                  inputType="number"
+                                  min={1}
+                                  defaultValue={1}
+                                  required/>
+                        <button type={"button"} className="cmp-invoiceForm-button" onClick={handleAddProduct} >Agregar</button>
                     </div>
-                </form>
-                <ProductTable toShow={selectedProducts} onDelete={handleDelete}/>
+                </div>
+                <ProductTable toShow={selectedProducts} onDelete={handleDelete} />
             </>}
-        </>)
+        </>
+    )
 }

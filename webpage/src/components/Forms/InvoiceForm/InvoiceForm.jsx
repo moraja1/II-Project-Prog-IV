@@ -18,6 +18,7 @@ const API = (user) => {
 export const InvoiceForm = () => {
     const {user} = useContext(AuthContext);
     const [isProduct, setIsProduct] = useState(true);
+    const [failClientsModal, setFailClientsModal] = useState(false);
     const [failProductsModal, setFailProductsModal] = useState(false);
     const [failServicesModal, setFailServicesModal] = useState(false);
     const [clientsRegistered, setClientsRegistered] = useState([]);
@@ -51,7 +52,6 @@ export const InvoiceForm = () => {
             API(user).get('/services')
                 .then(res => {
                     setServicesRegistered(res.data);
-                    console.log(res.data)
                     return res.data;
                 })
                 .catch(() => setFailServicesModal(true)),
@@ -60,11 +60,15 @@ export const InvoiceForm = () => {
 
     const handleProductSelection = (product) => {
         let productsChange = [...invoiceProducts]
-        if(productsChange.find(p => p.product.code === product.product.code) === undefined) productsChange.push(product);
-        else {
-            let index = productsChange.findIndex(x => x.product.code === product.product.code);
-            productsChange[index].quantity = Number(productsChange[index].quantity) + Number(product.quantity);
+        let pushed = false;
+        for (let p of productsChange) {
+            if(p.product.code === product.product.code) {
+                pushed = true;
+                p.quantity = Number(p.quantity) + Number(product.quantity);
+                break;
+            }
         }
+        if(!pushed) productsChange.push(product);
         setInvoiceProducts(productsChange);
     }
 
@@ -75,11 +79,15 @@ export const InvoiceForm = () => {
 
     const handleServiceSelection = (service) => {
         let servicesChange = [...invoiceServices]
-        if(servicesChange.find(s => s.service.id === service.service.id) === undefined) servicesChange.push(service);
-        else {
-            let index = servicesChange.findIndex(x => x.service.id === service.service.id);
-            servicesChange[index].hourAmount = Number(servicesChange[index].hourAmount) + Number(service.hourAmount);
+        let pushed = false;
+        for (let p of servicesChange) {
+            if(p.service.id === service.service.id) {
+                pushed = true;
+                p.hourAmount = Number(p.hourAmount) + Number(service.hourAmount);
+                break;
+            }
         }
+        if(!pushed) servicesChange.push(service);
         setInvoiceServices(servicesChange);
     }
 
@@ -95,12 +103,13 @@ export const InvoiceForm = () => {
             setIsProduct(false);
         }
     }
-
     const handleSubmit = (e) => {
         e.preventDefault();
+        const formData = new FormData(document.getElementById("cmp-invoiceForm-1"));
+        const payload = Object.fromEntries(formData);
 
+        console.log(payload)
     }
-
     const modalRead = () => {
         if(failProductsModal) {
             setFailProductsModal(false);
@@ -109,11 +118,10 @@ export const InvoiceForm = () => {
             setFailServicesModal(false);
         }
     }
-
     return (
         <>
             <ModalMsg message={"No se tiene ningún cliente registrado, por favor registre un sus clientes antes de facturar"}
-                      activate={failProductsModal}
+                      activate={failClientsModal}
                       modalRead={modalRead}/>
             <ModalMsg message={"No se tiene ningún producto registrado, por favor registre sus productos antes de facturar"}
                       activate={failProductsModal}
@@ -122,7 +130,7 @@ export const InvoiceForm = () => {
                       activate={failServicesModal}
                       modalRead={modalRead}/>
             <article className={"cmp-container invoiceForm"}>
-                <form id={"cmp-invoiceForm-1"} className={"cmp-invoiceForm"}>
+                <form id={"cmp-invoiceForm-1"} className={"cmp-invoiceForm"} onSubmit={handleSubmit}>
                     <h2 className={"cmp-title"}>Generar Factura</h2>
                     <FaFileInvoiceDollar className="cmp-invoiceForm-icon"/>
                     <div className={"cmp-invoiceForm-dateCode"}>
@@ -137,24 +145,24 @@ export const InvoiceForm = () => {
                                   disabled/>
                     </div>
                     <SelectBox name="idClient" label={"Seleccione el cliente"} required>
-                        {/*OPTIONS*/}
+                        {clientsRegistered.map((client) => <option key={client.id} value={JSON.stringify(client)}>
+                            {`${client.name} ${client.lastName} - Cédula: ${client.naturalId}`}
+                        </option>)}
                     </SelectBox>
-                </form>
-                <SelectBox name="sells" label={"Que va a facturar?"} onChange={handleSellSelection} disabled={invoiceProducts.length > 0 || invoiceServices.length > 0}>
-                    <option value={"prods"}>Productos</option>
-                    <option value={"servs"}>Servicios</option>
-                </SelectBox>
-                <ProductTableSelector
-                    isActive={isProduct}
-                    availableProducts={productsRegistered}
-                    selectedProducts={invoiceProducts}
-                    onProductSelected={handleProductSelection} onProductDeleted={handleProductDeleted}/>
-                <ServiceTableSelector
-                    isActive={!isProduct}
-                    availableServices={servicesRegistered}
-                    selectedServices={invoiceServices}
-                    onServiceSelected={handleServiceSelection} onServiceDeleted={handleServiceDeleted}/>
-                <form id={"cmp-invoiceForm-3"} className={"cmp-invoiceForm"}>
+                    <SelectBox name="sells" label={"Que va a facturar?"} onChange={handleSellSelection} disabled={invoiceProducts.length > 0 || invoiceServices.length > 0}>
+                        <option value={"prods"}>Productos</option>
+                        <option value={"servs"}>Servicios</option>
+                    </SelectBox>
+                    <ProductTableSelector
+                        isActive={isProduct}
+                        availableProducts={productsRegistered}
+                        selectedProducts={invoiceProducts}
+                        onProductSelected={handleProductSelection} onProductDeleted={handleProductDeleted}/>
+                    <ServiceTableSelector
+                        isActive={!isProduct}
+                        availableServices={servicesRegistered}
+                        selectedServices={invoiceServices}
+                        onServiceSelected={handleServiceSelection} onServiceDeleted={handleServiceDeleted}/>
                     <div className={"cmp-invoiceForm-ivaSubtotal"}>
                         <InputBox name="iva" label={"IVA"}
                                   inputType="number"
@@ -168,8 +176,8 @@ export const InvoiceForm = () => {
                                   defaultValue={0}
                                   disabled/>
                     </div>
+                    <input type={"submit"} className={"main-button"} value={"Facturar"}/>
                 </form>
-                <button className={"main-button"} type={"button"} onSelect={handleSubmit}>Facturar</button>
             </article>
         </>
     )

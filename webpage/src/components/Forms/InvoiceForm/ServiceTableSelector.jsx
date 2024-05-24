@@ -5,16 +5,27 @@ import {ServiceTable} from "./ServiceTable.jsx";
 
 export function ServiceTableSelector({ isActive, availableServices, selectedServices, onServiceSelected, onServiceDeleted }) {
     const [services, setServices] = useState(availableServices);
+    const [selectedService, setSelectedService] = useState({});
+    const [hourAmount, setHourAmount] = useState(1);
     useEffect(() => {
-        setServices(availableServices)
+        setServices(availableServices);
+        setSelectedService(availableServices[0]);
     }, [availableServices]);
+
+    const handleChangeSelector = (e) => {
+        setSelectedService(JSON.parse(e.target.value));
+    }
+
+    const handleChangeHourAmount = (e) => {
+        setHourAmount(e.target.value);
+    }
+
     const handleAddServices = (e) => {
-        e.preventDefault()
-        const formData = new FormData(e.target);
-        let payload = Object.fromEntries(formData);
-        payload = {
-            ...payload,
-            service: JSON.parse(payload.service),
+        e.preventDefault();
+        e.stopPropagation();
+        let payload = {
+            service: selectedService,
+            hourAmount: hourAmount
         }
         onServiceSelected(payload);
     }
@@ -25,23 +36,21 @@ export function ServiceTableSelector({ isActive, availableServices, selectedServ
     return (
         <>
             {isActive && <>
-                <form id={"cmp-invoiceForm-2"} onSubmit={handleAddServices}>
                     <div className={"cmp-invoiceForm-products"}>
-                        <SelectBox name="service" label={"Seleccione un servicio"} required>
+                        <SelectBox name="service" label={"Seleccione un servicio"} onChange={handleChangeSelector} required>
                             {services.map((serv) => <option key={serv.id} value={JSON.stringify(serv)}>
                                 {`${serv.name} - Precio por hora: ${serv.priceHour}`}
                             </option>)}
                         </SelectBox>
                         <div className={"cmp-invoiceForm-autoFit"}>
-                            <InputBox name="hourAmount" label={"Cantidad de horas"}
+                            <InputBox name="hourAmount" label={"Cantidad de horas"} onChange={handleChangeHourAmount}
                                       inputType="number"
                                       min={1}
                                       defaultValue={1}
                                       required/>
-                            <input type={"submit"} value={"Agregar"} className="cmp-invoiceForm-button"/>
+                            <button type={"button"} className="cmp-invoiceForm-button" onClick={handleAddServices}>Agregar</button>
                         </div>
                     </div>
-                </form>
                 <ServiceTable toShow={selectedServices} onDelete={handleDelete} />
             </>}
         </>)
