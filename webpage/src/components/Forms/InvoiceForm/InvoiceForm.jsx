@@ -16,16 +16,19 @@ const API = (user) => {
 }
 
 export const InvoiceForm = () => {
-    const {user} = useContext(AuthContext);
-    const [isProduct, setIsProduct] = useState(true);
-    const [failClientsModal, setFailClientsModal] = useState(false);
-    const [failProductsModal, setFailProductsModal] = useState(false);
-    const [failServicesModal, setFailServicesModal] = useState(false);
-    const [clientsRegistered, setClientsRegistered] = useState([]);
-    const [productsRegistered, setProductsRegistered] = useState([]);
-    const [servicesRegistered, setServicesRegistered] = useState([]);
+    const {user} = useContext(AuthContext); //Context
+    const [isProduct, setIsProduct] = useState(true); //Invoice type
+    const [failClientsModal, setFailClientsModal] = useState(false); //MODAL
+    const [failProductsModal, setFailProductsModal] = useState(false); //MODAL
+    const [failServicesModal, setFailServicesModal] = useState(false); //MODAL
+    const [clientsRegistered, setClientsRegistered] = useState([]); //Supplier's Clients
+    const [productsRegistered, setProductsRegistered] = useState([]); //Supplier's Products
+    const [servicesRegistered, setServicesRegistered] = useState([]); //Supplier's Servicess
     const [invoiceProducts, setInvoiceProducts] = useState([]);
     const [invoiceServices, setInvoiceServices] = useState([]);
+    const [iva, setIva] = useState(13);
+    const [subtotal, setSubtotal] = useState(0);
+    const [totalAmount, setTotalAmount] = useState(0);
     const clientsQuerys = useQuery({
         queryKey: ['clientsQ'],
         queryFn: () =>
@@ -58,23 +61,38 @@ export const InvoiceForm = () => {
         enabled: false,
     });
 
+    //------------------------HOOKS END---------------------------//
+    //------------------------HOOKS END---------------------------//
+    //------------------------HOOKS END---------------------------//
+
     const handleProductSelection = (product) => {
         let productsChange = [...invoiceProducts]
         let pushed = false;
+        let total = 0;
         for (let p of productsChange) {
             if(p.product.code === product.product.code) {
                 pushed = true;
+                total = subtotal - Number(p.quantity) * Number(p.product.price);
                 p.quantity = Number(p.quantity) + Number(product.quantity);
+                total += Number(p.quantity) * Number(p.product.price);
                 break;
             }
         }
-        if(!pushed) productsChange.push(product);
+        if(!pushed) {
+            total += subtotal + Number(product.quantity) * Number(product.product.price);
+            productsChange.push(product);
+        }
         setInvoiceProducts(productsChange);
+        setSubtotal(total);
+        setTotalAmount(total + (total * (iva / 100)))
     }
 
     const handleProductDeleted = (product) => {
         let productsChange = invoiceProducts.filter((p) => p.product.id !== product.product.id);
+        let total = subtotal - Number(product.quantity) * Number(product.product.price);
         setInvoiceProducts(productsChange);
+        setSubtotal(total);
+        setTotalAmount(total + (total * (iva / 100)))
     }
 
     const handleServiceSelection = (service) => {
@@ -103,10 +121,31 @@ export const InvoiceForm = () => {
             setIsProduct(false);
         }
     }
+
+    const changeIVA = (e) => {
+        setIva(e.target.value);
+    }
     const handleSubmit = (e) => {
         e.preventDefault();
+        if(invoiceServices.length === 0 && invoiceProducts.length === 0) return;
+
         const formData = new FormData(document.getElementById("cmp-invoiceForm-1"));
-        const payload = Object.fromEntries(formData);
+        let payload = Object.fromEntries(formData);
+        const client = JSON.parse(payload.client)
+
+        delete payload.product;
+        delete payload.quantity;
+        delete payload.service;
+        delete payload.hourAmount;
+        delete payload.idClient;
+
+        payload = {
+            ...payload,
+            client: client,
+        }
+
+        if(invoiceProducts.length > 0) payload.products = invoiceProducts;
+        if(invoiceServices.length > 0) payload.services = invoiceServices;
 
         console.log(payload)
     }
@@ -139,12 +178,12 @@ export const InvoiceForm = () => {
                                   errorMessage={"Por favor, ingrese un código de 4 caractéres como minimo"}
                                   min={4}
                                   required/>
-                        <InputBox name="date" label={"Fecha"}
+                        <InputBox label={"Fecha"}
                                   inputType="date"
                                   defaultValue={utc}
-                                  disabled/>
+                                  readOnly={true}/>
                     </div>
-                    <SelectBox name="idClient" label={"Seleccione el cliente"} required>
+                    <SelectBox name="client" label={"Seleccione el cliente"} required>
                         {clientsRegistered.map((client) => <option key={client.id} value={JSON.stringify(client)}>
                             {`${client.name} ${client.lastName} - Cédula: ${client.naturalId}`}
                         </option>)}
@@ -164,17 +203,21 @@ export const InvoiceForm = () => {
                         selectedServices={invoiceServices}
                         onServiceSelected={handleServiceSelection} onServiceDeleted={handleServiceDeleted}/>
                     <div className={"cmp-invoiceForm-ivaSubtotal"}>
-                        <InputBox name="iva" label={"IVA"}
+                        <InputBox name="iva" label={"IVA"} onChange={changeIVA}
                                   inputType="number"
                                   errorMessage={"Por favor, ingrese el porcentaje de IVA"}
                                   max={100}
                                   min={0}
-                                  defaultValue={13}
+                                  defaultValue={iva}
                                   required/>
+                        <InputBox name="subtotal" label={"Subtotal"}
+                                  inputType="number"
+                                  value={subtotal}
+                                  readOnly/>
                         <InputBox name="total" label={"Total"}
                                   inputType="number"
-                                  defaultValue={0}
-                                  disabled/>
+                                  value={totalAmount}
+                                  readOnly/>
                     </div>
                     <input type={"submit"} className={"main-button"} value={"Facturar"}/>
                 </form>
