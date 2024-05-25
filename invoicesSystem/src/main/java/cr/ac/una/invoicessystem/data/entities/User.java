@@ -66,7 +66,7 @@ public class User {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "idUser", orphanRemoval = true, fetch = FetchType.EAGER)
-    private Set<UserProduct> products = new HashSet<>();
+    private Set<Product> products = new HashSet<>();
 
     @JsonManagedReference
     @OneToMany(mappedBy = "idUser", orphanRemoval = true, fetch = FetchType.EAGER)

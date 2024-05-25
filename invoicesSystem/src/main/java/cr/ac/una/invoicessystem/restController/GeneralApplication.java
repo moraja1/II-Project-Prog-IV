@@ -23,6 +23,7 @@ public class GeneralApplication {
     private final UserProductRepository userProductRepository;
     private final ServiceRepository serviceRepository;
     private final UserServiceRepository userServiceRepository;
+    private final InvoiceRepository invoiceRepository;
 
     public GeneralApplication(UserRepository userRepository,
                               ClientRepository clientRepository,
@@ -30,7 +31,8 @@ public class GeneralApplication {
                               ProductRepository productRepository,
                               UserProductRepository userProductRepository,
                               ServiceRepository serviceRepository,
-                              UserServiceRepository userServiceRepository) {
+                              UserServiceRepository userServiceRepository,
+                              InvoiceRepository invoiceRepository) {
         this.userRepository = userRepository;
         this.clientRepository = clientRepository;
         this.measureUnitRepository = measureUnitRepository;
@@ -38,6 +40,7 @@ public class GeneralApplication {
         this.userProductRepository = userProductRepository;
         this.serviceRepository = serviceRepository;
         this.userServiceRepository = userServiceRepository;
+        this.invoiceRepository = invoiceRepository;
     }
 
     @GetMapping("/{id}")
@@ -213,11 +216,16 @@ public class GeneralApplication {
         //Validations
         Optional<User> optionalUser = userRepository.findById(Long.parseLong(sub));
         if(optionalUser.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
         return ResponseEntity.ok(optionalUser.get().getClients().stream().toList());
     }
 
     @PostMapping("invoice")
     private ResponseEntity<Invoice> addInvoice(@RequestHeader("sub") String sub, @RequestBody InvoiceFormDto invoiceFormDto) {
+        //Validations
+        Optional<User> optionalUser = userRepository.findById(Long.parseLong(sub));
+        if(optionalUser.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
         return ResponseEntity.ok().build();
     }
 }

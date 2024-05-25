@@ -34,14 +34,15 @@ public class Product {
     @JsonBackReference
     private Set<InvoiceProduct> invoiceProducts = new HashSet<>();
 
-    @OneToMany(mappedBy = "product", orphanRemoval = true)
     @JsonBackReference
-    private Set<UserProduct> users = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_user", nullable = false)
+    private User idUser;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_measure_units", nullable = false)
     @JsonManagedReference
-    private MeasureUnit idMeasureUnits;
+    private MeasureUnit measureUnits;
 
     public void addUserProduct(UserProduct user) {
         users.add(user);

@@ -24,12 +24,12 @@ public class MeasureUnit {
     @Column(name = "symbol", length = 8)
     private String symbol;
 
-    @OneToMany(mappedBy = "idMeasureUnits", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "measureUnits", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonBackReference
     private Set<Product> products = new LinkedHashSet<>();
 
     public void addProduct(Product product) {
         products.add(product);
-        product.setIdMeasureUnits(this);
+        product.setMeasureUnits(this);
     }
 }
