@@ -1,10 +1,7 @@
 package cr.ac.una.invoicessystem.restController;
 
-import cr.ac.una.invoicessystem.logic.dto.ProductFormDto;
-import cr.ac.una.invoicessystem.logic.dto.ProfileDto;
-import cr.ac.una.invoicessystem.logic.dto.ServiceFormDto;
+import cr.ac.una.invoicessystem.logic.dto.*;
 import cr.ac.una.invoicessystem.data.entities.*;
-import cr.ac.una.invoicessystem.logic.dto.ClientFormDto;
 import cr.ac.una.invoicessystem.data.repositories.*;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
@@ -217,5 +214,10 @@ public class GeneralApplication {
         Optional<User> optionalUser = userRepository.findById(Long.parseLong(sub));
         if(optionalUser.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         return ResponseEntity.ok(optionalUser.get().getClients().stream().toList());
+    }
+
+    @PostMapping("invoice")
+    private ResponseEntity<Invoice> addInvoice(@RequestHeader("sub") String sub, @RequestBody InvoiceFormDto invoiceFormDto) {
+        return ResponseEntity.ok().build();
     }
 }
