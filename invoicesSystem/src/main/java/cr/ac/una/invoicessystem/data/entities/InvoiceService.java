@@ -29,8 +29,4 @@ public class InvoiceService {
 
     @Column(name = "hour_amount")
     private Integer hourAmount;
-
-    @Column(name = "subtotal")
-    private Integer subtotal;
-
 }

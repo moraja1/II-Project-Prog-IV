@@ -199,4 +199,23 @@ public class GeneralApplication {
 
         return ResponseEntity.ok(products);
     }
+
+    @GetMapping("services")
+    private ResponseEntity<List<Service>> getAllServices(@RequestHeader("sub") String sub) {
+        //Validations
+        Optional<User> optionalUser = userRepository.findById(Long.parseLong(sub));
+        if(optionalUser.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        List<UserService> userServices = userServiceRepository.findAllByIdUser(optionalUser.get());
+        List<Service> services = userServices.stream().map(UserService::getService).toList();
+
+        return ResponseEntity.ok(services);
+    }
+
+    @GetMapping("clients")
+    private ResponseEntity<List<Client>> getAllClients(@RequestHeader("sub") String sub) {
+        //Validations
+        Optional<User> optionalUser = userRepository.findById(Long.parseLong(sub));
+        if(optionalUser.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        return ResponseEntity.ok(optionalUser.get().getClients().stream().toList());
+    }
 }

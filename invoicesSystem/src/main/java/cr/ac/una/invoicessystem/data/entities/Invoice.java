@@ -5,8 +5,11 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -24,16 +27,17 @@ public class Invoice {
     private String code;
 
     @Column(name = "date")
-    private LocalDate date;
+    @CreationTimestamp
+    private LocalDateTime date;
 
     @Column(name = "iva")
     private Integer iva;
 
     @Column(name = "subtotal")
-    private Integer subtotal;
+    private Long subtotal;
 
     @Column(name = "total_price")
-    private Integer totalPrice;
+    private Long totalPrice;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_client", nullable = false)

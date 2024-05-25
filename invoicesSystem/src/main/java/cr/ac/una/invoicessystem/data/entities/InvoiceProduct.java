@@ -29,8 +29,4 @@ public class InvoiceProduct {
 
     @Column(name = "quantity")
     private Integer quantity;
-
-    @Column(name = "subtotal")
-    private Integer subtotal;
-
 }
