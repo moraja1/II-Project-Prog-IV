@@ -3,7 +3,6 @@ package cr.ac.una.invoicessystem.restController;
 import cr.ac.una.invoicessystem.logic.dto.*;
 import cr.ac.una.invoicessystem.data.entities.*;
 import cr.ac.una.invoicessystem.data.repositories.*;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +21,8 @@ public class GeneralApplication {
     private final ProductRepository productRepository;
     private final ServiceRepository serviceRepository;
     private final InvoiceRepository invoiceRepository;
+    private final InvoiceProductRepository invoiceProductRepository;
+    private final InvoiceServiceRepository invoiceServiceRepository;
     /*private final InvoiceRepository invoiceRepository;*/
 
     public GeneralApplication(UserRepository userRepository,
@@ -30,7 +31,9 @@ public class GeneralApplication {
                               ProductRepository productRepository,
                               ServiceRepository serviceRepository,/*,
                               InvoiceRepository invoiceRepository*/
-                              InvoiceRepository invoiceRepository) {
+                              InvoiceRepository invoiceRepository,
+                              InvoiceProductRepository invoiceProductRepository,
+                              InvoiceServiceRepository invoiceServiceRepository) {
         this.userRepository = userRepository;
         this.clientRepository = clientRepository;
         this.measureUnitRepository = measureUnitRepository;
@@ -38,6 +41,8 @@ public class GeneralApplication {
         this.serviceRepository = serviceRepository;
         /*this.invoiceRepository = invoiceRepository;*/
         this.invoiceRepository = invoiceRepository;
+        this.invoiceProductRepository = invoiceProductRepository;
+        this.invoiceServiceRepository = invoiceServiceRepository;
     }
 
     @GetMapping("/{id}")
@@ -223,15 +228,70 @@ public class GeneralApplication {
                 .iva(invoiceFormDto.iva())
                 .subtotal(invoiceFormDto.subtotal())
                 .totalPrice(invoiceFormDto.total())
+                .invoiceProducts(new HashSet<>())
+                .invoiceServices(new HashSet<>())
                 .build();
 
         optionalUser.get().addInvoice(invoiceToAdd);
         optionalClient.get().addInvoice(invoiceToAdd);
-
         Invoice savedInvoice = invoiceRepository.save(invoiceToAdd);
 
+        if(!invoiceFormDto.products().isEmpty()){
+            try{
+                addProductsToInvoice(savedInvoice, invoiceFormDto.products());
+            } catch (Exception e){
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .header("Message", e.getMessage()).build();
+            }
 
+        }
+        if(!invoiceFormDto.services().isEmpty()){
+            try{
+                addServiceToInvoice(savedInvoice, invoiceFormDto.services());
+            } catch (Exception e){
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .header("Message", e.getMessage()).build();
+            }
+        }
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(savedInvoice);
+    }
+
+    private void addProductsToInvoice(Invoice savedInvoice, List<InvoiceProductDto> invoiceProductDtoList) throws Exception {
+        for(var invoiceProductDto : invoiceProductDtoList) {
+            Optional<Product> optionalProduct = productRepository.findById(invoiceProductDto.product().id());
+            if(optionalProduct.isEmpty()) throw new Exception("Hay productos en la factura que no estan registrados en la base de datos");
+            InvoiceProduct invoiceProduct = new InvoiceProduct();
+            invoiceProduct.setQuantity(invoiceProductDto.quantity());
+
+            InvoiceProductId id = new InvoiceProductId();
+            id.setIdProducts(optionalProduct.get().getId());
+            id.setIdInvoice(savedInvoice.getId());
+            invoiceProduct.setId(id);
+
+            optionalProduct.get().addInvoice(invoiceProduct);
+            savedInvoice.addInvoiceProduct(invoiceProduct);
+
+            invoiceProductRepository.save(invoiceProduct);
+        }
+    }
+
+    private void addServiceToInvoice(Invoice savedInvoice, List<InvoiceServiceDto> invoiceServiceList) throws Exception {
+        for(var invoiceProductDto : invoiceServiceList) {
+            Optional<Service> optionalService = serviceRepository.findById(invoiceProductDto.service().id());
+            if(optionalService.isEmpty()) throw new Exception("Hay servicios en la factura que no estan registrados en la base de datos");
+            InvoiceService invoiceService = new InvoiceService();
+            invoiceService.setHourAmount(Long.valueOf(invoiceProductDto.hourAmount()));
+
+            InvoiceServiceId id = new InvoiceServiceId();
+            id.setIdService(optionalService.get().getId());
+            id.setIdInvoice(savedInvoice.getId());
+            invoiceService.setId(id);
+
+            optionalService.get().addInvoice(invoiceService);
+            savedInvoice.addInvoiceService(invoiceService);
+
+            invoiceServiceRepository.save(invoiceService);
+        }
     }
 }

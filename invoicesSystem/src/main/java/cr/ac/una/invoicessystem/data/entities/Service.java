@@ -34,4 +34,8 @@ public class Service {
     @ManyToOne
     private User user;
 
+    public void addInvoice(InvoiceService invoice) {
+        invoiceServices.add(invoice);
+        invoice.setService(this);
+    }
 }

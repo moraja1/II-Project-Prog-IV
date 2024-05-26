@@ -49,3 +49,17 @@ insert into user (natural_id, password, name, last_name, mobile, email, enabled,
 values ('707770777', 'bvnbcaerte', 'Crampble', 'Gladiatore', '9996654984', 'Gfjhdfbsa@yahoo.es', true, 2);
 insert into user_roles (id_role, id_user)
 values (2, 6);
+
+-- PRODUCTS --
+
+INSERT INTO projectii.products (id_products, code, name, price, measure_units_id_measure_units, user_id_user) VALUES (3, 'PD-001', 'Bola Nike', 4500, 7, 3);
+INSERT INTO projectii.products (id_products, code, name, price, measure_units_id_measure_units, user_id_user) VALUES (4, 'PD-001', 'Bola Nike', 4500, 7, 6);
+INSERT INTO projectii.products (id_products, code, name, price, measure_units_id_measure_units, user_id_user) VALUES (5, 'PD-002', 'Bola Adidas', 6500, 7, 3);
+INSERT INTO projectii.products (id_products, code, name, price, measure_units_id_measure_units, user_id_user) VALUES (6, 'PD-003', 'Proteina', 500, 1, 3);
+INSERT INTO projectii.products (id_products, code, name, price, measure_units_id_measure_units, user_id_user) VALUES (7, 'PD-004', 'Bebida energizante', 25, 3, 3);
+
+-- SERVICES --
+
+INSERT INTO projectii.service (id_service, name, price_hour, user_id_user) VALUES (1, 'Arquitectura', 12000, 6);
+INSERT INTO projectii.service (id_service, name, price_hour, user_id_user) VALUES (3, 'Mecanico Automotriz', 12000, 6);
+INSERT INTO projectii.service (id_service, name, price_hour, user_id_user) VALUES (4, 'Arquitectura', 12000, 3);

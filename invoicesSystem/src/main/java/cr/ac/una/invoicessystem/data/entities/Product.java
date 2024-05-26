@@ -30,7 +30,7 @@ public class Product {
     @Column(name = "price", nullable = false)
     private Integer price;
 
-    @OneToMany(mappedBy = "products", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "product", orphanRemoval = true)
     @JsonBackReference
     private Set<InvoiceProduct> invoiceProducts = new HashSet<>();
 
@@ -41,4 +41,9 @@ public class Product {
     @ManyToOne
     @JsonManagedReference
     private MeasureUnit measureUnits;
+
+    public void addInvoice(InvoiceProduct invoice) {
+        invoiceProducts.add(invoice);
+        invoice.setProduct(this);
+    }
 }

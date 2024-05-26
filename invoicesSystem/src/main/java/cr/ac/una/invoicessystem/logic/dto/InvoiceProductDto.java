@@ -5,5 +5,5 @@ import java.io.Serializable;
 /**
  * DTO for {@link cr.ac.una.invoicessystem.data.entities.InvoiceProduct}
  */
-public record InvoiceProductDto(ProductDto product, Integer quantity) implements Serializable {
+public record InvoiceProductDto(ProductDto product, Long quantity) implements Serializable {
 }

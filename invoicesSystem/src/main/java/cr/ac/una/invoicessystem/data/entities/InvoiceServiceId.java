@@ -14,10 +14,10 @@ import java.util.Objects;
 @Embeddable
 public class InvoiceServiceId implements Serializable {
     private static final long serialVersionUID = -5803534590312370938L;
-    @Column(name = "id_invoice", nullable = false)
+    @Column(name = "invoice_id_invoice", nullable = false)
     private Long idInvoice;
 
-    @Column(name = "id_service", nullable = false)
+    @Column(name = "service_id_service", nullable = false)
     private Long idService;
 
     @Override

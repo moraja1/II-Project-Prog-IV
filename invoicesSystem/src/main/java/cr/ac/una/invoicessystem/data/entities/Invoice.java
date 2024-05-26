@@ -49,11 +49,11 @@ public class Invoice {
     @ManyToOne
     private User user;
 
-    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "invoice", orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<InvoiceProduct> invoiceProducts = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "invoice", orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<InvoiceService> invoiceServices = new LinkedHashSet<>();
 

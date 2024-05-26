@@ -2,7 +2,9 @@ package cr.ac.una.invoicessystem.data.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 
@@ -11,13 +13,15 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Embeddable
 public class InvoiceProductId implements Serializable {
     private static final long serialVersionUID = -2028301497070356683L;
-    @Column(name = "id_invoice", nullable = false)
+    @Column(name = "invoice_id_invoice", nullable = false)
     private Long idInvoice;
 
-    @Column(name = "id_products", nullable = false)
+    @Column(name = "product_id_products", nullable = false)
     private Long idProducts;
 
     @Override

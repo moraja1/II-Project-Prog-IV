@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS `projectii`.`measure_units`
 
 
 -- -----------------------------------------------------
--- Table `projectii`.`products`
+-- Table `projectii`.`product`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `projectii`.`products`
 (
