@@ -18,17 +18,15 @@ export function ServiceForm() {
         queryKey: ['servicesCabys'],
         queryFn: () =>
             axios.get(`http://localhost:8081/cabys/api/services`)
-                .then((res) => res.data)
-                .catch(() => {
-                    setFailModal(true);
-                }),
+                .then((res) => res.data),
     })
     const mutation = useMutation({
         mutationFn: (service) =>
             gnrlAPI.post('/service', service)
                 .then((res) => {
                     if(res.status === HttpStatusCode.Created) setSuccessModal(true);
-                }),
+                })
+                .catch(() => setFailModal(true)),
     })
     const handleSubmit = (e) => {
         const formData = new FormData(e.target);
@@ -54,7 +52,8 @@ export function ServiceForm() {
 
     return (
         <>
-            <ModalMsg message={"No se puede agregar el servicio. Pongase en contacto con el administrador del sistema"} activate={failModal} modalRead={modalRead}/>
+            <ModalMsg message={"No se puede agregar el servicio. Verifique que no tenga un servicio ya registrado con el mismo nombre y precio"}
+                      activate={failModal} modalRead={modalRead}/>
             <ModalMsg message={"Servicio agregado correctamente"} activate={successModal} modalRead={modalRead}/>
             <article className="cmp-container serviceForm">
                 <form className="cmp-serviceForm" onSubmit={handleSubmit}>

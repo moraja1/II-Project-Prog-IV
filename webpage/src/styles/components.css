@@ -140,6 +140,10 @@
     border-radius: 25px;
 }
 
+.disabled {
+    background-color: #ccc;
+}
+
     /* MAIN BUTTON END */
 
     /* CMP TABLE */

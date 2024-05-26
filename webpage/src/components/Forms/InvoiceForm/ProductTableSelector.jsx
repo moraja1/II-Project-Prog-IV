@@ -31,6 +31,8 @@ export function ProductTableSelector({ isActive, availableProducts, selectedProd
         onProductSelected(payload);
     }
     const handleDelete = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         const prodToDelete = JSON.parse(e.target.value);
         onProductDeleted(prodToDelete);
     }
@@ -39,8 +41,8 @@ export function ProductTableSelector({ isActive, availableProducts, selectedProd
             {isActive && <>
                 <div className={"cmp-invoiceForm-products"}>
                     <SelectBox name="product" label={"Seleccione un producto"} onChange={handleChangeSelector} required>
-                        {products.map((prod) => <option key={prod.id} value={JSON.stringify(prod)}>
-                            {`${prod.name} - Precio: ${prod.price} por ${prod.idMeasureUnits.name}`}
+                        {products.map((prod, index) => <option key={index} value={JSON.stringify(prod)}>
+                            {`${prod.name} - Precio: ${prod.price} por ${prod.measureUnits.name}`}
                         </option>)}
                     </SelectBox>
                     <div className={"cmp-invoiceForm-autoFit"}>

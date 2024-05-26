@@ -2,12 +2,13 @@ import {FaFileInvoiceDollar} from "react-icons/fa";
 import InputBox from "../../molecules/InputBox.jsx";
 import SelectBox from "../../molecules/SelectBox.jsx";
 import {useContext, useState} from "react";
-import {useQuery} from "@tanstack/react-query";
+import {useMutation, useQuery} from "@tanstack/react-query";
 import {gnrlAPI} from "../../../services/Api.js";
 import {AuthContext} from "../../../services/Auth/AuthProvider.jsx";
 import {ModalMsg} from "../../Modal/ModalMessage.jsx";
 import {ProductTableSelector} from "./ProductTableSelector.jsx";
 import {ServiceTableSelector} from "./ServiceTableSelector.jsx";
+import {HttpStatusCode} from "axios";
 
 const utc = new Date().toJSON().slice(0,10).replace(/-/g,'-');
 const API = (user) => {
@@ -21,6 +22,8 @@ export const InvoiceForm = () => {
     const [failClientsModal, setFailClientsModal] = useState(false); //MODAL
     const [failProductsModal, setFailProductsModal] = useState(false); //MODAL
     const [failServicesModal, setFailServicesModal] = useState(false); //MODAL
+    const [successModal, setSuccessModal] = useState(false); //MODAL
+    const [failModal, setFailModal] = useState(false); //MODAL
     const [clientsRegistered, setClientsRegistered] = useState([]); //Supplier's Clients
     const [productsRegistered, setProductsRegistered] = useState([]); //Supplier's Products
     const [servicesRegistered, setServicesRegistered] = useState([]); //Supplier's Servicess
@@ -37,7 +40,7 @@ export const InvoiceForm = () => {
                     setClientsRegistered(res.data);
                     return res.data;
                 })
-                .catch(() => setFailClientsModal(true))
+                .catch(() => setFailClientsModal(true)),
     })
     const productsQuery = useQuery({
         queryKey: ['productsQ'],
@@ -49,6 +52,15 @@ export const InvoiceForm = () => {
                 })
                 .catch(() => setFailProductsModal(true))
     });
+    const invoicePost = useMutation({
+        mutationKey: ['invoicePost'],
+        mutationFn: (invoice) =>
+            API(user).post('/invoice', invoice)
+                .then((res) => {
+                    if(res.status === HttpStatusCode.Ok) setSuccessModal(true);
+                })
+                .catch(() => setFailModal(true))
+    })
     const servicesQuery = useQuery({
         queryKey: ['servicesQ'],
         queryFn: () =>
@@ -98,20 +110,31 @@ export const InvoiceForm = () => {
     const handleServiceSelection = (service) => {
         let servicesChange = [...invoiceServices]
         let pushed = false;
-        for (let p of servicesChange) {
-            if(p.service.id === service.service.id) {
+        let total = 0;
+        for (let s of servicesChange) {
+            if(s.service.id === service.service.id) {
                 pushed = true;
-                p.hourAmount = Number(p.hourAmount) + Number(service.hourAmount);
+                total = subtotal - Number(s.hourAmount) * Number(s.service.priceHour);
+                s.hourAmount = Number(s.hourAmount) + Number(service.hourAmount);
+                total += Number(s.hourAmount) * Number(s.service.priceHour);
                 break;
             }
         }
-        if(!pushed) servicesChange.push(service);
+        if(!pushed) {
+            total += subtotal + Number(service.hourAmount) * Number(service.service.priceHour);
+            servicesChange.push(service);
+        }
         setInvoiceServices(servicesChange);
+        setSubtotal(total);
+        setTotalAmount(total + (total * (iva / 100)))
     }
 
     const handleServiceDeleted = (service) => {
         let servicesChange = invoiceServices.filter((s) => s.service.id !== service.service.id);
+        let total = subtotal - Number(service.hourAmount) * Number(service.service.priceHour);
         setInvoiceServices(servicesChange);
+        setSubtotal(total);
+        setTotalAmount(total + (total * (iva / 100)))
     }
 
     const handleSellSelection = (e) => {
@@ -125,6 +148,7 @@ export const InvoiceForm = () => {
     const changeIVA = (e) => {
         setIva(e.target.value);
     }
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if(invoiceServices.length === 0 && invoiceProducts.length === 0) return;
@@ -132,6 +156,8 @@ export const InvoiceForm = () => {
         const formData = new FormData(document.getElementById("cmp-invoiceForm-1"));
         let payload = Object.fromEntries(formData);
         const client = JSON.parse(payload.client)
+
+
 
         delete payload.product;
         delete payload.quantity;
@@ -142,12 +168,12 @@ export const InvoiceForm = () => {
         payload = {
             ...payload,
             client: client,
+            products: invoiceProducts,
+            services: invoiceServices,
         }
 
-        if(invoiceProducts.length > 0) payload.products = invoiceProducts;
-        if(invoiceServices.length > 0) payload.services = invoiceServices;
-
-        console.log(payload)
+        console.log(payload);
+        invoicePost.mutate(payload);
     }
     const modalRead = () => {
         if(failProductsModal) {
@@ -156,9 +182,24 @@ export const InvoiceForm = () => {
         if(failServicesModal) {
             setFailServicesModal(false);
         }
+        if(failClientsModal){
+            setFailClientsModal(false);
+        }
+        if(successModal) {
+            setSuccessModal(false);
+        }
+        if(failModal) {
+            setFailModal(false)
+        }
     }
     return (
         <>
+            <ModalMsg
+                message={"Factura ingresada correctamente."}
+                activate={successModal} modalRead={modalRead}/>
+            <ModalMsg
+                message={"No se pudo registrar la factura. Pongase en contacto con el administrador."}
+                activate={failModal} modalRead={modalRead}/>
             <ModalMsg message={"No se tiene ningún cliente registrado, por favor registre un sus clientes antes de facturar"}
                       activate={failClientsModal}
                       modalRead={modalRead}/>
@@ -177,7 +218,7 @@ export const InvoiceForm = () => {
                                   inputType="text"
                                   errorMessage={"Por favor, ingrese un código de 4 caractéres como minimo"}
                                   min={4}
-                                  required/>
+                                  required={true}/>
                         <InputBox label={"Fecha"}
                                   inputType="date"
                                   defaultValue={utc}
@@ -209,7 +250,7 @@ export const InvoiceForm = () => {
                                   max={100}
                                   min={0}
                                   defaultValue={iva}
-                                  required/>
+                                  required={true}/>
                         <InputBox name="subtotal" label={"Subtotal"}
                                   inputType="number"
                                   value={subtotal}
@@ -219,7 +260,10 @@ export const InvoiceForm = () => {
                                   value={totalAmount}
                                   readOnly/>
                     </div>
-                    <input type={"submit"} className={"main-button"} value={"Facturar"}/>
+                    <input type={"submit"}
+                           className={"main-button"
+                               .concat(invoiceProducts.length === 0 && invoiceServices.length === 0 ? " disabled" : "")} value={"Facturar"}
+                           disabled={invoiceProducts.length === 0 && invoiceServices.length === 0}/>
                 </form>
             </article>
         </>

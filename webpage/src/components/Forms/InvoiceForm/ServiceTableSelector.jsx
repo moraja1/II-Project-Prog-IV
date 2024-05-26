@@ -30,6 +30,8 @@ export function ServiceTableSelector({ isActive, availableServices, selectedServ
         onServiceSelected(payload);
     }
     const handleDelete = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         const prodToDelete = JSON.parse(e.target.value);
         onServiceDeleted(prodToDelete);
     }
@@ -38,7 +40,7 @@ export function ServiceTableSelector({ isActive, availableServices, selectedServ
             {isActive && <>
                     <div className={"cmp-invoiceForm-products"}>
                         <SelectBox name="service" label={"Seleccione un servicio"} onChange={handleChangeSelector} required>
-                            {services.map((serv) => <option key={serv.id} value={JSON.stringify(serv)}>
+                            {services.map((serv, index) => <option key={index} value={JSON.stringify(serv)}>
                                 {`${serv.name} - Precio por hora: ${serv.priceHour}`}
                             </option>)}
                         </SelectBox>

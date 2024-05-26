@@ -19,7 +19,6 @@ const InputBox = (props) => {
                 focused={focused.toString()}
                 name={name}
                 placeholder={placeholder}
-                required={inputProps.required}
             />
             {errorMessage && <div className={"error-message-form"}>
                 <span>{errorMessage}</span>

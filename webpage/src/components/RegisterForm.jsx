@@ -77,7 +77,8 @@ export function RegisterForm() {
                               required/>
                     <InputBox name="lastName" label={"Apellidos"}
                               errorMessage={"Por favor, ingresa tus apellidos"}
-                              inputType="text"/>
+                              inputType="text"
+                              required/>
                     <SelectBox name="type" label={"Que el tipo de persona"} required>
                         {supplierTypes.map((opt, index) => (
                                 <option key={index} value={opt.value}>{opt.name}</option>
@@ -86,11 +87,11 @@ export function RegisterForm() {
                     </SelectBox>
                     <InputBox name="password" label={"Contraseña"}
                               errorMessage={"Por favor, ingresa una contraseña"}
-                              inputType="password"/>
+                              inputType="password" required/>
                     <InputBox name="passwordConf" label={"Confirmar Contraseña"}
                               errorMessage={"Las contraseñas no coinciden"}
                               pattern={values.password}
-                              inputType="password"/>
+                              inputType="password" required/>
                     <input className="main-button" type="submit" value="Registrarme"/>
                 </form>
                 <p>Ir a <Link to="/">Iniciar Sesión</Link></p>
