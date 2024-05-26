@@ -26,7 +26,7 @@ public class Service {
     @Column(name = "price_hour")
     private Integer priceHour;
 
-    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "service", orphanRemoval = true)
     @JsonBackReference
     private Set<InvoiceService> invoiceServices = new LinkedHashSet<>();
 
