@@ -21,20 +21,23 @@ public class GeneralApplication {
     private final MeasureUnitRepository measureUnitRepository;
     private final ProductRepository productRepository;
     private final ServiceRepository serviceRepository;
+    private final InvoiceRepository invoiceRepository;
     /*private final InvoiceRepository invoiceRepository;*/
 
     public GeneralApplication(UserRepository userRepository,
                               ClientRepository clientRepository,
                               MeasureUnitRepository measureUnitRepository,
                               ProductRepository productRepository,
-                              ServiceRepository serviceRepository/*,
-                              InvoiceRepository invoiceRepository*/) {
+                              ServiceRepository serviceRepository,/*,
+                              InvoiceRepository invoiceRepository*/
+                              InvoiceRepository invoiceRepository) {
         this.userRepository = userRepository;
         this.clientRepository = clientRepository;
         this.measureUnitRepository = measureUnitRepository;
         this.productRepository = productRepository;
         this.serviceRepository = serviceRepository;
         /*this.invoiceRepository = invoiceRepository;*/
+        this.invoiceRepository = invoiceRepository;
     }
 
     @GetMapping("/{id}")
@@ -118,7 +121,9 @@ public class GeneralApplication {
         if(optionalMeasureUnit.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         Optional<Product> optionalProduct = productRepository.findByCode(product.getCode());
         if(optionalProduct.isPresent()) {
-            if(Objects.equals(optionalProduct.get().getUser().getId(), userOptional.get().getId())) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            if(Objects.equals(optionalProduct.get().getUser().getId(), userOptional.get().getId())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
         }
 
         //Valid input
@@ -149,7 +154,6 @@ public class GeneralApplication {
                 service.getSupplierId() == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         Optional<User> userOptional = userRepository.findById(service.getSupplierId());
         if(userOptional.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        boolean exists = false;
         for(var s: userOptional.get().getServices()) {
             if(Objects.equals(s.getName(), service.getName()) && Objects.equals(s.getPriceHour(), service.getPrice())) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -199,12 +203,35 @@ public class GeneralApplication {
         return ResponseEntity.ok(optionalUser.get().getClients().stream().toList());
     }
 
-    /*@PostMapping("invoice")
+    @PostMapping("invoice")
     private ResponseEntity<Invoice> addInvoice(@RequestHeader("sub") String sub, @RequestBody InvoiceFormDto invoiceFormDto) {
         //Validations
         Optional<User> optionalUser = userRepository.findById(Long.parseLong(sub));
         if(optionalUser.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        if(invoiceFormDto.subtotal() < 0 || invoiceFormDto.total() < 0) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        Optional<Client> optionalClient = clientRepository.findById(invoiceFormDto.client().id());
+        if(optionalClient.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        if(invoiceFormDto.products().isEmpty() && invoiceFormDto.services().isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        Optional<Invoice> optionalInvoice = invoiceRepository.findByCode(invoiceFormDto.code());
+        if(optionalInvoice.isPresent()) {
+            if(Objects.equals(optionalInvoice.get().getUser(), optionalUser.get())) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        //Valid input
+        Invoice invoiceToAdd = Invoice.builder()
+                .code(invoiceFormDto.code())
+                .iva(invoiceFormDto.iva())
+                .subtotal(invoiceFormDto.subtotal())
+                .totalPrice(invoiceFormDto.total())
+                .build();
+
+        optionalUser.get().addInvoice(invoiceToAdd);
+        optionalClient.get().addInvoice(invoiceToAdd);
+
+        Invoice savedInvoice = invoiceRepository.save(invoiceToAdd);
+
+
 
         return ResponseEntity.ok().build();
-    }*/
+    }
 }

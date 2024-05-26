@@ -3,8 +3,7 @@ package cr.ac.una.invoicessystem.data.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
@@ -16,6 +15,9 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "invoice")
 public class Invoice {
     @Id
@@ -34,10 +36,10 @@ public class Invoice {
     private Integer iva;
 
     @Column(name = "subtotal")
-    private Long subtotal;
+    private Double subtotal;
 
     @Column(name = "total_price")
-    private Long totalPrice;
+    private Double totalPrice;
 
     @ManyToOne
     @JsonManagedReference
