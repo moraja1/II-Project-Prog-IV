@@ -3,6 +3,7 @@ package cr.ac.una.invoicessystem.restController;
 import cr.ac.una.invoicessystem.data.repositories.RoleRepository;
 import cr.ac.una.invoicessystem.data.repositories.SupplierTypeRepository;
 import cr.ac.una.invoicessystem.data.repositories.UserRepository;
+import cr.ac.una.invoicessystem.data.repositories.UserRoleRepository;
 import cr.ac.una.invoicessystem.logic.dto.LoginDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,18 +22,18 @@ import java.util.Optional;
 @RequestMapping("/api/auth")
 public class AuthApplication {
 
-    //private UserRoleRepository userRoleRepository;
+    private UserRoleRepository userRoleRepository;
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private SupplierTypeRepository supplierTypeRepository;
 
     @Autowired
     public AuthApplication(UserRepository userRepository,
-                           RoleRepository roleRepository, /*UserRoleRepository userRoleRepository,*/
+                           RoleRepository roleRepository, UserRoleRepository userRoleRepository,
                            SupplierTypeRepository supplierTypeRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-        //this.userRoleRepository = userRoleRepository;
+        this.userRoleRepository = userRoleRepository;
         this.supplierTypeRepository = supplierTypeRepository;
     }
 
@@ -61,14 +62,15 @@ public class AuthApplication {
         userToRegister.setEnabled(false);
 
         Role role = roleRepository.findByName(ERole.ROLE_USER).get();
+        User savedUser = userRepository.save(userToRegister);
 
         UserRole userRole = new UserRole();
-        userRole.setId(new UserRoleId());
+        userRole.setId(new UserRoleId(savedUser.getId(), role.getId()));
 
-        userToRegister.addRole(userRole);
+        savedUser.addRole(userRole);
         role.addUser(userRole);
 
-        User savedUser = userRepository.save(userToRegister);
+        userRoleRepository.save(userRole);
 
         URI locationOfNewSupplier = ucb
                 .path("/api/users/{id}")
