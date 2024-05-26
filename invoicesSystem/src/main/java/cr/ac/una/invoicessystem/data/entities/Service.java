@@ -30,13 +30,8 @@ public class Service {
     @JsonBackReference
     private Set<InvoiceService> invoiceServices = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "service", orphanRemoval = true)
     @JsonBackReference
-    private Set<UserService> users = new LinkedHashSet<>();
-
-    public void addUserService(UserService user) {
-        users.add(user);
-        user.setService(this);
-    }
+    @ManyToOne
+    private User user;
 
 }

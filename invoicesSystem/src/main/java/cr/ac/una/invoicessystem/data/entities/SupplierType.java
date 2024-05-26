@@ -24,7 +24,7 @@ public class SupplierType {
     @Column(length = 20)
     private EType name;
 
-    @OneToMany(mappedBy = "type", orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "type", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference
     private Set<User> users = new HashSet<>();
 

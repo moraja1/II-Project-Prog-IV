@@ -1,10 +1,9 @@
 package cr.ac.una.invoicessystem.restController;
 
-import cr.ac.una.invoicessystem.logic.dto.LoginDto;
 import cr.ac.una.invoicessystem.data.repositories.RoleRepository;
 import cr.ac.una.invoicessystem.data.repositories.SupplierTypeRepository;
 import cr.ac.una.invoicessystem.data.repositories.UserRepository;
-import cr.ac.una.invoicessystem.data.repositories.UserRoleRepository;
+import cr.ac.una.invoicessystem.logic.dto.LoginDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,18 +21,18 @@ import java.util.Optional;
 @RequestMapping("/api/auth")
 public class AuthApplication {
 
-    private UserRoleRepository userRoleRepository;
+    //private UserRoleRepository userRoleRepository;
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private SupplierTypeRepository supplierTypeRepository;
 
     @Autowired
     public AuthApplication(UserRepository userRepository,
-                           RoleRepository roleRepository, UserRoleRepository userRoleRepository,
+                           RoleRepository roleRepository, /*UserRoleRepository userRoleRepository,*/
                            SupplierTypeRepository supplierTypeRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-        this.userRoleRepository = userRoleRepository;
+        //this.userRoleRepository = userRoleRepository;
         this.supplierTypeRepository = supplierTypeRepository;
     }
 
@@ -49,7 +48,9 @@ public class AuthApplication {
                 "Message", "Not Registered in Ministry").build();
         Optional<SupplierType> type = supplierTypeRepository.findByName(EType.getEType(register.type()));
         if (type.isEmpty()) return ResponseEntity.badRequest().build();
-
+        //Extra validations
+        if(register.naturalId().isEmpty() || register.name().isEmpty() || register.password().isEmpty() ||
+        register.lastName().isEmpty() || register.type().isEmpty()) return ResponseEntity.badRequest().build();
 
         User userToRegister = new User();
         userToRegister.setNaturalId(register.naturalId());
@@ -61,15 +62,13 @@ public class AuthApplication {
 
         Role role = roleRepository.findByName(ERole.ROLE_USER).get();
 
-        User savedUser = userRepository.save(userToRegister);
-
         UserRole userRole = new UserRole();
-        userRole.setId(new UserRoleId(savedUser.getId(), role.getId()));
+        userRole.setId(new UserRoleId());
 
-        savedUser.addRole(userRole);
+        userToRegister.addRole(userRole);
         role.addUser(userRole);
 
-        userRoleRepository.save(userRole);
+        User savedUser = userRepository.save(userToRegister);
 
         URI locationOfNewSupplier = ucb
                 .path("/api/users/{id}")

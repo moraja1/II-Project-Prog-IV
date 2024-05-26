@@ -49,50 +49,50 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
     private Set<UserRole> roles = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "id_supplier_type", nullable = false)
     @JsonManagedReference
     private SupplierType type;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "idUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<Client> clients = new HashSet<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "idUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Invoice> invoices = new HashSet<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "idUser", orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Product> products = new HashSet<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "idUser", orphanRemoval = true, fetch = FetchType.EAGER)
-    private Set<UserService> services = new HashSet<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Service> services = new HashSet<>();
 
     @Transient
     private Boolean isAuthenticated = false;
 
     public void addClient(Client client) {
         clients.add(client);
-        client.setIdUser(this);
+        client.setUser(this);
     }
 
     public void addInvoice(Invoice invoice) {
         invoices.add(invoice);
-        invoice.setIdUser(this);
+        invoice.setUser(this);
     }
 
-    public void addUserProduct(UserProduct product) {
+    public void addProduct(Product product) {
         products.add(product);
-        product.setIdUser(this);
+        product.setUser(this);
     }
 
-    public void addUserService(UserService service) {
+    public void addService(Service service) {
         services.add(service);
-        service.setIdUser(this);
+        service.setUser(this);
     }
 
     public void addRole(UserRole role) {

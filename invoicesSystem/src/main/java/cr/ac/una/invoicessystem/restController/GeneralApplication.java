@@ -20,27 +20,21 @@ public class GeneralApplication {
     private final ClientRepository clientRepository;
     private final MeasureUnitRepository measureUnitRepository;
     private final ProductRepository productRepository;
-    private final UserProductRepository userProductRepository;
     private final ServiceRepository serviceRepository;
-    private final UserServiceRepository userServiceRepository;
-    private final InvoiceRepository invoiceRepository;
+    /*private final InvoiceRepository invoiceRepository;*/
 
     public GeneralApplication(UserRepository userRepository,
                               ClientRepository clientRepository,
                               MeasureUnitRepository measureUnitRepository,
                               ProductRepository productRepository,
-                              UserProductRepository userProductRepository,
-                              ServiceRepository serviceRepository,
-                              UserServiceRepository userServiceRepository,
-                              InvoiceRepository invoiceRepository) {
+                              ServiceRepository serviceRepository/*,
+                              InvoiceRepository invoiceRepository*/) {
         this.userRepository = userRepository;
         this.clientRepository = clientRepository;
         this.measureUnitRepository = measureUnitRepository;
         this.productRepository = productRepository;
-        this.userProductRepository = userProductRepository;
         this.serviceRepository = serviceRepository;
-        this.userServiceRepository = userServiceRepository;
-        this.invoiceRepository = invoiceRepository;
+        /*this.invoiceRepository = invoiceRepository;*/
     }
 
     @GetMapping("/{id}")
@@ -51,7 +45,7 @@ public class GeneralApplication {
     }
 
     @PatchMapping("/profile")
-    private ResponseEntity<User> updateUserEnable(@RequestBody ProfileDto profile) {
+    private ResponseEntity<User> updateUserProfile(@RequestBody ProfileDto profile) {
         Optional<User> userOptional = userRepository.findByNaturalIdAndPassword(profile.naturalId(), profile.password());
         if (userOptional.isEmpty()) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
@@ -69,6 +63,14 @@ public class GeneralApplication {
         //Validations
         Optional<User> userOptional = userRepository.findById(client.getSupplierId());
         if(userOptional.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        boolean exists = false;
+        for(var c : userOptional.get().getClients()) {
+            if(c.getNaturalId().equals(client.getNaturalId())) {
+                exists = true;
+                break;
+            }
+        }
+        if(exists) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
         //Valid input
         Client clientToSave = Client.builder()
@@ -95,7 +97,6 @@ public class GeneralApplication {
         return optionalClient.map(client ->
                 ResponseEntity.ok().body(client)).orElseGet(() ->
                 ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-
     }
 
     @GetMapping("/measures")
@@ -117,11 +118,7 @@ public class GeneralApplication {
         if(optionalMeasureUnit.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         Optional<Product> optionalProduct = productRepository.findByCode(product.getCode());
         if(optionalProduct.isPresent()) {
-            for (var u : optionalProduct.get().getUsers()) {
-                if(u.getId().getIdUser().equals(userOptional.get().getId())) {
-                    return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-                }
-            }
+            if(Objects.equals(optionalProduct.get().getUser().getId(), userOptional.get().getId())) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         //Valid input
@@ -132,22 +129,12 @@ public class GeneralApplication {
                 .build();
 
         optionalMeasureUnit.get().addProduct(productToSave);
+        userOptional.get().addProduct(productToSave);
         Product savedProduct = productRepository.save(productToSave);
         URI locationOfNewProduct = ucb
                 .path("/product/{id}")
                 .buildAndExpand(savedProduct.getId())
                 .toUri();
-
-        UserProduct userProduct = new UserProduct();
-        userProduct.setId(new UserProductId(savedProduct.getId(), userOptional.get().getId()));
-
-        if(userOptional.get().getProducts() == null) userOptional.get().setProducts(new HashSet<>());
-        if(savedProduct.getUsers() == null) savedProduct.setUsers(new HashSet<>());
-
-        userOptional.get().addUserProduct(userProduct);
-        savedProduct.addUserProduct(userProduct);
-
-        userProductRepository.save(userProduct);
 
         return ResponseEntity.created(locationOfNewProduct).body(savedProduct);
     }
@@ -162,6 +149,12 @@ public class GeneralApplication {
                 service.getSupplierId() == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         Optional<User> userOptional = userRepository.findById(service.getSupplierId());
         if(userOptional.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        boolean exists = false;
+        for(var s: userOptional.get().getServices()) {
+            if(Objects.equals(s.getName(), service.getName()) && Objects.equals(s.getPriceHour(), service.getPrice())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        }
 
         //Valid input
         serviceToSave = Service.builder()
@@ -169,22 +162,12 @@ public class GeneralApplication {
                 .priceHour(service.getPrice())
                 .build();
 
+        userOptional.get().addService(serviceToSave);
         Service savedService = serviceRepository.save(serviceToSave);
         URI locationOfNewService = ucb
                 .path("/service/{id}")
                 .buildAndExpand(savedService.getId())
                 .toUri();
-
-        UserService userService = new UserService();
-        userService.setId(new UserServiceId(savedService.getId(), userOptional.get().getId()));
-
-        if(userOptional.get().getServices() == null) userOptional.get().setServices(new HashSet<>());
-        if(savedService.getUsers() == null) savedService.setUsers(new HashSet<>());
-
-        userOptional.get().addUserService(userService);
-        savedService.addUserService(userService);
-
-        userServiceRepository.save(userService);
 
         return ResponseEntity.created(locationOfNewService).body(savedService);
     }
@@ -194,10 +177,8 @@ public class GeneralApplication {
         //Validations
         Optional<User> optionalUser = userRepository.findById(Long.parseLong(sub));
         if(optionalUser.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        List<UserProduct> userProducts = userProductRepository.findAllByIdUser(optionalUser.get());
-        List<Product> products = userProducts.stream().map(UserProduct::getProduct).toList();
 
-        return ResponseEntity.ok(products);
+        return ResponseEntity.ok(optionalUser.get().getProducts().stream().toList());
     }
 
     @GetMapping("services")
@@ -205,10 +186,8 @@ public class GeneralApplication {
         //Validations
         Optional<User> optionalUser = userRepository.findById(Long.parseLong(sub));
         if(optionalUser.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        List<UserService> userServices = userServiceRepository.findAllByIdUser(optionalUser.get());
-        List<Service> services = userServices.stream().map(UserService::getService).toList();
 
-        return ResponseEntity.ok(services);
+        return ResponseEntity.ok(optionalUser.get().getServices().stream().toList());
     }
 
     @GetMapping("clients")
@@ -220,12 +199,12 @@ public class GeneralApplication {
         return ResponseEntity.ok(optionalUser.get().getClients().stream().toList());
     }
 
-    @PostMapping("invoice")
+    /*@PostMapping("invoice")
     private ResponseEntity<Invoice> addInvoice(@RequestHeader("sub") String sub, @RequestBody InvoiceFormDto invoiceFormDto) {
         //Validations
         Optional<User> optionalUser = userRepository.findById(Long.parseLong(sub));
         if(optionalUser.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
         return ResponseEntity.ok().build();
-    }
+    }*/
 }

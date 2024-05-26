@@ -16,17 +16,15 @@ public class InvoiceProduct {
     private InvoiceProductId id;
 
     @MapsId("idInvoice")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_invoice", nullable = false)
+    @ManyToOne(optional = false)
     @JsonBackReference
-    private Invoice idInvoice;
+    private Invoice invoice;
 
     @MapsId("idProducts")
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "id_products", nullable = false)
     @JsonManagedReference
     private Product products;
 
     @Column(name = "quantity")
-    private Integer quantity;
+    private Long quantity;
 }

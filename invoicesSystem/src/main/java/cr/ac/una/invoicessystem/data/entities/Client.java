@@ -11,18 +11,17 @@ import java.util.Set;
 
 @Getter
 @Setter
-@Entity
 @Builder
-@Table(name = "client")
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "client")
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_client", nullable = false)
     private Long id;
 
-    @NaturalId
     @Column(name = "natural_id", length = 32, nullable = false)
     private String naturalId;
 
@@ -39,17 +38,15 @@ public class Client {
     private String mobile;
 
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_user", nullable = false)
-    private User idUser;
+    @ManyToOne
+    private User user;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToMany(mappedBy = "idClient", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference
     private Set<Invoice> invoices = new LinkedHashSet<>();
 
     public void addInvoice(Invoice invoice) {
         invoices.add(invoice);
-        invoice.setIdClient(this);
+        invoice.setClient(this);
     }
 }

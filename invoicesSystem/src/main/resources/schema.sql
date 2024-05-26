@@ -1,209 +1,235 @@
--- MySQL Workbench Forward Engineering
-
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
-
--- -----------------------------------------------------
 -- Schema projectii
 -- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `projectii` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE `projectii`;
 
 -- -----------------------------------------------------
--- Schema projectii
+-- Table `projectii`.`supplier_type`
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `projectii` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
-USE `projectii` ;
+CREATE TABLE IF NOT EXISTS `projectii`.`supplier_type`
+(
+    `id_supplier_type` BIGINT                                           NOT NULL AUTO_INCREMENT,
+    `name`             ENUM ('PHYSICAL', 'JURIDICAL', 'ADMINISTRATIVE') NULL DEFAULT NULL,
+    PRIMARY KEY (`id_supplier_type`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
+
 
 -- -----------------------------------------------------
 -- Table `projectii`.`user`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `projectii`.`user` (
-  `id_user` INT NOT NULL AUTO_INCREMENT,
-  `natural_id` VARCHAR(16) NULL,
-  `password` VARCHAR(32) NULL,
-  `name` VARCHAR(32) NULL,
-  `last_name` VARCHAR(32) NULL,
-  `mobile` VARCHAR(16) NULL,
-  `email` VARCHAR(32) NULL,
-  `enabled` TINYINT NULL DEFAULT 0,
-  `type` VARCHAR(16) NULL,
-  `role` VARCHAR(16) NULL,
-  PRIMARY KEY (`id_user`),
-  UNIQUE INDEX `id_user_UNIQUE` (`id_user` ASC) VISIBLE,
-  UNIQUE INDEX `natural_id_UNIQUE` (`natural_id` ASC) VISIBLE)
-ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `projectii`.`user`
+(
+    `id_user`               BIGINT       NOT NULL AUTO_INCREMENT,
+    `email`                 VARCHAR(32)  NULL DEFAULT NULL,
+    `enabled`               BIT(1)       NULL DEFAULT b'0',
+    `last_name`             VARCHAR(32)  NULL DEFAULT NULL,
+    `mobile`                VARCHAR(16)  NULL DEFAULT NULL,
+    `name`                  VARCHAR(32)  NULL DEFAULT NULL,
+    `natural_id`            VARCHAR(16)  NULL DEFAULT NULL,
+    `password`              VARCHAR(256) NULL DEFAULT NULL,
+    `type_id_supplier_type` BIGINT       NOT NULL,
+    PRIMARY KEY (`id_user`),
+    UNIQUE INDEX `UKofjqkoakihues2v1fiyqyvia6` (`natural_id` ASC) VISIBLE,
+    INDEX `FK4o0dn07vxc0enqctc31lpb6am` (`type_id_supplier_type` ASC) VISIBLE,
+    CONSTRAINT `FK4o0dn07vxc0enqctc31lpb6am`
+        FOREIGN KEY (`type_id_supplier_type`)
+            REFERENCES `projectii`.`supplier_type` (`id_supplier_type`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
 -- Table `projectii`.`client`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `projectii`.`client` (
-  `id_client` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(32) NULL,
-  `last_name` VARCHAR(32) NULL,
-  `natural_id` VARCHAR(32) NULL,
-  `mobile` VARCHAR(16) NULL,
-  `email` VARCHAR(32) NULL,
-  `id_user` INT NOT NULL,
-  PRIMARY KEY (`id_client`),
-  UNIQUE INDEX `idclient_UNIQUE` (`id_client` ASC) VISIBLE,
-  INDEX `fk_client_user_idx` (`id_user` ASC) VISIBLE,
-  CONSTRAINT `fk_client_user`
-    FOREIGN KEY (`id_user`)
-    REFERENCES `projectii`.`user` (`id_user`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `projectii`.`service`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `projectii`.`service` (
-  `id_service` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(32) NULL,
-  `currency` VARCHAR(32) NULL,
-  `price_hour` INT NULL,
-  PRIMARY KEY (`id_service`),
-  UNIQUE INDEX `id_service_UNIQUE` (`id_service` ASC) VISIBLE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `projectii`.`user_services`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `projectii`.`user_services` (
-  `id_service` INT NOT NULL,
-  `id_user` INT NOT NULL,
-  PRIMARY KEY (`id_service`, `id_user`),
-  INDEX `fk_service_has_user_user1_idx` (`id_user` ASC) VISIBLE,
-  INDEX `fk_service_has_user_service1_idx` (`id_service` ASC) VISIBLE,
-  CONSTRAINT `fk_service_has_user_service1`
-    FOREIGN KEY (`id_service`)
-    REFERENCES `projectii`.`service` (`id_service`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_service_has_user_user1`
-    FOREIGN KEY (`id_user`)
-    REFERENCES `projectii`.`user` (`id_user`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `projectii`.`products`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `projectii`.`products` (
-  `id_products` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(32) NULL,
-  `currency` VARCHAR(32) NULL,
-  `price` INT NULL,
-  `measure_unit` VARCHAR(16) NULL,
-  PRIMARY KEY (`id_products`),
-  UNIQUE INDEX `idproducts_UNIQUE` (`id_products` ASC) VISIBLE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `projectii`.`user_products`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `projectii`.`user_products` (
-  `id_products` INT NOT NULL,
-  `id_user` INT NOT NULL,
-  PRIMARY KEY (`id_products`, `id_user`),
-  INDEX `fk_products_has_user_user1_idx` (`id_user` ASC) VISIBLE,
-  INDEX `fk_products_has_user_products1_idx` (`id_products` ASC) VISIBLE,
-  CONSTRAINT `fk_products_has_user_products1`
-    FOREIGN KEY (`id_products`)
-    REFERENCES `projectii`.`products` (`id_products`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_products_has_user_user1`
-    FOREIGN KEY (`id_user`)
-    REFERENCES `projectii`.`user` (`id_user`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `projectii`.`client`
+(
+    `id_client`    BIGINT      NOT NULL AUTO_INCREMENT,
+    `email`        VARCHAR(32) NOT NULL,
+    `last_name`    VARCHAR(32) NOT NULL,
+    `mobile`       VARCHAR(16) NULL DEFAULT NULL,
+    `name`         VARCHAR(32) NOT NULL,
+    `natural_id`   VARCHAR(32) NOT NULL,
+    `user_id_user` BIGINT      NULL DEFAULT NULL,
+    PRIMARY KEY (`id_client`),
+    UNIQUE INDEX `UK_giud2og02puttc862o04q1w59` (`natural_id` ASC) VISIBLE,
+    INDEX `FK7ienpdbhwd46kn7go8busfk7b` (`user_id_user` ASC) VISIBLE,
+    CONSTRAINT `FK7ienpdbhwd46kn7go8busfk7b`
+        FOREIGN KEY (`user_id_user`)
+            REFERENCES `projectii`.`user` (`id_user`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
 -- Table `projectii`.`invoice`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `projectii`.`invoice` (
-  `id_invoice` INT NOT NULL AUTO_INCREMENT,
-  `code` DOUBLE NULL,
-  `date` DATE NULL,
-  `total_price` INT NULL,
-  `iva` INT NULL,
-  `subtotal` INT NULL,
-  `id_user` INT NOT NULL,
-  `id_client` INT NOT NULL,
-  PRIMARY KEY (`id_invoice`),
-  UNIQUE INDEX `idinvoice_UNIQUE` (`id_invoice` ASC) VISIBLE,
-  INDEX `fk_invoice_user1_idx` (`id_user` ASC) VISIBLE,
-  INDEX `fk_invoice_client1_idx` (`id_client` ASC) VISIBLE,
-  CONSTRAINT `fk_invoice_user1`
-    FOREIGN KEY (`id_user`)
-    REFERENCES `projectii`.`user` (`id_user`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_invoice_client1`
-    FOREIGN KEY (`id_client`)
-    REFERENCES `projectii`.`client` (`id_client`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `projectii`.`invoice`
+(
+    `id_invoice`       BIGINT       NOT NULL AUTO_INCREMENT,
+    `code`             VARCHAR(255) NULL DEFAULT NULL,
+    `date`             DATETIME(6)  NULL DEFAULT NULL,
+    `iva`              INT          NULL DEFAULT NULL,
+    `subtotal`         BIGINT       NULL DEFAULT NULL,
+    `total_price`      BIGINT       NULL DEFAULT NULL,
+    `client_id_client` BIGINT       NULL DEFAULT NULL,
+    `user_id_user`     BIGINT       NULL DEFAULT NULL,
+    PRIMARY KEY (`id_invoice`),
+    INDEX `FKd3a5w04o1fet7w9nr5kuvkd71` (`client_id_client` ASC) VISIBLE,
+    INDEX `FKi1ts5jpol1m4pq3xl8g6x0b9a` (`user_id_user` ASC) VISIBLE,
+    CONSTRAINT `FKd3a5w04o1fet7w9nr5kuvkd71`
+        FOREIGN KEY (`client_id_client`)
+            REFERENCES `projectii`.`client` (`id_client`),
+    CONSTRAINT `FKi1ts5jpol1m4pq3xl8g6x0b9a`
+        FOREIGN KEY (`user_id_user`)
+            REFERENCES `projectii`.`user` (`id_user`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `projectii`.`invoice_has_products`
+-- Table `projectii`.`measure_units`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `projectii`.`invoice_has_products` (
-  `invoice_id_invoice` INT NOT NULL,
-  `products_id_products` INT NOT NULL,
-  `cantity` INT NULL,
-  `subtotal` INT NULL,
-  PRIMARY KEY (`invoice_id_invoice`, `products_id_products`),
-  INDEX `fk_invoice_has_products_products1_idx` (`products_id_products` ASC) VISIBLE,
-  INDEX `fk_invoice_has_products_invoice1_idx` (`invoice_id_invoice` ASC) VISIBLE,
-  CONSTRAINT `fk_invoice_has_products_invoice1`
-    FOREIGN KEY (`invoice_id_invoice`)
-    REFERENCES `projectii`.`invoice` (`id_invoice`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_invoice_has_products_products1`
-    FOREIGN KEY (`products_id_products`)
-    REFERENCES `projectii`.`products` (`id_products`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `projectii`.`measure_units`
+(
+    `id_measure_units` BIGINT      NOT NULL AUTO_INCREMENT,
+    `name`             VARCHAR(32) NULL DEFAULT NULL,
+    `symbol`           VARCHAR(8)  NULL DEFAULT NULL,
+    PRIMARY KEY (`id_measure_units`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `projectii`.`invoice_has_service`
+-- Table `projectii`.`products`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `projectii`.`invoice_has_service` (
-  `id_invoice` INT NOT NULL,
-  `id_service` INT NOT NULL,
-  `hour_amount` INT NULL,
-  `subtotal` INT NULL,
-  PRIMARY KEY (`id_invoice`, `id_service`),
-  INDEX `fk_invoice_has_service_service1_idx` (`id_service` ASC) VISIBLE,
-  INDEX `fk_invoice_has_service_invoice1_idx` (`id_invoice` ASC) VISIBLE,
-  CONSTRAINT `fk_invoice_has_service_invoice1`
-    FOREIGN KEY (`id_invoice`)
-    REFERENCES `projectii`.`invoice` (`id_invoice`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_invoice_has_service_service1`
-    FOREIGN KEY (`id_service`)
-    REFERENCES `projectii`.`service` (`id_service`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `projectii`.`products`
+(
+    `id_products`                    BIGINT      NOT NULL AUTO_INCREMENT,
+    `code`                           VARCHAR(32) NOT NULL,
+    `name`                           VARCHAR(32) NOT NULL,
+    `price`                          INT         NOT NULL,
+    `measure_units_id_measure_units` BIGINT      NULL DEFAULT NULL,
+    `user_id_user`                   BIGINT      NULL DEFAULT NULL,
+    PRIMARY KEY (`id_products`),
+    INDEX `FKg2abpcxiodihwrjpsyi67c0y7` (`measure_units_id_measure_units` ASC) VISIBLE,
+    INDEX `FKpa0odinmsu0kvdubsv0gslqde` (`user_id_user` ASC) VISIBLE,
+    CONSTRAINT `FKg2abpcxiodihwrjpsyi67c0y7`
+        FOREIGN KEY (`measure_units_id_measure_units`)
+            REFERENCES `projectii`.`measure_units` (`id_measure_units`),
+    CONSTRAINT `FKpa0odinmsu0kvdubsv0gslqde`
+        FOREIGN KEY (`user_id_user`)
+            REFERENCES `projectii`.`user` (`id_user`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
 
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+-- -----------------------------------------------------
+-- Table `projectii`.`invoice_products`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `projectii`.`invoice_products`
+(
+    `quantity`             BIGINT NULL DEFAULT NULL,
+    `products_id_products` BIGINT NOT NULL,
+    `invoice_id_invoice`   BIGINT NOT NULL,
+    PRIMARY KEY (`invoice_id_invoice`, `products_id_products`),
+    INDEX `FK8th3qr5rveicuylqfl2dyn6up` (`products_id_products` ASC) VISIBLE,
+    CONSTRAINT `FK4x90qiub3592wqqvoeh7hq7xx`
+        FOREIGN KEY (`invoice_id_invoice`)
+            REFERENCES `projectii`.`invoice` (`id_invoice`),
+    CONSTRAINT `FK8th3qr5rveicuylqfl2dyn6up`
+        FOREIGN KEY (`products_id_products`)
+            REFERENCES `projectii`.`products` (`id_products`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `projectii`.`service`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `projectii`.`service`
+(
+    `id_service`   BIGINT      NOT NULL AUTO_INCREMENT,
+    `name`         VARCHAR(32) NULL DEFAULT NULL,
+    `price_hour`   INT         NULL DEFAULT NULL,
+    `user_id_user` BIGINT      NULL DEFAULT NULL,
+    PRIMARY KEY (`id_service`),
+    INDEX `FKro75esm13nuacfdos00lg7ye` (`user_id_user` ASC) VISIBLE,
+    CONSTRAINT `FKro75esm13nuacfdos00lg7ye`
+        FOREIGN KEY (`user_id_user`)
+            REFERENCES `projectii`.`user` (`id_user`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `projectii`.`invoice_services`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `projectii`.`invoice_services`
+(
+    `hour_amount`        BIGINT NULL DEFAULT NULL,
+    `invoice_id_invoice` BIGINT NOT NULL,
+    `service_id_service` BIGINT NOT NULL,
+    PRIMARY KEY (`invoice_id_invoice`, `service_id_service`),
+    INDEX `FK56xj02tq1jai8fuaxas7oxqoy` (`service_id_service` ASC) VISIBLE,
+    CONSTRAINT `FK56xj02tq1jai8fuaxas7oxqoy`
+        FOREIGN KEY (`service_id_service`)
+            REFERENCES `projectii`.`service` (`id_service`),
+    CONSTRAINT `FKk0ytyh54mptuuxruyucg4slhj`
+        FOREIGN KEY (`invoice_id_invoice`)
+            REFERENCES `projectii`.`invoice` (`id_invoice`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `projectii`.`roles`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `projectii`.`roles`
+(
+    `id`   INT                              NOT NULL AUTO_INCREMENT,
+    `name` ENUM ('ROLE_ADMIN', 'ROLE_USER') NULL DEFAULT NULL,
+    PRIMARY KEY (`id`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `projectii`.`user_roles`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `projectii`.`user_roles`
+(
+    `id_role` INT    NOT NULL,
+    `id_user` BIGINT NOT NULL,
+    PRIMARY KEY (`id_role`, `id_user`),
+    INDEX `FKok1v2uejpjcfqg8va888yvy0w` (`id_user` ASC) VISIBLE,
+    CONSTRAINT `FK1v995xldvmr6w96c5feofx1gf`
+        FOREIGN KEY (`id_role`)
+            REFERENCES `projectii`.`roles` (`id`),
+    CONSTRAINT `FKok1v2uejpjcfqg8va888yvy0w`
+        FOREIGN KEY (`id_user`)
+            REFERENCES `projectii`.`user` (`id_user`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8mb4
+    COLLATE = utf8mb4_0900_ai_ci;

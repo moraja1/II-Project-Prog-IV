@@ -17,16 +17,14 @@ public class InvoiceService {
 
     @MapsId("idInvoice")
     @ManyToOne(optional = false)
-    @JoinColumn(name = "id_invoice", nullable = false)
     @JsonBackReference
-    private Invoice idInvoice;
+    private Invoice invoice;
 
     @MapsId("idService")
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "id_service", nullable = false)
     @JsonManagedReference
     private Service service;
 
     @Column(name = "hour_amount")
-    private Integer hourAmount;
+    private Long hourAmount;
 }

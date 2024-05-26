@@ -39,22 +39,30 @@ public class Invoice {
     @Column(name = "total_price")
     private Long totalPrice;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "id_client", nullable = false)
+    @ManyToOne
     @JsonManagedReference
-    private Client idClient;
+    private Client client;
 
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_user", nullable = false)
-    private User idUser;
+    @ManyToOne
+    private User user;
 
-    @OneToMany(mappedBy = "idInvoice", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<InvoiceProduct> invoiceProducts = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "idInvoice", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<InvoiceService> invoiceServices = new LinkedHashSet<>();
+
+    public void addInvoiceProduct(InvoiceProduct invoiceProduct) {
+        invoiceProducts.add(invoiceProduct);
+        invoiceProduct.setInvoice(this);
+    }
+
+    public void addInvoiceService(InvoiceService invoiceService) {
+        invoiceServices.add(invoiceService);
+        invoiceService.setInvoice(this);
+    }
 
 }

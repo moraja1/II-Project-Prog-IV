@@ -35,17 +35,10 @@ public class Product {
     private Set<InvoiceProduct> invoiceProducts = new HashSet<>();
 
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_user", nullable = false)
-    private User idUser;
+    @ManyToOne
+    private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "id_measure_units", nullable = false)
+    @ManyToOne
     @JsonManagedReference
     private MeasureUnit measureUnits;
-
-    public void addUserProduct(UserProduct user) {
-        users.add(user);
-        user.setProduct(this);
-    }
 }

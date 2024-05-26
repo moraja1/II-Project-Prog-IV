@@ -1,8 +1,8 @@
 package cr.ac.una.invoicessystem.restController;
 
+import cr.ac.una.invoicessystem.data.repositories.UserRepository;
 import cr.ac.una.invoicessystem.logic.dto.UserTableDto;
 import cr.ac.una.invoicessystem.data.entities.User;
-import cr.ac.una.invoicessystem.data.repositories.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface SupplierTypeRepository extends JpaRepository<SupplierType, Long> {
-    Optional<SupplierType> findByName(EType eType);
+    Optional<SupplierType> findByName(EType name);
 }
