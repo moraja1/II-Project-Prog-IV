@@ -5,14 +5,13 @@ import TableAnimations from "../skeletons/TableAnimation.jsx";
 import ErrorPage from "../error-page.jsx";
 import {ROLES, TYPES} from "../../services/Constants.js";
 
+const headersName = ["Cedula", "Nombre", "Apellidos", "Teléfono", "Correo Electrónico", "Tipo", "Rol", "Acceso", "Acción"]
 
 const UserTable = () => {
     const {users, tableDataQuery, handlePageButtons, handleTableButton} = useTable();
 
     if (tableDataQuery.isPending || tableDataQuery.isFetching) return <TableAnimations />;
     if (tableDataQuery.error) return <ErrorPage />;
-
-    let headersName = ["Cedula", "Nombre", "Apellidos", "Teléfono", "Correo Electrónico", "Tipo", "Rol", "Acceso", "Acción"]
 
     return (
         <div className={"cmp-table-container"}>

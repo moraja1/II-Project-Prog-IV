@@ -195,18 +195,20 @@ export const InvoiceForm = () => {
     return (
         <>
             <ModalMsg
-                message={"Factura ingresada correctamente."}
-                activate={successModal} modalRead={modalRead}/>
+                message={"Factura ingresada correctamente"}
+                activate={successModal}
+                modalRead={modalRead}/>
             <ModalMsg
-                message={"No se pudo registrar la factura. Pongase en contacto con el administrador."}
-                activate={failModal} modalRead={modalRead}/>
+                message={"No se pudo registrar la factura. Verifique que no haya una factura con el mismo código ya registrado"}
+                activate={failModal}
+                modalRead={modalRead}/>
             <ModalMsg message={"No se tiene ningún cliente registrado, por favor registre un sus clientes antes de facturar"}
                       activate={failClientsModal}
                       modalRead={modalRead}/>
             <ModalMsg message={"No se tiene ningún producto registrado, por favor registre sus productos antes de facturar"}
                       activate={failProductsModal}
                       modalRead={modalRead}/>
-            <ModalMsg message={"No se tiene ningún servicio registrado, por favor registre sus productos antes de facturar"}
+            <ModalMsg message={"No se tiene ningún servicio registrado, por favor registre sus servicios antes de facturar"}
                       activate={failServicesModal}
                       modalRead={modalRead}/>
             <article className={"cmp-container invoiceForm"}>

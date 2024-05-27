@@ -11,7 +11,7 @@ export function ProductTable({ toShow, onDelete }) {
     }, [toShow]);
 
     return (
-        <table className="cmp-table prod-table">
+        <table className="cmp-table center-data">
             <caption className="cmp-table-title">Productos en factura</caption>
             <thead>
             <tr>
