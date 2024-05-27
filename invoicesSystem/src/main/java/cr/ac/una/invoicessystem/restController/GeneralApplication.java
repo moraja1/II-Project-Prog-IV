@@ -257,6 +257,14 @@ public class GeneralApplication {
         return ResponseEntity.ok(savedInvoice);
     }
 
+    @GetMapping("invoices")
+    private ResponseEntity<List<Invoice>> getAllInvoices(@RequestHeader("sub") String sub) {
+        Optional<User> optionalUser = userRepository.findById(Long.parseLong(sub));
+        if(optionalUser.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
+        return ResponseEntity.ok(optionalUser.get().getInvoices().stream().toList());
+    }
+
     private void addProductsToInvoice(Invoice savedInvoice, List<InvoiceProductDto> invoiceProductDtoList) throws Exception {
         for(var invoiceProductDto : invoiceProductDtoList) {
             Optional<Product> optionalProduct = productRepository.findById(invoiceProductDto.product().id());
