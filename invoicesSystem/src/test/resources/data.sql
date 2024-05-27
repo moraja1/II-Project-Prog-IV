@@ -63,3 +63,9 @@ INSERT INTO projectii.products (id_products, code, name, price, measure_units_id
 INSERT INTO projectii.service (id_service, name, price_hour, user_id_user) VALUES (1, 'Arquitectura', 12000, 6);
 INSERT INTO projectii.service (id_service, name, price_hour, user_id_user) VALUES (3, 'Mecanico Automotriz', 12000, 6);
 INSERT INTO projectii.service (id_service, name, price_hour, user_id_user) VALUES (4, 'Arquitectura', 12000, 3);
+
+-- CLIENTS --
+INSERT INTO projectii.client (id_client, email, last_name, mobile, name, natural_id, user_id_user)
+VALUES (1, 'keylor@psg.com', 'Navas', '90356045', 'Keylor', '905440633', 3);
+INSERT INTO projectii.client (id_client, email, last_name, mobile, name, natural_id, user_id_user)
+VALUES (2, 'marta@car.com', 'Escobar', '20444036', 'Marta Emilia', '70588033', 3);

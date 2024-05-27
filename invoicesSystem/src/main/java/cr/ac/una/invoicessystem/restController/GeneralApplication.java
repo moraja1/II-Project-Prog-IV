@@ -23,14 +23,12 @@ public class GeneralApplication {
     private final InvoiceRepository invoiceRepository;
     private final InvoiceProductRepository invoiceProductRepository;
     private final InvoiceServiceRepository invoiceServiceRepository;
-    /*private final InvoiceRepository invoiceRepository;*/
 
     public GeneralApplication(UserRepository userRepository,
                               ClientRepository clientRepository,
                               MeasureUnitRepository measureUnitRepository,
                               ProductRepository productRepository,
-                              ServiceRepository serviceRepository,/*,
-                              InvoiceRepository invoiceRepository*/
+                              ServiceRepository serviceRepository,
                               InvoiceRepository invoiceRepository,
                               InvoiceProductRepository invoiceProductRepository,
                               InvoiceServiceRepository invoiceServiceRepository) {
@@ -39,7 +37,6 @@ public class GeneralApplication {
         this.measureUnitRepository = measureUnitRepository;
         this.productRepository = productRepository;
         this.serviceRepository = serviceRepository;
-        /*this.invoiceRepository = invoiceRepository;*/
         this.invoiceRepository = invoiceRepository;
         this.invoiceProductRepository = invoiceProductRepository;
         this.invoiceServiceRepository = invoiceServiceRepository;
