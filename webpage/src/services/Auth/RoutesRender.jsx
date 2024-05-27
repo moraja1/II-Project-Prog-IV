@@ -12,6 +12,7 @@ import {ServiceForm} from "../../components/Forms/ServiceForm/ServiceForm.jsx";
 import {InvoiceForm} from "../../components/Forms/InvoiceForm/InvoiceForm.jsx";
 import {createBrowserRouter} from "react-router-dom";
 import {ProtectedRoute} from "./ProtectedRoute.jsx";
+import {InvoiceDocument} from "../../components/InvoiceDocument.jsx";
 
 export const router = createBrowserRouter([
     {
@@ -36,7 +37,7 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: "",
-                element: <MyHome />
+                element: <MyHome />,
             },
             {
                 path: "profile",

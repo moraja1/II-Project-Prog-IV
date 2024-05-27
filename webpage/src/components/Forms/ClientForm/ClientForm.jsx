@@ -32,7 +32,7 @@ export function ClientForm(  ) {
                     <InputBox name="naturalId" label={"Cedula"}
                               inputType="text"
                               errorMessage={"Por favor, ingresa un cedula válida de 9 dígitos"}
-                              pattern={`^\\d+$`}
+                              pattern={`^\\d{9}$`}
                               required/>
                     <InputBox name="name" label={"Nombre"}
                               inputType="text"

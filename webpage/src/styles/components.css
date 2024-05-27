@@ -393,6 +393,11 @@
     text-align: center;
 }
 
+.invoice-screen {
+    width: 95%;
+    text-align: center;
+}
+
     /* HOME SCREEN END */
 
     /* PRODUCT FORM */

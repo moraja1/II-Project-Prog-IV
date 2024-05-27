@@ -1,9 +1,9 @@
-import {ROLES, TYPES} from "../services/Constants.js";
 import {GrLinkNext, GrLinkPrevious} from "react-icons/gr";
 import {useQuery} from "@tanstack/react-query";
 import {gnrlAPI} from "../services/Api.js";
 import {useContext, useEffect, useState} from "react";
 import {AuthContext} from "../services/Auth/AuthProvider.jsx";
+import {useNavigate} from "react-router-dom";
 
 let headersName = ["Fecha", "Codigo", "Cliente", "Cantidad de Productos", "Horas de Servicio", "IVA", "Subtotal", "Total", "PDF"]
 const API = (user) => {
@@ -11,7 +11,7 @@ const API = (user) => {
     return gnrlAPI;
 }
 
-export function InvoicesTable() {
+export function InvoicesTable({ invoice, setInvoice}) {
     const {user} = useContext(AuthContext);
     const [page, setPage] = useState(0);
     const [size] = useState(5);
@@ -47,7 +47,18 @@ export function InvoicesTable() {
     const handleTableButton = (e) => {
         e.preventDefault();
         let payload = JSON.parse(e.target.value)
-        console.log(payload)
+        const reg = /^(\d{4}-\d{2}-\d{2}).*$/
+        const resultDate = reg.exec(payload.date);
+        const newInvoice = {
+            invoice: {
+                ...payload,
+                date: resultDate[1],
+                supplier: user,
+            },
+            show: true,
+        }
+        console.log(newInvoice)
+        setInvoice(newInvoice);
     }
 
     return (
@@ -83,7 +94,7 @@ export function InvoicesTable() {
                         <td>{inv.totalPrice}</td>
                         <td className="molecule-table-icon">
                             <div className="molecule-table-button" style={{color: "blue"}}>
-                                <button onClick={handleTableButton} value={JSON.stringify(inv)}>Imprimir</button>
+                                <button onClick={handleTableButton} value={JSON.stringify(inv)}>Ver</button>
                             </div>
                         </td>
                     </tr>
