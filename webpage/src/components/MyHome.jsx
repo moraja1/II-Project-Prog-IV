@@ -3,7 +3,6 @@ import {ROLES} from "../services/Constants.js";
 import {AuthContext} from "../services/Auth/AuthProvider.jsx";
 import {useContext, useState} from "react";
 import {InvoicesTable} from "./InvoicesTable.jsx";
-import {Outlet} from "react-router-dom";
 import {InvoiceDocument} from "./InvoiceDocument.jsx";
 
 const MyHome = () => {
@@ -16,7 +15,7 @@ const MyHome = () => {
             <article className="cmp-container home-screen">
                 <h1>{`Bienvenido, ${user.name} ${user.lastName}`}</h1>
                 {user.roles[0].role.name === ROLES.ADMIN && <UserTable/>}
-                {user.roles[0].role.name === ROLES.SUPPLIER.ENGLISH && <InvoicesTable invoice={invoice} setInvoice={setInvoice}/>}
+                {user.roles[0].role.name === ROLES.SUPPLIER.ENGLISH && <InvoicesTable setInvoice={setInvoice}/>}
             </article>
             {invoice.show &&
                 <article className="cmp-container invoice-screen">

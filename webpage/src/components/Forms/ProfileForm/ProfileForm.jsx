@@ -45,7 +45,7 @@ export function ProfileForm() {
                               inputType="text"
                               defaultValue={user.lastName}/>
                     <InputBox name="mobile" label={"Teléfono"}
-                              errorMessage={"Debe ser nu número de 8 digitos y no puede contener letras"}
+                              errorMessage={"Debe ser un número de 8 digitos y no puede contener letras"}
                               inputType="text"
                               pattern={`^\\d{8}$`}
                               defaultValue={user.mobile}/>

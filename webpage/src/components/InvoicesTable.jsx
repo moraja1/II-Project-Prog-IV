@@ -3,15 +3,16 @@ import {useQuery} from "@tanstack/react-query";
 import {gnrlAPI} from "../services/Api.js";
 import {useContext, useEffect, useState} from "react";
 import {AuthContext} from "../services/Auth/AuthProvider.jsx";
-import {useNavigate} from "react-router-dom";
+import { saveAs } from 'file-saver';
+import { toXML } from 'jstoxml';
 
-let headersName = ["Fecha", "Codigo", "Cliente", "Cantidad de Productos", "Horas de Servicio", "IVA", "Subtotal", "Total", "PDF"]
+let headersName = ["Fecha", "Codigo", "Cliente", "Cantidad de Productos", "Horas de Servicio", "IVA", "Subtotal", "Total", "PDF", "XML"]
 const API = (user) => {
     gnrlAPI.defaults.headers.common['sub'] = user.id;
     return gnrlAPI;
 }
 
-export function InvoicesTable({ invoice, setInvoice}) {
+export function InvoicesTable({ setInvoice }) {
     const {user} = useContext(AuthContext);
     const [page, setPage] = useState(0);
     const [size] = useState(5);
@@ -44,8 +45,9 @@ export function InvoicesTable({ invoice, setInvoice}) {
         if(element === "next") invoices.length === size ? setPage(page+1) : {};
     }
 
-    const handleTableButton = (e) => {
+    const handleTableButtonPDF = (e) => {
         e.preventDefault();
+        e.stopPropagation();
         let payload = JSON.parse(e.target.value)
         const reg = /^(\d{4}-\d{2}-\d{2}).*$/
         const resultDate = reg.exec(payload.date);
@@ -57,9 +59,44 @@ export function InvoicesTable({ invoice, setInvoice}) {
             },
             show: true,
         }
-        console.log(newInvoice)
         setInvoice(newInvoice);
     }
+
+    const handleTableButtonXML = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        let payload = JSON.parse(e.target.value)
+        const reg = /^(\d{4}-\d{2}-\d{2}).*$/
+        const resultDate = reg.exec(payload.date);
+        let newSupplier = user;
+        delete newSupplier.id;
+        delete newSupplier.enabled;
+        delete newSupplier.roles;
+        delete newSupplier.type;
+        delete newSupplier.clients;
+        delete newSupplier.invoices;
+        delete newSupplier.products;
+        delete newSupplier.services;
+        delete newSupplier.isAuthenticated;
+
+        const newInvoice = {
+            invoice: {
+                ...payload,
+                date: resultDate[1],
+                supplier: newSupplier,
+            },
+        }
+        const config = {
+            indent: '    '
+        };
+        const xmlData = toXML(newInvoice, config);
+        downloadXML(xmlData);
+    }
+
+    const downloadXML = (xmlData) => {
+        const blob = new Blob([xmlData], { type: 'application/xml' });
+        saveAs(blob, 'factura.xml');
+    };
 
     return (
         <div className={"cmp-table-container"}>
@@ -67,7 +104,7 @@ export function InvoicesTable({ invoice, setInvoice}) {
                 <caption className="cmp-table-title">Estas son las facturas registradas</caption>
                 <thead>
                 <tr>
-                    {headersName.map((th, index) => (<th key={index}>{th}</th>))}
+                    {headersName.map((th, index) => (<th key={index}>{th}</th>) )}
                 </tr>
                 </thead>
                 <tbody>
@@ -94,7 +131,12 @@ export function InvoicesTable({ invoice, setInvoice}) {
                         <td>{inv.totalPrice}</td>
                         <td className="molecule-table-icon">
                             <div className="molecule-table-button" style={{color: "blue"}}>
-                                <button onClick={handleTableButton} value={JSON.stringify(inv)}>Ver</button>
+                                <button onClick={handleTableButtonPDF} value={JSON.stringify(inv)}>Ver</button>
+                            </div>
+                        </td>
+                        <td className="molecule-table-icon">
+                            <div className="molecule-table-button" style={{color: "blue"}}>
+                                <button onClick={handleTableButtonXML} value={JSON.stringify(inv)}>Ver</button>
                             </div>
                         </td>
                     </tr>
@@ -103,7 +145,8 @@ export function InvoicesTable({ invoice, setInvoice}) {
                 </tbody>
             </table>
             <div className={"cmp-table-pagesBtns"}>
-                <button name={"prev"} onClick={handlePageButtons} type={"button"} className={"main-button cmp-table-pagesBtn"}><GrLinkPrevious className={"prev"} /></button>
+                <button name={"prev"} onClick={handlePageButtons} type={"button"}
+                        className={"main-button cmp-table-pagesBtn"}><GrLinkPrevious className={"prev"}/></button>
                 <button name={"next"} onClick={handlePageButtons} type={"button"} className={"main-button cmp-table-pagesBtn"}><GrLinkNext className={"next"} /></button>
             </div>
         </div>

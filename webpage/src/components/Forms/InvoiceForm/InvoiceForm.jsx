@@ -40,7 +40,9 @@ export const InvoiceForm = () => {
                     setClientsRegistered(res.data);
                     return res.data;
                 })
-                .catch(() => setFailClientsModal(true)),
+                .catch(() => {
+                    setFailClientsModal(true);
+                }),
     })
     const productsQuery = useQuery({
         queryKey: ['productsQ'],
@@ -194,17 +196,15 @@ export const InvoiceForm = () => {
     }
     return (
         <>
-            <ModalMsg
-                message={"Factura ingresada correctamente"}
+            <ModalMsg message={"Factura ingresada correctamente"}
                 activate={successModal}
                 modalRead={modalRead}/>
-            <ModalMsg
-                message={"No se pudo registrar la factura. Verifique que no haya una factura con el mismo código ya registrado"}
+            <ModalMsg message={"No se pudo registrar la factura. Verifique que no haya una factura con el mismo código ya registrado"}
                 activate={failModal}
                 modalRead={modalRead}/>
             <ModalMsg message={"No se tiene ningún cliente registrado, por favor registre un sus clientes antes de facturar"}
                       activate={failClientsModal}
-                      modalRead={modalRead}/>
+                      modalRead={modalRead} />
             <ModalMsg message={"No se tiene ningún producto registrado, por favor registre sus productos antes de facturar"}
                       activate={failProductsModal}
                       modalRead={modalRead}/>
