@@ -121,9 +121,9 @@ public class GeneralApplication {
         if(userOptional.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         Optional<MeasureUnit> optionalMeasureUnit = measureUnitRepository.findById(product.getMeasureUnit().id());
         if(optionalMeasureUnit.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        Optional<Product> optionalProduct = productRepository.findByCode(product.getCode());
-        if(optionalProduct.isPresent()) {
-            if(Objects.equals(optionalProduct.get().getUser().getId(), userOptional.get().getId())) {
+        List<Product> savedProducts = productRepository.findByCode(product.getCode());
+        for(var p : savedProducts) {
+            if(Objects.equals(p.getUser().getId(), userOptional.get().getId())) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
         }
