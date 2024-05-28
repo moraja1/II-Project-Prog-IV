@@ -18,7 +18,9 @@ const InvoiceItemsTable = ({invoice}) => (
         <InvoiceTableHeader />
         {invoice.invoiceProducts.length > 0 && <InvoiceTableRowProduct items={invoice.invoiceProducts} />}
         {invoice.invoiceServices.length > 0 && <InvoiceTableRowService items={invoice.invoiceServices} />}
-        <InvoiceTableFooter total={invoice.totalPrice} />
+        <InvoiceTableFooter label={"Subtotal"} total={invoice.subtotal} />
+        <InvoiceTableFooter label={"IVA"} total={invoice.iva} />
+        <InvoiceTableFooter label={"Total"} total={invoice.totalPrice} />
     </View>
 );
 

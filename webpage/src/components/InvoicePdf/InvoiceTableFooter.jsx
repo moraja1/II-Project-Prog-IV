@@ -26,10 +26,10 @@ const styles = StyleSheet.create({
 });
 
 
-export const InvoiceTableFooter = ({ total }) => {
+export const InvoiceTableFooter = ({ label, total }) => {
     return(
         <View style={styles.row}>
-            <Text style={styles.description}>TOTAL</Text>
+            <Text style={styles.description}>{label}</Text>
             <Text style={styles.total}>{ Number.parseFloat(total).toFixed(2)}</Text>
         </View>
     )
